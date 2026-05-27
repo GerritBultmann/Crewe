@@ -47,3 +47,11 @@ export const isStickerCompatibleWithSlot = (sticker: Sticker, slot: AlbumSlot) =
   const category = categoryById(slot.categoryId);
   return Boolean(category?.acceptedPositions.includes(sticker.position));
 };
+
+export const stickerIdentityKey = (sticker: Pick<Sticker, 'name' | 'team'>) =>
+  `${sticker.name}|${sticker.team}`
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
