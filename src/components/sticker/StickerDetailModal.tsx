@@ -9,22 +9,8 @@ interface StickerDetailModalProps {
   onDelete: (sticker: Sticker) => void;
 }
 
-export const StickerDetailModal = ({ sticker, onClose, onEdit, onDelete }: StickerDetailModalProps) => (
-  <Modal
-    title={sticker.name}
-    onClose={onClose}
-    wide
-    footer={
-      <>
-        <button type="button" className="button button--ghost" onClick={() => onEdit(sticker)}>
-          Bearbeiten
-        </button>
-        <button type="button" className="button button--danger" onClick={() => onDelete(sticker)}>
-          Löschen
-        </button>
-      </>
-    }
-  >
+export const StickerDetailModal = ({ sticker, onClose }: StickerDetailModalProps) => (
+  <Modal title={sticker.name} onClose={onClose} wide variant="fm">
     <PlayerProfilePanel sticker={sticker} />
   </Modal>
 );
