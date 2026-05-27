@@ -4,24 +4,47 @@ interface RoleSelectorProps {
   positionId: string;
   mode: RoleMode;
   roleName: string;
+  abilityStars?: string;
   onPositionChange: (positionId: string) => void;
   onModeChange: (mode: RoleMode) => void;
   onRoleChange: (roleName: string) => void;
 }
 
-export const RoleSelector = ({ positionId, mode, roleName, onPositionChange, onModeChange, onRoleChange }: RoleSelectorProps) => {
+const shortPositionLabel: Record<string, string> = {
+  GK: 'GK',
+  LV: 'D/WB (L)',
+  IV: 'D (C)',
+  RV: 'D/WB (R)',
+  LAV: 'WB/M (L)',
+  DM: 'DM',
+  RAV: 'WB/M (R)',
+  LM: 'M/AM (L)',
+  ZM: 'M (C)',
+  RM: 'M/AM (R)',
+  LA: 'M/AM (L)',
+  OM: 'AM (C)',
+  RA: 'M/AM (R)',
+  MS: 'ST (C)',
+};
+
+const fallbackStars = '★★★☆☆';
+
+export const RoleSelector = ({ positionId, mode, roleName, abilityStars, onPositionChange, onModeChange, onRoleChange }: RoleSelectorProps) => {
   const activeDot = POSITION_DOTS.find((dot) => dot.id === positionId) ?? POSITION_DOTS[0];
   const linked = new Set(activeDot.linked);
   const roles = roleOptionsFor(positionId, mode);
+  const stars = abilityStars || fallbackStars;
 
   return (
-    <section className="fm-card fm-role-card">
-      <div className="fm-role-pitch-title">
+    <section className="fm-role-panel">
+      <div className="fm-left-topline">
         <div>
-          <div className="fm-card-title">Spielpositionen</div>
-          <small>{activeDot.label}</small>
+          <span className="fm-panel-kicker">Positions</span>
+          <strong>{shortPositionLabel[positionId] ?? activeDot.label}</strong>
         </div>
+        <button type="button" className="fm-compare-button">▣ Compare</button>
       </div>
+
       <div className="fm-role-pitch">
         <div className="fm-role-box" />
         <div className="fm-role-box right" />
@@ -38,21 +61,28 @@ export const RoleSelector = ({ positionId, mode, roleName, onPositionChange, onM
           />
         ))}
       </div>
-      <div className="fm-role-selected-label">{activeDot.label}</div>
+
+      <div className="fm-role-selected-label">Selected: {activeDot.label}</div>
+
       <div className="fm-role-switch">
-        <button type="button" className={mode === 'ip' ? 'active' : ''} onClick={() => onModeChange('ip')}>Mit Ball</button>
-        <button type="button" className={mode === 'oop' ? 'active' : ''} onClick={() => onModeChange('oop')}>Ohne Ball</button>
+        <button type="button" className={mode === 'ip' ? 'active' : ''} onClick={() => onModeChange('ip')}>With Ball</button>
+        <button type="button" className={mode === 'oop' ? 'active' : ''} onClick={() => onModeChange('oop')}>Without Ball</button>
       </div>
-      <div className="fm-role-table-head"><span>Ausw.</span><span>Rolle</span></div>
+
+      <div className="fm-role-table-head">
+        <span>Sel</span>
+        <span>C. Ability</span>
+        <span>Role</span>
+      </div>
       <div className="fm-role-list">
         {roles.length ? roles.map(([name]) => (
           <button key={name} type="button" className={`fm-role-choice ${name === roleName ? 'active' : ''}`} onClick={() => onRoleChange(name)}>
             <span className="fm-radio-dot" />
+            <span className="fm-stars">{stars}</span>
             <span>{name}</span>
           </button>
         )) : <div className="fm-role-empty">Keine Rollen für diese Position hinterlegt.</div>}
       </div>
-      <p className="fm-role-hint">Primäre Attribute werden grün, sekundäre Attribute hellblau markiert.</p>
     </section>
   );
 };
