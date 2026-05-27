@@ -6,12 +6,13 @@ interface ModalProps {
   onClose: () => void;
   footer?: ReactNode;
   wide?: boolean;
+  variant?: 'default' | 'fm';
 }
 
-export const Modal = ({ title, children, onClose, footer, wide = false }: ModalProps) => (
-  <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
+export const Modal = ({ title, children, onClose, footer, wide = false, variant = 'default' }: ModalProps) => (
+  <div className={`modal-backdrop modal-backdrop--${variant}`} role="presentation" onMouseDown={onClose}>
     <section
-      className={`modal${wide ? ' modal--wide' : ''}`}
+      className={`modal modal--${variant}${wide ? ' modal--wide' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={title}
