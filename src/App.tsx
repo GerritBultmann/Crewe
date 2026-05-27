@@ -1,0 +1,104 @@
+import { useState } from 'react';
+import { AlbumSpreadView } from './components/album/AlbumSpreadView';
+import { AlbumToolbar } from './components/album/AlbumToolbar';
+import { SpreadNavigator } from './components/album/SpreadNavigator';
+import { StickerCollection } from './components/sticker/StickerCollection';
+import { StickerDetailModal } from './components/sticker/StickerDetailModal';
+import { StickerFormModal } from './components/sticker/StickerFormModal';
+import { useAlbum } from './hooks/useAlbum';
+import { downloadAlbumJson, readAlbumJsonFile } from './services/exportAlbum';
+import type { Sticker } from './domain/types';
+import type { StickerFormValues } from './domain/stickers';
+
+export const App = () => {
+  const { album, dispatch } = useAlbum();
+  const [formSticker, setFormSticker] = useState<Sticker | null | undefined>(undefined);
+  const [detailSticker, setDetailSticker] = useState<Sticker | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  const closeForm = () => setFormSticker(undefined);
+
+  const submitSticker = (values: StickerFormValues) => {
+    if (formSticker) {
+      dispatch({ type: 'sticker/update', stickerId: formSticker.id, values });
+    } else {
+      dispatch({ type: 'sticker/create', values });
+    }
+    closeForm();
+  };
+
+  const deleteSticker = (sticker: Sticker) => {
+    const confirmed = window.confirm(`Sticker "${sticker.name}" wirklich loeschen?`);
+    if (!confirmed) return;
+    dispatch({ type: 'sticker/delete', stickerId: sticker.id });
+    setDetailSticker(null);
+    closeForm();
+  };
+
+  const importAlbum = async (file: File) => {
+    try {
+      const importedAlbum = await readAlbumJsonFile(file);
+      dispatch({ type: 'album/import', payload: importedAlbum });
+      setNotice('Import erfolgreich. Die Daten wurden lokal gespeichert.');
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Import fehlgeschlagen.');
+    }
+  };
+
+  return (
+    <main className="app-shell">
+      <AlbumToolbar
+        album={album}
+        onRename={(title) => dispatch({ type: 'album/rename', title })}
+        onExport={() => downloadAlbumJson(album)}
+        onImport={importAlbum}
+      />
+
+      {notice ? (
+        <div className="notice" role="status">
+          <span>{notice}</span>
+          <button type="button" onClick={() => setNotice(null)}>
+            ×
+          </button>
+        </div>
+      ) : null}
+
+      <SpreadNavigator album={album} dispatch={dispatch} />
+
+      <div className="workspace-layout">
+        <AlbumSpreadView
+          album={album}
+          dispatch={dispatch}
+          onOpenSticker={setDetailSticker}
+          onEditSticker={(sticker) => setFormSticker(sticker)}
+          onDeleteSticker={deleteSticker}
+        />
+
+        <StickerCollection
+          album={album}
+          dispatch={dispatch}
+          onAdd={() => setFormSticker(null)}
+          onOpen={setDetailSticker}
+          onEdit={(sticker) => setFormSticker(sticker)}
+          onDelete={deleteSticker}
+        />
+      </div>
+
+      {formSticker !== undefined ? (
+        <StickerFormModal sticker={formSticker} onClose={closeForm} onSubmit={submitSticker} />
+      ) : null}
+
+      {detailSticker ? (
+        <StickerDetailModal
+          sticker={detailSticker}
+          onClose={() => setDetailSticker(null)}
+          onEdit={(sticker) => {
+            setDetailSticker(null);
+            setFormSticker(sticker);
+          }}
+          onDelete={deleteSticker}
+        />
+      ) : null}
+    </main>
+  );
+};

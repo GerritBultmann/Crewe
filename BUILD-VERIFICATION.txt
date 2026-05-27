@@ -1,0 +1,13 @@
+Build verification
+==================
+
+Command executed in this environment:
+
+npm run build
+
+Result:
+- TypeScript check passed: tsc --noEmit
+- Vite production build passed
+- Generated bundle during verification: dist/index.html and dist/assets/*
+
+The generated dist/ directory is intentionally not included as a source artifact target because GitHub Pages builds it in .github/workflows/deploy.yml.

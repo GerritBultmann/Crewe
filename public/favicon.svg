@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Stickeralbum Icon">
+  <rect width="64" height="64" rx="14" fill="#123c2f"/>
+  <path d="M16 12h25l7 7v33H16z" fill="#f7ead2"/>
+  <path d="M41 12v8h8" fill="#d5b46d"/>
+  <rect x="22" y="26" width="20" height="17" rx="4" fill="#2f7d63"/>
+  <circle cx="32" cy="34" r="5" fill="#f7ead2"/>
+</svg>
