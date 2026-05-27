@@ -126,6 +126,13 @@ const normalizeStatus = (status: unknown): StickerStatus => {
   return KNOWN_STATUSES.has(value) ? value : 'owned';
 };
 
+const normalizeSourceRow = (sourceRow: unknown): Record<string, string> | undefined => {
+  if (!sourceRow || typeof sourceRow !== 'object' || Array.isArray(sourceRow)) return undefined;
+  return Object.fromEntries(
+    Object.entries(sourceRow as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')]),
+  );
+};
+
 export const normalizeImportedAlbum = (candidate: unknown): AlbumData | null => {
   if (!candidate || typeof candidate !== 'object') return null;
   const value = candidate as Partial<AlbumData>;
@@ -157,6 +164,8 @@ export const normalizeImportedAlbum = (candidate: unknown): AlbumData | null => 
 
   const stickers = value.stickers.map((sticker): Sticker => {
     const timestamp = nowIso();
+    const importedFrom = sticker.importedFrom === 'csv' || sticker.importedFrom === 'json' ? sticker.importedFrom : undefined;
+
     return {
       id: String(sticker.id || createId('sticker')),
       number: String(sticker.number || ''),
@@ -166,6 +175,8 @@ export const normalizeImportedAlbum = (candidate: unknown): AlbumData | null => 
       status: normalizeStatus(sticker.status),
       imageUrl: sticker.imageUrl ? String(sticker.imageUrl) : undefined,
       description: sticker.description ? String(sticker.description) : undefined,
+      importedFrom,
+      sourceRow: normalizeSourceRow(sticker.sourceRow),
       createdAt: String(sticker.createdAt || timestamp),
       updatedAt: String(sticker.updatedAt || timestamp),
     };
