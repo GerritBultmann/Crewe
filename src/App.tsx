@@ -6,7 +6,7 @@ import { StickerCollection } from './components/sticker/StickerCollection';
 import { StickerDetailModal } from './components/sticker/StickerDetailModal';
 import { StickerFormModal } from './components/sticker/StickerFormModal';
 import { useAlbum } from './hooks/useAlbum';
-import { downloadAlbumJson, readAlbumJsonFile } from './services/exportAlbum';
+import { downloadAlbumJson, readImportFile } from './services/exportAlbum';
 import type { Sticker } from './domain/types';
 import type { StickerFormValues } from './domain/stickers';
 
@@ -37,9 +37,16 @@ export const App = () => {
 
   const importAlbum = async (file: File) => {
     try {
-      const importedAlbum = await readAlbumJsonFile(file);
-      dispatch({ type: 'album/import', payload: importedAlbum });
-      setNotice('Import erfolgreich. Die Daten wurden lokal gespeichert.');
+      const result = await readImportFile(file);
+
+      if (result.type === 'album') {
+        dispatch({ type: 'album/import', payload: result.album });
+        setNotice('Album-Import erfolgreich. Die Daten wurden lokal gespeichert.');
+        return;
+      }
+
+      dispatch({ type: 'stickers/import', imports: result.imports });
+      setNotice(`${result.imports.length} Sticker aus ${file.name} importiert.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : 'Import fehlgeschlagen.');
     }
