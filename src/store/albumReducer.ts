@@ -5,7 +5,13 @@ import {
   nowIso,
   reindexSpreadSlots,
 } from '../domain/album';
-import { createStickerFromForm, isStickerCompatibleWithSlot, updateStickerFromForm } from '../domain/stickers';
+import {
+  createStickerFromForm,
+  isStickerCompatibleWithSlot,
+  stickerIdentityKey,
+  updateStickerFromForm,
+} from '../domain/stickers';
+import type { ParsedStickerImport } from '../services/importStickers';
 import type { AlbumData, AlbumSpread, Sticker } from '../domain/types';
 import type { StickerFormValues } from '../domain/stickers';
 
@@ -23,7 +29,8 @@ export type AlbumAction =
   | { type: 'slot/unstick'; spreadId: string; slotId: string }
   | { type: 'sticker/create'; values: StickerFormValues; targetSlotId?: string }
   | { type: 'sticker/update'; stickerId: string; values: StickerFormValues }
-  | { type: 'sticker/delete'; stickerId: string };
+  | { type: 'sticker/delete'; stickerId: string }
+  | { type: 'stickers/import'; imports: ParsedStickerImport[] };
 
 const touch = (album: AlbumData): AlbumData => ({ ...album, updatedAt: nowIso() });
 
@@ -114,6 +121,66 @@ const firstCompatibleEmptySlot = (album: AlbumData, sticker: Sticker) => {
   return activeSpread?.slots.find(
     (slot) => slot.categoryId === category.id && !slot.stickerId && isStickerCompatibleWithSlot(sticker, slot),
   );
+};
+
+const upsertImportedStickers = (album: AlbumData, imports: ParsedStickerImport[]): AlbumData => {
+  if (!imports.length) return album;
+
+  const timestamp = nowIso();
+  const importedStickers = imports.map((item) => ({
+    sticker: {
+      ...createStickerFromForm(item.values),
+      importedFrom: item.source,
+      sourceRow: item.sourceRow,
+      updatedAt: timestamp,
+    } satisfies Sticker,
+    values: item.values,
+  }));
+
+  const byIdentity = new Map(album.stickers.map((sticker) => [stickerIdentityKey(sticker), sticker]));
+  const nextStickers = [...album.stickers];
+  const importedIds: string[] = [];
+
+  for (const { sticker } of importedStickers) {
+    const identity = stickerIdentityKey(sticker);
+    const existing = byIdentity.get(identity);
+
+    if (existing) {
+      const updated: Sticker = {
+        ...existing,
+        number: sticker.number || existing.number,
+        name: sticker.name || existing.name,
+        team: sticker.team || existing.team,
+        position: sticker.position,
+        status: sticker.status,
+        imageUrl: sticker.imageUrl ?? existing.imageUrl,
+        description: sticker.description || existing.description,
+        importedFrom: sticker.importedFrom,
+        sourceRow: sticker.sourceRow,
+        updatedAt: timestamp,
+      };
+      const index = nextStickers.findIndex((item) => item.id === existing.id);
+      if (index >= 0) nextStickers[index] = updated;
+      byIdentity.set(identity, updated);
+      importedIds.push(updated.id);
+    } else {
+      nextStickers.push(sticker);
+      byIdentity.set(identity, sticker);
+      importedIds.push(sticker.id);
+    }
+  }
+
+  let nextAlbum: AlbumData = { ...album, stickers: nextStickers };
+
+  for (const stickerId of importedIds) {
+    const sticker = findSticker(nextAlbum, stickerId);
+    if (!sticker) continue;
+    const targetSlot = firstCompatibleEmptySlot(nextAlbum, sticker);
+    if (!targetSlot) continue;
+    nextAlbum = placeSticker(nextAlbum, nextAlbum.activeSpreadId, targetSlot.id, sticker.id);
+  }
+
+  return nextAlbum;
 };
 
 export const albumReducer = (state: AlbumData, action: AlbumAction): AlbumData => {
@@ -232,6 +299,9 @@ export const albumReducer = (state: AlbumData, action: AlbumAction): AlbumData =
         ...clearStickerFromSlots(state, action.stickerId),
         stickers: state.stickers.filter((sticker) => sticker.id !== action.stickerId),
       });
+
+    case 'stickers/import':
+      return touch(upsertImportedStickers(state, action.imports));
 
     default:
       return state;
