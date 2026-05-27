@@ -1,4 +1,5 @@
 import type { ChangeEvent } from 'react';
+import { CREWE_LOGO_URL } from '../../config/albumConfig';
 import { getAlbumStats } from '../../domain/album';
 import type { AlbumData } from '../../domain/types';
 
@@ -21,7 +22,9 @@ export const AlbumToolbar = ({ album, onRename, onExport, onImport }: AlbumToolb
   return (
     <header className="app-header">
       <div className="brand-block">
-        <div className="brand-mark" aria-hidden="true">S</div>
+        <div className="brand-mark" aria-hidden="true">
+          <img src={CREWE_LOGO_URL} alt="" />
+        </div>
         <div>
           <label className="eyebrow" htmlFor="album-title">Lokales Stickeralbum</label>
           <input
@@ -45,8 +48,8 @@ export const AlbumToolbar = ({ album, onRename, onExport, onImport }: AlbumToolb
           JSON exportieren
         </button>
         <label className="button button--ghost file-button">
-          JSON importieren
-          <input type="file" accept="application/json,.json" onChange={importFile} />
+          JSON / CSV importieren
+          <input type="file" accept="application/json,.json,text/csv,.csv" onChange={importFile} />
         </label>
       </div>
     </header>
