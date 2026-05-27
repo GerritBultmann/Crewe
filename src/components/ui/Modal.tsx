@@ -5,12 +5,13 @@ interface ModalProps {
   children: ReactNode;
   onClose: () => void;
   footer?: ReactNode;
+  wide?: boolean;
 }
 
-export const Modal = ({ title, children, onClose, footer }: ModalProps) => (
+export const Modal = ({ title, children, onClose, footer, wide = false }: ModalProps) => (
   <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
     <section
-      className="modal"
+      className={`modal${wide ? ' modal--wide' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={title}
