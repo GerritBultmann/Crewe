@@ -32,6 +32,8 @@ export interface Sticker {
   status: StickerStatus;
   imageUrl?: string;
   description?: string;
+  importedFrom?: 'json' | 'csv';
+  sourceRow?: Record<string, string>;
   createdAt: string;
   updatedAt: string;
 }
