@@ -2,6 +2,8 @@ import type { StickerCategory, StickerPosition } from '../domain/types';
 
 export const STORAGE_KEY = 'stickeralbum:album-data:v1';
 export const EXPORT_SCHEMA_VERSION = 1 as const;
+export const CREWE_LOGO_URL = 'https://upload.wikimedia.org/wikipedia/de/thumb/9/9d/Crewe_alexandra.svg/250px-Crewe_alexandra.svg.png';
+export const CREWE_DEFAULT_TEAM = 'Crewe Alexandra';
 
 export const STICKER_POSITIONS: { value: StickerPosition; label: string }[] = [
   { value: 'TW', label: 'Torwart' },
