@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import './styles/global.css';
 import './styles/crewe-logo.css';
+import './styles/player-profile.css';
 
 const rootElement = document.getElementById('root');
 
