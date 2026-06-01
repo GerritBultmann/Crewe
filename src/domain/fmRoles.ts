@@ -40,93 +40,84 @@ export const ATTRIBUTE_GROUPS = {
   athletic: ['Antritt', 'Ausdauer', 'Balance', 'Beweglichkeit', 'Grundfitness', 'Kraft', 'Schnelligkeit', 'Sprunghöhe'],
 } as const;
 
+const role = (pos: string[], primary: string[], secondary: string[]): RoleDefinition => ({ pos, primary, secondary });
+
 export const ROLE_DATA: Record<RoleMode, Record<string, RoleDefinition>> = {
   ip: {
-    Torwart: { pos: ['GK'], primary: ['Halten', 'Hohe Bälle', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], secondary: ['Abschlag', 'Abwurf', 'Eins gegen Eins', 'Antizipation', 'Entscheidungen'] },
-    'Kompromissloser Torwart': { pos: ['GK'], primary: ['Halten', 'Hohe Bälle', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], secondary: ['Eins gegen Eins', 'Antizipation', 'Entscheidungen'] },
-    'Ballspielender Torwart': { pos: ['GK'], primary: ['Abschlag', 'Halten', 'Hohe Bälle', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], secondary: ['Abwurf', 'Eins gegen Eins', 'Exzentrizität', 'Passen', 'Antizipation', 'Entscheidungen', 'Nervenstärke'] },
-    Innenverteidiger: { pos: ['CB'], primary: ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], secondary: ['Aggressivität', 'Entscheidungen', 'Konzentration', 'Mut', 'Nervenstärke', 'Schnelligkeit'] },
-    'Spielaufbauender Innenverteidiger': { pos: ['CB'], primary: ['Deckung', 'Kopfballtechnik', 'Passen', 'Tackling', 'Antizipation', 'Nervenstärke', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], secondary: ['Ballannahme', 'Technik', 'Aggressivität', 'Entscheidungen', 'Konzentration', 'Mut', 'Übersicht', 'Schnelligkeit'] },
-    'Aufrückender Innenverteidiger': { pos: ['CB'], primary: ['Deckung', 'Kopfballtechnik', 'Passen', 'Tackling', 'Technik', 'Antizipation', 'Entscheidungen', 'Nervenstärke', 'Stellungsspiel', 'Teamwork', 'Kraft', 'Sprunghöhe'], secondary: ['Ballannahme', 'Dribbling', 'Aggressivität', 'Konzentration', 'Mut', 'Übersicht', 'Ausdauer', 'Schnelligkeit'] },
-    Außenverteidiger: { pos: ['FB'], primary: ['Deckung', 'Tackling', 'Antizipation', 'Konzentration', 'Stellungsspiel', 'Teamwork', 'Antritt'], secondary: ['Dribbling', 'Flanken', 'Passen', 'Technik', 'Einsatzfreude', 'Entscheidungen', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    Flügelverteidiger: { pos: ['FB', 'WB'], primary: ['Deckung', 'Flanken', 'Tackling', 'Einsatzfreude', 'Teamwork', 'Antritt', 'Ausdauer', 'Schnelligkeit'], secondary: ['Ballannahme', 'Dribbling', 'Passen', 'Technik', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Balance', 'Beweglichkeit'] },
-    'Spielmachender Flügelverteidiger': { pos: ['FB', 'WB'], primary: ['Ballannahme', 'Passen', 'Tackling', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Teamwork', 'Übersicht', 'Antritt'], secondary: ['Deckung', 'Dribbling', 'Flanken', 'Antizipation', 'Einsatzfreude', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    'Inverser Außenverteidiger': { pos: ['FB'], primary: ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Kraft'], secondary: ['Dribbling', 'Aggressivität', 'Entscheidungen', 'Konzentration', 'Mut', 'Nervenstärke', 'Einsatzfreude', 'Sprunghöhe', 'Antritt', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    'Defensiver Mittelfeldspieler': { pos: ['DM'], primary: ['Tackling', 'Antizipation', 'Konzentration', 'Stellungsspiel', 'Teamwork'], secondary: ['Ballannahme', 'Passen', 'Aggressivität', 'Einsatzfreude', 'Entscheidungen', 'Nervenstärke', 'Ausdauer', 'Kraft'] },
-    'Tiefer Spielmacher': { pos: ['DM'], primary: ['Ballannahme', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Teamwork', 'Übersicht'], secondary: ['Deckung', 'Tackling', 'Antizipation', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Ausdauer', 'Balance'] },
-    'Box-to-Box-Spieler': { pos: ['DM', 'CM'], primary: ['Passen', 'Tackling', 'Einsatzfreude', 'Ohne Ball', 'Teamwork', 'Ausdauer'], secondary: ['Abschluss', 'Ballannahme', 'Dribbling', 'Technik', 'Weitschüsse', 'Aggressivität', 'Antizipation', 'Entscheidungen', 'Stellungsspiel', 'Antritt', 'Balance', 'Kraft', 'Schnelligkeit'] },
-    'Zentraler Mittelfeldspieler': { pos: ['CM'], primary: ['Ballannahme', 'Passen', 'Tackling', 'Entscheidungen', 'Teamwork'], secondary: ['Technik', 'Antizipation', 'Konzentration', 'Nervenstärke', 'Ohne Ball', 'Stellungsspiel', 'Übersicht', 'Ausdauer'] },
-    Spielmacher: { pos: ['CM'], primary: ['Ballannahme', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Ohne Ball', 'Teamwork', 'Übersicht'], secondary: ['Dribbling', 'Tackling', 'Antizipation', 'Flair', 'Stellungsspiel', 'Ausdauer', 'Beweglichkeit'] },
-    'Vorgeschobener Spielmacher': { pos: ['CM', 'AM'], primary: ['Ballannahme', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Ohne Ball', 'Teamwork', 'Übersicht'], secondary: ['Dribbling', 'Flanken', 'Antizipation', 'Flair', 'Antritt', 'Beweglichkeit'] },
-    'Offensiver Mittelfeldspieler': { pos: ['CM', 'AM'], primary: ['Ballannahme', 'Passen', 'Technik', 'Weitschüsse', 'Flair', 'Nervenstärke', 'Ohne Ball'], secondary: ['Abschluss', 'Dribbling', 'Flanken', 'Antizipation', 'Entscheidungen', 'Übersicht', 'Antritt', 'Beweglichkeit'] },
-    Freigeist: { pos: ['AM'], primary: ['Ballannahme', 'Dribbling', 'Passen', 'Technik', 'Weitschüsse', 'Flair', 'Nervenstärke', 'Ohne Ball', 'Übersicht'], secondary: ['Abschluss', 'Flanken', 'Antizipation', 'Entscheidungen', 'Antritt', 'Beweglichkeit'] },
-    Flügelspieler: { pos: ['WM', 'W'], primary: ['Dribbling', 'Flanken', 'Technik', 'Teamwork', 'Antritt', 'Beweglichkeit', 'Schnelligkeit'], secondary: ['Ballannahme', 'Passen', 'Antizipation', 'Einsatzfreude', 'Flair', 'Ohne Ball', 'Ausdauer', 'Balance'] },
-    'Äußerer Mittelfeldspieler': { pos: ['WM'], primary: ['Flanken', 'Passen', 'Technik', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer', 'Schnelligkeit'], secondary: ['Ballannahme', 'Dribbling', 'Antizipation', 'Nervenstärke', 'Ohne Ball', 'Übersicht', 'Antritt', 'Beweglichkeit'] },
-    'Inverser Außenstürmer': { pos: ['W'], primary: ['Ballannahme', 'Dribbling', 'Technik', 'Antizipation', 'Nervenstärke', 'Ohne Ball', 'Antritt', 'Beweglichkeit'], secondary: ['Abschluss', 'Flanken', 'Passen', 'Weitschüsse', 'Einsatzfreude', 'Flair', 'Übersicht', 'Ausdauer', 'Balance', 'Schnelligkeit'] },
-    Zielspieler: { pos: ['ST'], primary: ['Abschluss', 'Kopfballtechnik', 'Aggressivität', 'Mut', 'Nervenstärke', 'Ohne Ball', 'Balance', 'Kraft', 'Sprunghöhe'], secondary: ['Ballannahme', 'Antizipation', 'Entscheidungen', 'Teamwork'] },
-    'Pressender Stürmer': { pos: ['ST'], primary: ['Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Ohne Ball', 'Teamwork', 'Ausdauer'], secondary: ['Abschluss', 'Ballannahme', 'Konzentration', 'Schnelligkeit', 'Antritt'] },
-    Mittelstürmer: { pos: ['ST'], primary: ['Abschluss', 'Antizipation', 'Konzentration', 'Ohne Ball', 'Nervenstärke'], secondary: ['Ballannahme', 'Kopfballtechnik', 'Passen', 'Teamwork', 'Antritt', 'Schnelligkeit'] },
+    Torwart: role(['GK'], ['Halten', 'Hohe Bälle', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], ['Abschlag', 'Abwurf', 'Eins gegen Eins', 'Antizipation', 'Entscheidungen']),
+    'Kompromissloser Torwart': role(['GK'], ['Halten', 'Hohe Bälle', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], ['Eins gegen Eins', 'Antizipation', 'Entscheidungen']),
+    'Ballspielender Torwart': role(['GK'], ['Abschlag', 'Halten', 'Hohe Bälle', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], ['Abwurf', 'Eins gegen Eins', 'Exzentrizität', 'Passen', 'Antizipation', 'Entscheidungen', 'Nervenstärke']),
+    Innenverteidiger: role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], ['Aggressivität', 'Entscheidungen', 'Konzentration', 'Mut', 'Nervenstärke', 'Schnelligkeit']),
+    'Spielaufbauender Innenverteidiger': role(['CB'], ['Deckung', 'Kopfballtechnik', 'Passen', 'Tackling', 'Antizipation', 'Nervenstärke', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], ['Ballannahme', 'Technik', 'Aggressivität', 'Entscheidungen', 'Konzentration', 'Mut', 'Übersicht', 'Schnelligkeit']),
+    'Kompromissloser Innenverteidiger': role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], ['Aggressivität', 'Konzentration', 'Mut', 'Schnelligkeit']),
+    'Aufrückender Innenverteidiger': role(['CB'], ['Deckung', 'Kopfballtechnik', 'Passen', 'Tackling', 'Technik', 'Antizipation', 'Entscheidungen', 'Nervenstärke', 'Stellungsspiel', 'Teamwork', 'Kraft', 'Sprunghöhe'], ['Ballannahme', 'Dribbling', 'Aggressivität', 'Konzentration', 'Mut', 'Übersicht', 'Ausdauer', 'Schnelligkeit']),
+    Halbraumverteidiger: role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], ['Dribbling', 'Aggressivität', 'Einsatzfreude', 'Entscheidungen', 'Konzentration', 'Mut', 'Nervenstärke', 'Antritt', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    Außenverteidiger: role(['FB'], ['Deckung', 'Tackling', 'Antizipation', 'Konzentration', 'Stellungsspiel', 'Teamwork', 'Antritt'], ['Dribbling', 'Flanken', 'Passen', 'Technik', 'Einsatzfreude', 'Entscheidungen', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    Flügelverteidiger: role(['FB', 'WB'], ['Deckung', 'Flanken', 'Tackling', 'Einsatzfreude', 'Teamwork', 'Antritt', 'Ausdauer', 'Schnelligkeit'], ['Ballannahme', 'Dribbling', 'Passen', 'Technik', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Balance', 'Beweglichkeit']),
+    'Vorgeschobener Flügelverteidiger': role(['WB'], ['Dribbling', 'Flanken', 'Technik', 'Einsatzfreude', 'Ohne Ball', 'Teamwork', 'Antritt', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'], ['Ballannahme', 'Passen', 'Tackling', 'Antizipation', 'Entscheidungen', 'Flair', 'Stellungsspiel', 'Sprunghöhe']),
+    'Spielmachender Flügelverteidiger': role(['FB', 'WB'], ['Ballannahme', 'Passen', 'Tackling', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Teamwork', 'Übersicht', 'Antritt'], ['Deckung', 'Dribbling', 'Flanken', 'Antizipation', 'Einsatzfreude', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Inverser Flügelverteidiger': role(['FB', 'WB'], ['Passen', 'Tackling', 'Antizipation', 'Entscheidungen', 'Nervenstärke', 'Stellungsspiel', 'Teamwork', 'Antritt'], ['Ballannahme', 'Deckung', 'Technik', 'Konzentration', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Defensiver Mittelfeldspieler': role(['DM'], ['Tackling', 'Antizipation', 'Konzentration', 'Stellungsspiel', 'Teamwork'], ['Ballannahme', 'Passen', 'Aggressivität', 'Einsatzfreude', 'Entscheidungen', 'Nervenstärke', 'Ausdauer', 'Kraft']),
+    'Tiefer Spielmacher': role(['DM'], ['Ballannahme', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Teamwork', 'Übersicht'], ['Deckung', 'Tackling', 'Antizipation', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Ausdauer', 'Balance']),
+    'Box-to-Box-Spieler': role(['DM', 'CM'], ['Passen', 'Tackling', 'Einsatzfreude', 'Ohne Ball', 'Teamwork', 'Ausdauer'], ['Abschluss', 'Ballannahme', 'Dribbling', 'Technik', 'Weitschüsse', 'Aggressivität', 'Antizipation', 'Entscheidungen', 'Stellungsspiel', 'Antritt', 'Balance', 'Kraft', 'Schnelligkeit']),
+    'Weiter Achter': role(['CM'], ['Ballannahme', 'Passen', 'Tackling', 'Entscheidungen', 'Teamwork'], ['Dribbling', 'Flanken', 'Technik', 'Antizipation', 'Konzentration', 'Ohne Ball', 'Stellungsspiel', 'Übersicht', 'Ausdauer', 'Beweglichkeit']),
+    'Zentraler Mittelfeldspieler': role(['CM'], ['Ballannahme', 'Passen', 'Tackling', 'Entscheidungen', 'Teamwork'], ['Technik', 'Antizipation', 'Konzentration', 'Nervenstärke', 'Ohne Ball', 'Stellungsspiel', 'Übersicht', 'Ausdauer']),
+    Spielmacher: role(['CM'], ['Ballannahme', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Ohne Ball', 'Teamwork', 'Übersicht'], ['Dribbling', 'Tackling', 'Antizipation', 'Flair', 'Stellungsspiel', 'Ausdauer', 'Beweglichkeit']),
+    Halbraumspieler: role(['CM', 'AM'], ['Ballannahme', 'Flanken', 'Passen', 'Technik', 'Nervenstärke', 'Ohne Ball', 'Antritt'], ['Dribbling', 'Weitschüsse', 'Antizipation', 'Entscheidungen', 'Flair', 'Übersicht', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Vorgeschobener Spielmacher': role(['CM', 'AM'], ['Ballannahme', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Ohne Ball', 'Teamwork', 'Übersicht'], ['Dribbling', 'Flanken', 'Antizipation', 'Flair', 'Antritt', 'Beweglichkeit']),
+    'Offensiver Mittelfeldspieler': role(['CM', 'AM'], ['Ballannahme', 'Passen', 'Technik', 'Weitschüsse', 'Flair', 'Nervenstärke', 'Ohne Ball'], ['Abschluss', 'Dribbling', 'Flanken', 'Antizipation', 'Entscheidungen', 'Übersicht', 'Antritt', 'Beweglichkeit']),
+    Freigeist: role(['AM'], ['Ballannahme', 'Dribbling', 'Passen', 'Technik', 'Weitschüsse', 'Flair', 'Nervenstärke', 'Ohne Ball', 'Übersicht'], ['Abschluss', 'Flanken', 'Antizipation', 'Entscheidungen', 'Antritt', 'Beweglichkeit']),
+    Halbraumflügel: role(['WM', 'W'], ['Ballannahme', 'Dribbling', 'Technik', 'Nervenstärke', 'Teamwork', 'Antritt', 'Beweglichkeit'], ['Flanken', 'Passen', 'Weitschüsse', 'Antizipation', 'Einsatzfreude', 'Flair', 'Ohne Ball', 'Übersicht', 'Ausdauer', 'Balance', 'Schnelligkeit']),
+    Flügelspieler: role(['WM', 'W'], ['Dribbling', 'Flanken', 'Technik', 'Teamwork', 'Antritt', 'Beweglichkeit', 'Schnelligkeit'], ['Ballannahme', 'Passen', 'Antizipation', 'Einsatzfreude', 'Flair', 'Ohne Ball', 'Ausdauer', 'Balance']),
+    'Äußerer Mittelfeldspieler': role(['WM'], ['Flanken', 'Passen', 'Technik', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer', 'Schnelligkeit'], ['Ballannahme', 'Dribbling', 'Antizipation', 'Nervenstärke', 'Ohne Ball', 'Übersicht', 'Antritt', 'Beweglichkeit']),
+    'Äußerer Spielmacher': role(['WM', 'W'], ['Ballannahme', 'Dribbling', 'Flanken', 'Passen', 'Technik', 'Entscheidungen', 'Nervenstärke', 'Ohne Ball', 'Teamwork', 'Übersicht', 'Antritt'], ['Antizipation', 'Einsatzfreude', 'Flair', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Inverser Außenstürmer': role(['W'], ['Ballannahme', 'Dribbling', 'Technik', 'Antizipation', 'Nervenstärke', 'Ohne Ball', 'Antritt', 'Beweglichkeit'], ['Abschluss', 'Flanken', 'Passen', 'Weitschüsse', 'Einsatzfreude', 'Flair', 'Übersicht', 'Ausdauer', 'Balance', 'Schnelligkeit']),
+    Außenstürmer: role(['W'], ['Ballannahme', 'Dribbling', 'Technik', 'Antizipation', 'Ohne Ball', 'Antritt', 'Beweglichkeit', 'Schnelligkeit'], ['Abschluss', 'Flanken', 'Passen', 'Einsatzfreude', 'Flair', 'Nervenstärke', 'Ausdauer', 'Balance']),
+    'Zweiter Stürmer': role(['AM'], ['Abschluss', 'Ballannahme', 'Antizipation', 'Nervenstärke', 'Ohne Ball', 'Antritt'], ['Dribbling', 'Passen', 'Technik', 'Weitschüsse', 'Einsatzfreude', 'Entscheidungen', 'Konzentration', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    Zielspieler: role(['ST'], ['Abschluss', 'Kopfballtechnik', 'Aggressivität', 'Mut', 'Nervenstärke', 'Ohne Ball', 'Balance', 'Kraft', 'Sprunghöhe'], ['Ballannahme', 'Antizipation', 'Entscheidungen', 'Teamwork']),
+    'Hängende Spitze': role(['ST'], ['Abschluss', 'Ballannahme', 'Technik', 'Nervenstärke', 'Ohne Ball', 'Kraft'], ['Dribbling', 'Passen', 'Antizipation', 'Entscheidungen', 'Teamwork', 'Übersicht', 'Balance']),
+    Knipser: role(['ST'], ['Abschluss', 'Kopfballtechnik', 'Antizipation', 'Konzentration', 'Nervenstärke', 'Ohne Ball', 'Antritt'], ['Ballannahme', 'Technik', 'Entscheidungen', 'Balance', 'Beweglichkeit']),
+    Mittelstürmer: role(['ST'], ['Abschluss', 'Ballannahme', 'Technik', 'Antizipation', 'Konzentration', 'Nervenstärke', 'Ohne Ball', 'Antritt', 'Kraft'], ['Dribbling', 'Passen', 'Entscheidungen', 'Teamwork', 'Balance', 'Beweglichkeit']),
+    'Falsche Neun': role(['ST'], ['Ballannahme', 'Dribbling', 'Passen', 'Technik', 'Flair', 'Nervenstärke', 'Ohne Ball', 'Teamwork', 'Übersicht', 'Antritt'], ['Abschluss', 'Antizipation', 'Entscheidungen', 'Beweglichkeit']),
+    Stoßstürmer: role(['ST'], ['Abschluss', 'Antizipation', 'Antritt', 'Schnelligkeit', 'Nervenstärke'], ['Beweglichkeit', 'Dribbling', 'Technik', 'Entscheidungen', 'Ohne Ball']),
   },
   oop: {
-    Torwart: { pos: ['GK'], primary: ['Halten', 'Kommunikation', 'Reflexe', 'Strafraumkontrolle', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], secondary: ['Abschlag', 'Abwurf', 'Eins gegen Eins', 'Antizipation', 'Entscheidungen'] },
-    'Mitspielender Torwart': { pos: ['GK'], primary: ['Abschlag', 'Passen', 'Reflexe', 'Antizipation', 'Entscheidungen', 'Nervenstärke', 'Stellungsspiel'], secondary: ['Abwurf', 'Eins gegen Eins', 'Exzentrizität', 'Herauslaufen (Tendenz)', 'Technik', 'Beweglichkeit'] },
-    'Kompromissloser Innenverteidiger': { pos: ['CB'], primary: ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Konzentration', 'Mut', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], secondary: ['Aggressivität', 'Entscheidungen', 'Schnelligkeit'] },
-    Innenverteidiger: { pos: ['CB'], primary: ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit', 'Sprunghöhe'], secondary: ['Mut', 'Antritt'] },
-    Außenverteidiger: { pos: ['FB'], primary: ['Deckung', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Teamwork', 'Antritt'], secondary: ['Aggressivität', 'Konzentration', 'Einsatzfreude', 'Entscheidungen', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    Flügelverteidiger: { pos: ['WB'], primary: ['Deckung', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Teamwork', 'Antritt'], secondary: ['Aggressivität', 'Entscheidungen', 'Konzentration', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    'Pressender Außenverteidiger': { pos: ['FB', 'WB'], primary: ['Deckung', 'Tackling', 'Aggressivität', 'Antizipation', 'Einsatzfreude', 'Stellungsspiel', 'Teamwork', 'Antritt'], secondary: ['Entscheidungen', 'Konzentration', 'Mut', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    'Defensiver Mittelfeldspieler': { pos: ['DM'], primary: ['Deckung', 'Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Stellungsspiel', 'Teamwork', 'Ausdauer'], secondary: ['Aggressivität', 'Konzentration', 'Kraft', 'Schnelligkeit'] },
-    'Pressender Sechser': { pos: ['DM'], primary: ['Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Stellungsspiel', 'Teamwork', 'Ausdauer'], secondary: ['Deckung', 'Aggressivität', 'Konzentration', 'Kraft'] },
-    'Zentraler Mittelfeldspieler': { pos: ['CM'], primary: ['Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer'], secondary: ['Deckung', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit'] },
-    'Pressender Achter': { pos: ['CM'], primary: ['Tackling', 'Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer', 'Beweglichkeit'], secondary: ['Deckung', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit'] },
-    'Äußerer Mittelfeldspieler': { pos: ['WM'], primary: ['Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Antritt'], secondary: ['Deckung', 'Aggressivität', 'Antizipation', 'Ohne Ball', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    Flügelspieler: { pos: ['W'], primary: ['Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Antritt'], secondary: ['Deckung', 'Aggressivität', 'Ohne Ball', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit'] },
-    'Offensiver Mittelfeldspieler': { pos: ['AM'], primary: ['Antizipation', 'Einsatzfreude', 'Entscheidungen'], secondary: ['Deckung', 'Aggressivität', 'Ohne Ball', 'Teamwork', 'Ausdauer'] },
-    'Mitarbeitender Zehner': { pos: ['AM'], primary: ['Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer'], secondary: ['Deckung', 'Ohne Ball', 'Stellungsspiel'] },
-    Mittelstürmer: { pos: ['ST'], primary: ['Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Teamwork', 'Schnelligkeit'], secondary: ['Ballannahme', 'Deckung', 'Ausdauer'] },
-    'Pressender Stürmer': { pos: ['ST'], primary: ['Einsatzfreude', 'Teamwork', 'Ausdauer', 'Aggressivität', 'Antizipation'], secondary: ['Abschluss', 'Schnelligkeit', 'Konzentration', 'Kraft', 'Entscheidungen'] },
+    Torwart: role(['GK'], ['Halten', 'Reflexe', 'Eins gegen Eins', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], ['Hohe Bälle', 'Kommunikation', 'Antizipation', 'Entscheidungen', 'Strafraumkontrolle']),
+    Linientorwart: role(['GK'], ['Halten', 'Reflexe', 'Eins gegen Eins', 'Konzentration', 'Stellungsspiel', 'Beweglichkeit'], ['Hohe Bälle', 'Kommunikation', 'Antizipation', 'Entscheidungen', 'Strafraumkontrolle']),
+    'Libero-Torwart': role(['GK'], ['Eins gegen Eins', 'Halten', 'Herauslaufen (Tendenz)', 'Hohe Bälle', 'Reflexe', 'Antizipation', 'Entscheidungen', 'Stellungsspiel', 'Beweglichkeit', 'Schnelligkeit'], ['Abschlag', 'Abwurf', 'Kommunikation', 'Konzentration', 'Nervenstärke']),
+    Innenverteidiger: role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit', 'Sprunghöhe'], ['Mut', 'Antritt']),
+    'Stoppender Innenverteidiger': role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Aggressivität', 'Antizipation', 'Mut', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], ['Entscheidungen', 'Konzentration', 'Schnelligkeit']),
+    'Absichernder Innenverteidiger': role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit', 'Sprunghöhe'], ['Mut', 'Antritt']),
+    Halbraumverteidiger: role(['CB'], ['Deckung', 'Kopfballtechnik', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Kraft', 'Sprunghöhe'], ['Aggressivität', 'Entscheidungen', 'Konzentration', 'Mut', 'Antritt', 'Beweglichkeit', 'Schnelligkeit']),
+    'Abwartender Außenverteidiger': role(['FB'], ['Deckung', 'Tackling', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Antritt'], ['Teamwork', 'Beweglichkeit', 'Schnelligkeit']),
+    Außenverteidiger: role(['FB'], ['Deckung', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Teamwork', 'Antritt'], ['Aggressivität', 'Konzentration', 'Einsatzfreude', 'Entscheidungen', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    Flügelverteidiger: role(['WB'], ['Deckung', 'Tackling', 'Antizipation', 'Stellungsspiel', 'Teamwork', 'Antritt'], ['Aggressivität', 'Entscheidungen', 'Konzentration', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Abwartender Flügelverteidiger': role(['WB'], ['Deckung', 'Tackling', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Antritt'], ['Teamwork', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Pressender Außenverteidiger': role(['FB', 'WB'], ['Deckung', 'Tackling', 'Aggressivität', 'Antizipation', 'Einsatzfreude', 'Stellungsspiel', 'Teamwork', 'Antritt'], ['Entscheidungen', 'Konzentration', 'Mut', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Defensiver Mittelfeldspieler': role(['DM'], ['Deckung', 'Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Stellungsspiel', 'Teamwork', 'Ausdauer'], ['Aggressivität', 'Konzentration', 'Kraft', 'Schnelligkeit']),
+    'Flügelsichernder Sechser': role(['DM'], ['Deckung', 'Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Teamwork', 'Ausdauer', 'Beweglichkeit'], ['Aggressivität', 'Kraft']),
+    Halbverteidiger: role(['DM'], ['Deckung', 'Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Konzentration', 'Stellungsspiel', 'Teamwork', 'Kraft', 'Sprunghöhe'], ['Aggressivität', 'Ausdauer']),
+    'Abschirmender Sechser': role(['DM'], ['Deckung', 'Tackling', 'Antizipation', 'Entscheidungen', 'Konzentration', 'Stellungsspiel'], ['Einsatzfreude', 'Ausdauer', 'Kraft', 'Teamwork']),
+    'Pressender Sechser': role(['DM'], ['Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Stellungsspiel', 'Teamwork', 'Ausdauer'], ['Deckung', 'Aggressivität', 'Konzentration', 'Kraft']),
+    'Ballerobernder Mittelfeldspieler': role(['DM', 'CM'], ['Tackling', 'Aggressivität', 'Antizipation', 'Einsatzfreude', 'Teamwork', 'Ausdauer'], ['Deckung', 'Entscheidungen', 'Stellungsspiel', 'Kraft', 'Schnelligkeit']),
+    'Zentraler Mittelfeldspieler': role(['CM'], ['Tackling', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer'], ['Deckung', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit']),
+    'Pressender Achter': role(['CM'], ['Tackling', 'Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer', 'Beweglichkeit'], ['Deckung', 'Konzentration', 'Stellungsspiel', 'Kraft', 'Schnelligkeit']),
+    'Flügelsichernder Achter': role(['CM'], ['Deckung', 'Tackling', 'Antizipation', 'Entscheidungen', 'Stellungsspiel', 'Teamwork'], ['Aggressivität', 'Konzentration', 'Ausdauer']),
+    'Äußerer Mittelfeldspieler': role(['WM'], ['Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Antritt'], ['Deckung', 'Aggressivität', 'Antizipation', 'Ohne Ball', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    'Äußerer Umschaltspieler': role(['WM'], ['Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Teamwork', 'Schnelligkeit'], ['Ballannahme', 'Deckung', 'Dribbling', 'Nervenstärke', 'Antritt', 'Beweglichkeit']),
+    'Mitarbeitender Außenspieler': role(['WM'], ['Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Antritt', 'Ausdauer'], ['Deckung', 'Tackling', 'Ohne Ball', 'Stellungsspiel', 'Beweglichkeit', 'Schnelligkeit']),
+    Flügelspieler: role(['W'], ['Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Antritt'], ['Deckung', 'Aggressivität', 'Ohne Ball', 'Ausdauer', 'Beweglichkeit', 'Schnelligkeit']),
+    Umschaltflügel: role(['W'], ['Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Teamwork', 'Schnelligkeit'], ['Ballannahme', 'Deckung', 'Dribbling', 'Nervenstärke', 'Antritt', 'Beweglichkeit']),
+    'Offensiver Mittelfeldspieler': role(['AM'], ['Antizipation', 'Einsatzfreude', 'Entscheidungen'], ['Deckung', 'Aggressivität', 'Ohne Ball', 'Teamwork', 'Ausdauer']),
+    'Mitarbeitender Zehner': role(['AM'], ['Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Teamwork', 'Ausdauer'], ['Deckung', 'Ohne Ball', 'Stellungsspiel']),
+    'Zentraler Umschaltzehner': role(['AM'], ['Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Teamwork', 'Balance'], ['Ballannahme', 'Deckung', 'Nervenstärke', 'Kraft']),
+    Mittelstürmer: role(['ST'], ['Antizipation', 'Entscheidungen', 'Konzentration', 'Ohne Ball', 'Teamwork', 'Schnelligkeit'], ['Ballannahme', 'Deckung', 'Ausdauer']),
+    'Pressender Stürmer': role(['ST'], ['Einsatzfreude', 'Teamwork', 'Ausdauer', 'Aggressivität', 'Antizipation'], ['Abschluss', 'Schnelligkeit', 'Konzentration', 'Kraft', 'Entscheidungen']),
+    'Mitarbeitender Mittelstürmer': role(['ST'], ['Aggressivität', 'Antizipation', 'Einsatzfreude', 'Entscheidungen', 'Ohne Ball', 'Teamwork', 'Ausdauer'], ['Deckung', 'Stellungsspiel']),
   },
-};
-
-export const normalizeAttributeKey = (value: string) =>
-  value
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/ä/g, 'ae')
-    .replace(/ö/g, 'oe')
-    .replace(/ü/g, 'ue')
-    .replace(/ß/g, 'ss')
-    .replace(/[^a-z0-9]/g, '');
-
-export const attributeAlias = (label: string) =>
-  ({
-    Ruhe: 'Nervenstärke',
-    Erstkontakt: 'Ballannahme',
-    Abschläge: 'Abschlag',
-    'Eins-gegen-Eins': 'Eins gegen Eins',
-    Fangsicherheit: 'Halten',
-    Strafraumbeherrschung: 'Strafraumkontrolle',
-    Kopfball: 'Kopfballtechnik',
-    Stärke: 'Kraft',
-    Offensivbewegung: 'Ohne Ball',
-    Weitschuesse: 'Weitschüsse',
-    Freistoesse: 'Freistöße',
-    Sprunghoehe: 'Sprunghöhe',
-    Uebersicht: 'Übersicht',
-  })[label] ?? label;
-
-export const roleClassForAttribute = (label: string, role: RoleDefinition | null) => {
-  if (!role) return '';
-  const key = normalizeAttributeKey(label);
-  const primary = role.primary.map(attributeAlias).map(normalizeAttributeKey);
-  const secondary = role.secondary.map(attributeAlias).map(normalizeAttributeKey);
-  if (primary.includes(key)) return 'role-primary';
-  if (secondary.includes(key)) return 'role-secondary';
-  return '';
 };
 
 export const roleOptionsFor = (positionId: string, mode: RoleMode) => {
   const dot = POSITION_DOTS.find((item) => item.id === positionId) ?? POSITION_DOTS[0];
-  return Object.entries(ROLE_DATA[mode]).filter(([, role]) => role.pos.includes(dot.family));
+  return Object.entries(ROLE_DATA[mode]).filter(([, definition]) => definition.pos.includes(dot.family));
 };
