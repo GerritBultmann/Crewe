@@ -112,6 +112,7 @@ export const App = () => {
       {detailSticker ? (
         <StickerDetailModal
           sticker={detailSticker}
+          stickers={album.stickers}
           onClose={() => setDetailSticker(null)}
           onEdit={(sticker) => {
             setDetailSticker(null);
