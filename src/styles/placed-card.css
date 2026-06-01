@@ -11,9 +11,15 @@
   -webkit-mask-image: none;
 }
 
+.sticker-card__player-area {
+  inset: 5% 3% 24%;
+}
+
 .sticker-card__player-area img {
-  width: 128%;
-  height: 130%;
+  width: 165%;
+  height: 168%;
+  max-width: none;
+  max-height: none;
 }
 
 .sticker-card__glow-panel {
