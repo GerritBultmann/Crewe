@@ -12,12 +12,12 @@
 }
 
 .sticker-card__player-area {
-  inset: 5% 3% 24%;
+  inset: 8% 7% 26%;
 }
 
 .sticker-card__player-area img {
-  width: 165%;
-  height: 168%;
+  width: 148%;
+  height: 150%;
   max-width: none;
   max-height: none;
 }
