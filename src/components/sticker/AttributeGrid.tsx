@@ -34,18 +34,22 @@ const Section = ({ title, labels, values, role }: { title: string; labels: reado
   </section>
 );
 
-export const AttributeGrid = ({ values, role, isKeeper }: AttributeGridProps) => (
-  <div className="fm-attribute-board">
-    <div className="fm-attribute-column">
-      <Section title={isKeeper ? 'Torwart' : 'Technisch'} labels={isKeeper ? ATTRIBUTE_GROUPS.goalkeeping : ATTRIBUTE_GROUPS.fieldTechnical} values={values} role={role} />
-      {!isKeeper ? <Section title="Standards" labels={ATTRIBUTE_GROUPS.setPieces} values={values} role={role} /> : null}
+export const AttributeGrid = ({ values, role, isKeeper }: AttributeGridProps) => {
+  const firstColumnTitle = isKeeper ? 'Torwart' : 'Technisch';
+  const firstColumnLabels = isKeeper ? ATTRIBUTE_GROUPS.goalkeeping : ATTRIBUTE_GROUPS.fieldTechnical;
+
+  return (
+    <div className="fm-attribute-board">
+      <div className="fm-attribute-column">
+        <Section title={firstColumnTitle} labels={firstColumnLabels} values={values} role={role} />
+        {!isKeeper ? <Section title="Standards" labels={ATTRIBUTE_GROUPS.setPieces} values={values} role={role} /> : null}
+      </div>
+      <div className="fm-attribute-column">
+        <Section title="Mental" labels={ATTRIBUTE_GROUPS.mental} values={values} role={role} />
+      </div>
+      <div className="fm-attribute-column">
+        <Section title="Physisch" labels={ATTRIBUTE_GROUPS.athletic} values={values} role={role} />
+      </div>
     </div>
-    <div className="fm-attribute-column">
-      <Section title="Mental" labels={ATTRIBUTE_GROUPS.mental} values={values} role={role} />
-    </div>
-    <div className="fm-attribute-column">
-      <Section title="Physisch" labels={ATTRIBUTE_GROUPS.athletic} values={values} role={role} />
-      {!isKeeper ? <Section title="Torwart" labels={ATTRIBUTE_GROUPS.goalkeeping} values={values} role={role} /> : null}
-    </div>
-  </div>
-);
+  );
+};
