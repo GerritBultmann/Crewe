@@ -1,3 +1,7 @@
+.sticker-card__pattern {
+  background-size: 16px 28px;
+}
+
 .sticker-card__glow-panel {
   opacity: 0.7;
 }
