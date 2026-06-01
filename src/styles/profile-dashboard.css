@@ -28,14 +28,13 @@
 
 .fm-dashboard {
   display: grid;
-  grid-template-columns: 300px 330px minmax(680px, 1fr) 300px;
+  grid-template-columns: 330px minmax(760px, 1fr) 320px;
   gap: 22px;
   padding: 24px 28px 32px;
   background: #050b16;
   color: #dfe8f6;
 }
 
-.fm-profile-photo-card,
 .fm-info-cardlike,
 .fm-mini-card,
 .fm-career-table-card,
@@ -48,66 +47,6 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-.fm-profile-photo-card {
-  padding: 18px;
-  display: grid;
-  gap: 14px;
-  align-content: start;
-}
-
-.fm-profile-photo-frame {
-  min-height: 330px;
-  display: grid;
-  place-items: end center;
-  overflow: hidden;
-  border-radius: 12px;
-  background: #421421;
-}
-
-.fm-profile-photo-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-}
-
-.fm-profile-photo-frame span {
-  display: grid;
-  place-items: center;
-  width: 118px;
-  height: 118px;
-  margin: auto;
-  border: 2px solid rgba(255,255,255,.22);
-  border-radius: 999px;
-  color: rgba(255,255,255,.62);
-  font-size: 60px;
-  font-weight: 900;
-}
-
-.fm-profile-photo-meta {
-  display: grid;
-  gap: 8px;
-  color: rgba(229, 236, 250, 0.76);
-  font-size: 14px;
-}
-
-.fm-foot-mini {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(105, 122, 164, 0.24);
-}
-
-.fm-foot-mini div {
-  display: grid;
-  gap: 4px;
-  color: rgba(229,236,250,.58);
-  font-size: 13px;
-}
-
-.fm-foot-mini b { color: #fff; }
-
 .fm-dashboard .fm-role-panel {
   min-width: 0;
 }
@@ -119,6 +58,11 @@
 
 .fm-info-cardlike {
   padding: 18px;
+}
+
+.fm-info-row--wide b {
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .fm-bottom-cards {
@@ -321,7 +265,7 @@ tr.is-selected .fm-radio-fake {
 .is-negative { color: #ff8f8f; }
 
 @media (max-width: 1500px) {
-  .fm-dashboard { grid-template-columns: 300px minmax(560px, 1fr); }
+  .fm-dashboard { grid-template-columns: 330px minmax(560px, 1fr); }
   .fm-dashboard .fm-attribute-board { grid-template-columns: repeat(3, minmax(170px, 1fr)); }
   .fm-info-cardlike, .fm-bottom-cards { grid-column: 1 / -1; }
 }
