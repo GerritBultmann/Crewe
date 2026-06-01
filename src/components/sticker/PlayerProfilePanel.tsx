@@ -4,6 +4,7 @@ import { positionIdForProfile, profileFromSticker } from '../../domain/playerPro
 import type { Sticker } from '../../domain/types';
 import { AttributeGrid } from './AttributeGrid';
 import { RoleSelector } from './RoleSelector';
+import { StickerCard } from './StickerCard';
 
 interface PlayerProfilePanelProps {
   sticker: Sticker;
@@ -49,79 +50,90 @@ export const PlayerProfilePanel = ({ sticker }: PlayerProfilePanelProps) => {
   };
 
   return (
-    <div className="fm-screen-profile">
-      <RoleSelector
-        positionId={positionId}
-        mode={mode}
-        roleName={roleName}
-        abilityStars={profile.abilityStars}
-        onPositionChange={changePosition}
-        onModeChange={changeMode}
-        onRoleChange={setRoleName}
-      />
-
-      <AttributeGrid values={profile.attributes} role={selectedRole} isKeeper={isKeeper} />
-
-      <aside className="fm-info-panel">
-        <div className="fm-info-header">
-          <span>Info</span>
-          <button type="button" className="fm-analysis-button">◉ Attribute Analysis</button>
+    <div className="fm-profile-shell">
+      <header className="fm-player-hero">
+        <div className="fm-player-card-thumb">
+          <StickerCard sticker={sticker} compact draggable={false} interactive={false} />
         </div>
-
-        <div className="fm-info-block">
-          <div className="fm-info-row"><span>Height</span><b>{dash(profile.height)}</b></div>
-          <div className="fm-info-row"><span>Reputation</span><b>{reputationFromProfile(profile)}</b></div>
-          <div className="fm-info-row"><span>Personality</span><b>{dash(profile.personality)}</b></div>
-          <div className="fm-info-row"><span>Nationality</span><b>{dash(profile.nationality)}</b></div>
-          <div className="fm-info-row"><span>Age</span><b>{dash(profile.age)}</b></div>
-          <div className="fm-info-row"><span>Value</span><b>{dash(profile.value)}</b></div>
-          <div className="fm-info-row"><span>Wage</span><b>{dash(profile.wage)}</b></div>
-        </div>
-
-        <div className="fm-foot-panel">
-          <div>
-            <span>Left Foot</span>
-            <b>{dash(profile.leftFoot)}</b>
-            <i />
-          </div>
-          <div>
-            <span>Right Foot</span>
-            <b>{dash(profile.rightFoot)}</b>
-            <i className="strong" />
+        <div className="fm-player-identity">
+          <h1>{profile.name}</h1>
+          <strong>{sticker.number || '—'}</strong>
+          <div className="fm-player-tags">
+            <span>{dash(profile.rawPosition)}</span>
+            <span>{dash(profile.nationality)}</span>
+            <span>{sticker.status === 'owned' ? 'Im Verein' : sticker.status === 'wanted' ? 'Gesucht' : 'Doppelt'}</span>
           </div>
         </div>
-
-        <div className="fm-traits-panel">
-          <button type="button" className="fm-traits-button">✦ {traits.length || 0} Traits</button>
-          {traits.length ? (
-            <ul>
-              {traits.map((trait) => <li key={trait}>{trait}</li>)}
-            </ul>
-          ) : (
-            <p>{profile.mediaDescription || 'Keine Spielereigenschaften importiert.'}</p>
-          )}
+        <div className="fm-player-finance">
+          <span>Wert / Gehalt</span>
+          <b>{dash(profile.value)} · {dash(profile.wage)}</b>
+          <small>{profile.contractEnd ? `bis ${profile.contractEnd}` : dash(profile.contractRemaining)}</small>
         </div>
-
-        <div className="fm-stats-panel">
-          <span>Season Statistics</span>
-          <table>
-            <thead>
-              <tr><th>Apps</th><th>G</th><th>A</th><th>Pas%</th><th>Rat</th></tr>
-            </thead>
-            <tbody>
-              {(profile.stats.length ? profile.stats : [{ apps: '', goals: '', assists: '', passPercent: '', rating: '' }]).map((row, index) => (
-                <tr key={index}>
-                  <td>{dash(row.apps)}</td>
-                  <td>{dash(row.goals)}</td>
-                  <td>{dash(row.assists)}</td>
-                  <td>{dash(row.passPercent)}</td>
-                  <td>{dash(row.rating)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="fm-player-stars">
+          <span>Fähigkeit</span>
+          <b>{dash(profile.abilityStars)}</b>
+          <span>Potenzial</span>
+          <b>{dash(profile.potentialStars)}</b>
         </div>
-      </aside>
+        <div className="fm-player-club">
+          <span>Verein</span>
+          <b>{dash(profile.team)}</b>
+          <small>{dash(profile.squadStatus)}</small>
+        </div>
+      </header>
+
+      <div className="fm-screen-profile">
+        <RoleSelector
+          positionId={positionId}
+          mode={mode}
+          roleName={roleName}
+          abilityStars={profile.abilityStars}
+          onPositionChange={changePosition}
+          onModeChange={changeMode}
+          onRoleChange={setRoleName}
+        />
+
+        <AttributeGrid values={profile.attributes} role={selectedRole} isKeeper={isKeeper} />
+
+        <aside className="fm-info-panel">
+          <div className="fm-info-header">
+            <span>Info</span>
+            <button type="button" className="fm-analysis-button">◉ Attributanalyse</button>
+          </div>
+
+          <div className="fm-info-block">
+            <div className="fm-info-row"><span>Größe</span><b>{dash(profile.height)}</b></div>
+            <div className="fm-info-row"><span>Reputation</span><b>{reputationFromProfile(profile)}</b></div>
+            <div className="fm-info-row"><span>Persönlichkeit</span><b>{dash(profile.personality)}</b></div>
+            <div className="fm-info-row"><span>Nationalität</span><b>{dash(profile.nationality)}</b></div>
+            <div className="fm-info-row"><span>Alter</span><b>{dash(profile.age)}</b></div>
+            <div className="fm-info-row"><span>Wert</span><b>{dash(profile.value)}</b></div>
+            <div className="fm-info-row"><span>Gehalt</span><b>{dash(profile.wage)}</b></div>
+          </div>
+
+          <div className="fm-foot-panel">
+            <div><span>Linker Fuß</span><b>{dash(profile.leftFoot)}</b><i /></div>
+            <div><span>Rechter Fuß</span><b>{dash(profile.rightFoot)}</b><i className="strong" /></div>
+          </div>
+
+          <div className="fm-traits-panel">
+            <button type="button" className="fm-traits-button">✦ {traits.length || 0} Eigenschaften</button>
+            {traits.length ? <ul>{traits.map((trait) => <li key={trait}>{trait}</li>)}</ul> : <p>{profile.mediaDescription || 'Keine Spielereigenschaften importiert.'}</p>}
+          </div>
+
+          <div className="fm-stats-panel">
+            <span>Saisonstatistiken</span>
+            <table>
+              <thead><tr><th>Ein.</th><th>T</th><th>V</th><th>Pas%</th><th>Ø</th></tr></thead>
+              <tbody>
+                {(profile.stats.length ? profile.stats : [{ apps: '', goals: '', assists: '', passPercent: '', rating: '' }]).map((row, index) => (
+                  <tr key={index}><td>{dash(row.apps)}</td><td>{dash(row.goals)}</td><td>{dash(row.assists)}</td><td>{dash(row.passPercent)}</td><td>{dash(row.rating)}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };
