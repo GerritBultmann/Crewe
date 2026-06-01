@@ -72,8 +72,7 @@
   right: -8%;
   bottom: 0;
   height: 44%;
-  background:
-    linear-gradient(0deg, rgba(255, 229, 25, 0.98) 0%, rgba(255, 236, 50, 0.96) 28%, rgba(255, 240, 82, 0.56) 58%, rgba(255, 240, 82, 0) 92%);
+  background: linear-gradient(0deg, var(--card-bottom) 0%, var(--card-mid) 35%, var(--card-top) 68%, transparent 94%);
   clip-path: none;
 }
 
