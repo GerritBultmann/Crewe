@@ -6,6 +6,7 @@ interface StickerCardProps {
   sticker: Sticker;
   compact?: boolean;
   draggable?: boolean;
+  interactive?: boolean;
   onOpen?: (sticker: Sticker) => void;
   onEdit?: (sticker: Sticker) => void;
   onStick?: (sticker: Sticker) => void;
@@ -18,6 +19,7 @@ export const StickerCard = ({
   sticker,
   compact = false,
   draggable = true,
+  interactive = true,
   onOpen,
   onEdit,
   onStick,
@@ -26,6 +28,7 @@ export const StickerCard = ({
   onDragStart,
 }: StickerCardProps) => {
   const card = buildStickerCardViewModel(sticker);
+  const Wrapper = interactive ? 'button' : 'div';
 
   return (
     <article
@@ -37,13 +40,17 @@ export const StickerCard = ({
         onDragStart?.(sticker.id);
       }}
     >
-      <button className="sticker-card__hit" type="button" onClick={() => onOpen?.(sticker)} aria-label={`${card.fullName} öffnen`}>
+      <Wrapper
+        className="sticker-card__hit"
+        type={interactive ? 'button' : undefined}
+        onClick={interactive ? () => onOpen?.(sticker) : undefined}
+        aria-label={interactive ? `${card.fullName} öffnen` : undefined}
+      >
         <span className="sticker-card__pattern" aria-hidden="true" />
         <span className="sticker-card__shine" aria-hidden="true" />
 
         <span className="sticker-card__top-left">
-          <span>{card.edition}</span>
-          <strong>{card.cardNumber}/1000</strong>
+          <strong>{card.cardNumber}</strong>
         </span>
 
         <span className="sticker-card__top-right">
@@ -70,7 +77,7 @@ export const StickerCard = ({
 
         <span className="sticker-card__meta" aria-label="Spielerdaten">
           <span>
-            <small>Age</small>
+            <small>Alter</small>
             <strong>{card.age}</strong>
           </span>
           <span>
@@ -78,11 +85,11 @@ export const StickerCard = ({
             <strong>{card.position}</strong>
           </span>
           <span>
-            <small>Country</small>
+            <small>Land</small>
             <strong>{card.country}</strong>
           </span>
         </span>
-      </button>
+      </Wrapper>
 
       <div className="sticker-card__actions">
         {onStick ? <button type="button" onClick={() => onStick(sticker)}>Einkleben</button> : null}
