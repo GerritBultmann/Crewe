@@ -12,25 +12,29 @@
 }
 
 .sticker-card__player-area {
-  inset: 8% 7% 26%;
+  inset: 4% 2% 21%;
 }
 
 .sticker-card__player-area img {
-  width: 148%;
-  height: 150%;
+  width: 154%;
+  height: 157%;
   max-width: none;
   max-height: none;
 }
 
 .sticker-card__glow-panel {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50%;
   opacity: 1;
-  background: linear-gradient(0deg, var(--card-bottom) 0%, var(--card-mid) 35%, transparent 94%);
   background: linear-gradient(
     0deg,
     var(--card-bottom) 0%,
-    color-mix(in srgb, var(--card-bottom) 75%, transparent) 25%,
-    color-mix(in srgb, var(--card-mid) 0%, transparent) 40%,
-    transparent 100%
+    color-mix(in srgb, var(--card-bottom) 92%, transparent) 18%,
+    color-mix(in srgb, var(--card-mid) 72%, transparent) 33%,
+    color-mix(in srgb, var(--card-mid) 36%, transparent) 45%,
+    transparent 72%
   );
 }
 
