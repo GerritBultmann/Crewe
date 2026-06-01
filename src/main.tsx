@@ -4,6 +4,7 @@ import { App } from './App';
 import './styles/global.css';
 import './styles/crewe-logo.css';
 import './styles/player-profile.css';
+import './styles/sticker-card.css';
 
 const rootElement = document.getElementById('root');
 
