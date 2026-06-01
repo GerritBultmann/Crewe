@@ -10,6 +10,7 @@ import './styles/profile-hero.css';
 import './styles/attribute-highlights.css';
 import './styles/profile-dashboard.css';
 import './styles/placed-card.css';
+import './styles/image-paste.css';
 
 const rootElement = document.getElementById('root');
 
