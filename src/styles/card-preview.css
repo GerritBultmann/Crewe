@@ -1,0 +1,87 @@
+.card-preview-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at 50% 15%, rgba(255, 230, 80, 0.18), transparent 28rem), rgba(3, 8, 18, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.card-preview-modal {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  width: min(620px, 94vw);
+}
+
+.card-preview-close {
+  position: absolute;
+  top: -12px;
+  right: -8px;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(12, 18, 34, 0.78);
+  color: #fff;
+  font-size: 26px;
+}
+
+.card-preview-stage {
+  width: min(400px, 74vw);
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.card-preview-tilt {
+  transform-style: preserve-3d;
+  transition: transform 160ms ease;
+  will-change: transform;
+}
+
+.card-preview-stage .sticker-card {
+  filter: drop-shadow(0 34px 28px rgba(0, 0, 0, 0.48));
+}
+
+.card-preview-profile-button {
+  min-height: 48px;
+  padding: 0 28px;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffe96f, #e2b718);
+  color: #14100a;
+  font-size: 16px;
+  font-weight: 950;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.32);
+}
+
+.card-preview-profile-button:hover {
+  transform: translateY(-1px);
+}
+
+.sticker-card__pattern {
+  background-size: 32px 56px;
+}
+
+.sticker-card__glow-panel {
+  left: -12%;
+  right: -12%;
+  bottom: -6%;
+  height: 58%;
+  background:
+    radial-gradient(ellipse at 50% 95%, rgba(255, 247, 90, 0.96) 0 16%, rgba(255, 235, 32, 0.9) 30%, rgba(255, 226, 24, 0.54) 48%, rgba(255, 226, 24, 0.02) 72%),
+    linear-gradient(0deg, rgba(255, 230, 31, 0.95) 0%, rgba(255, 235, 55, 0.56) 44%, rgba(255, 242, 91, 0) 74%);
+  clip-path: polygon(0 42%, 50% 0, 100% 42%, 100% 100%, 0 100%);
+}
+
+.sticker-card__name {
+  bottom: 31%;
+}
+
+.sticker-card__meta small {
+  color: rgba(54, 49, 21, 0.64);
+}
