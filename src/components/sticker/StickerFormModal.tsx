@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ClipboardEvent } from 'react';
 import { STICKER_POSITIONS } from '../../config/albumConfig';
 import type { Sticker, StickerPosition, StickerStatus } from '../../domain/types';
 import type { StickerFormValues } from '../../domain/stickers';
@@ -20,6 +20,14 @@ const EMPTY_VALUES: StickerFormValues = {
   description: '',
 };
 
+const imageFileToDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ''));
+    reader.onerror = () => reject(new Error('Bild konnte nicht gelesen werden.'));
+    reader.readAsDataURL(file);
+  });
+
 export const StickerFormModal = ({ sticker, onClose, onSubmit }: StickerFormModalProps) => {
   const initialValues = useMemo<StickerFormValues>(() => {
     if (!sticker) return EMPTY_VALUES;
@@ -37,11 +45,31 @@ export const StickerFormModal = ({ sticker, onClose, onSubmit }: StickerFormModa
   }, [sticker]);
 
   const [values, setValues] = useState<StickerFormValues>(initialValues);
+  const [pasteMessage, setPasteMessage] = useState('');
   const isEdit = Boolean(sticker);
   const canSubmit = values.name.trim().length > 0;
 
   const setValue = <Key extends keyof StickerFormValues>(key: Key, value: StickerFormValues[Key]) => {
     setValues((current) => ({ ...current, [key]: value }));
+  };
+
+  const handlePasteImage = async (event: ClipboardEvent<HTMLDivElement>) => {
+    const imageItem = Array.from(event.clipboardData.items).find((item) => item.type.startsWith('image/'));
+    const file = imageItem?.getAsFile();
+
+    if (!file) {
+      setPasteMessage('Kein Bild in der Zwischenablage gefunden.');
+      return;
+    }
+
+    event.preventDefault();
+    try {
+      const dataUrl = await imageFileToDataUrl(file);
+      setValue('imageUrl', dataUrl);
+      setPasteMessage('Bild eingefügt. Speichern, damit es auf der Karte erscheint.');
+    } catch (error) {
+      setPasteMessage(error instanceof Error ? error.message : 'Bild konnte nicht eingefügt werden.');
+    }
   };
 
   return (
@@ -120,13 +148,22 @@ export const StickerFormModal = ({ sticker, onClose, onSubmit }: StickerFormModa
         </label>
 
         <label className="form-grid__wide">
-          <span>Bild-URL</span>
+          <span>Bild-URL oder eingefügtes Bild</span>
           <input
             value={values.imageUrl}
             onChange={(event) => setValue('imageUrl', event.target.value)}
-            placeholder="https://…"
+            placeholder="https://… oder Bild unten einfügen"
           />
         </label>
+
+        <div className="form-grid__wide image-paste-box" tabIndex={0} role="button" onPaste={handlePasteImage}>
+          <div>
+            <strong>Bild per Copy & Paste einfügen</strong>
+            <span>Hier klicken und dann Strg+V / Cmd+V drücken. Das Bild wird lokal als Data-URL gespeichert.</span>
+            {pasteMessage ? <em>{pasteMessage}</em> : null}
+          </div>
+          {values.imageUrl ? <img src={values.imageUrl} alt="Vorschau" /> : <span className="image-paste-box__placeholder">Kein Bild</span>}
+        </div>
 
         <label className="form-grid__wide">
           <span>Notiz</span>
