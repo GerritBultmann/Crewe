@@ -1,0 +1,336 @@
+.fm-profile-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  min-height: 70px;
+  align-items: end;
+  padding: 0 28px;
+  border-bottom: 1px solid rgba(111, 129, 173, 0.32);
+  background: linear-gradient(90deg, rgba(93, 13, 43, 0.62), rgba(13, 12, 31, 0.82));
+}
+
+.fm-profile-tabs button {
+  min-height: 50px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  color: rgba(246, 240, 250, 0.72);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.fm-profile-tabs button.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: inset 0 -3px 0 #fff;
+}
+
+.fm-dashboard {
+  display: grid;
+  grid-template-columns: 300px 330px minmax(680px, 1fr) 300px;
+  gap: 22px;
+  padding: 24px 28px 32px;
+  background: #050b16;
+  color: #dfe8f6;
+}
+
+.fm-profile-photo-card,
+.fm-info-cardlike,
+.fm-mini-card,
+.fm-career-table-card,
+.fm-card-gallery,
+.fm-season-detail-grid > section,
+.fm-development-grid > section {
+  border: 1px solid rgba(105, 122, 164, 0.34);
+  border-radius: 14px;
+  background: rgba(13, 19, 36, 0.86);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.fm-profile-photo-card {
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.fm-profile-photo-frame {
+  min-height: 330px;
+  display: grid;
+  place-items: end center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #421421;
+}
+
+.fm-profile-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.fm-profile-photo-frame span {
+  display: grid;
+  place-items: center;
+  width: 118px;
+  height: 118px;
+  margin: auto;
+  border: 2px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  color: rgba(255,255,255,.62);
+  font-size: 60px;
+  font-weight: 900;
+}
+
+.fm-profile-photo-meta {
+  display: grid;
+  gap: 8px;
+  color: rgba(229, 236, 250, 0.76);
+  font-size: 14px;
+}
+
+.fm-foot-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(105, 122, 164, 0.24);
+}
+
+.fm-foot-mini div {
+  display: grid;
+  gap: 4px;
+  color: rgba(229,236,250,.58);
+  font-size: 13px;
+}
+
+.fm-foot-mini b { color: #fff; }
+
+.fm-dashboard .fm-role-panel {
+  min-width: 0;
+}
+
+.fm-dashboard .fm-attribute-board {
+  grid-template-columns: repeat(3, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.fm-info-cardlike {
+  padding: 18px;
+}
+
+.fm-bottom-cards {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.1fr 1.5fr 1fr 1fr;
+  gap: 18px;
+}
+
+.fm-mini-card {
+  min-height: 130px;
+  padding: 18px;
+}
+
+.fm-mini-card h3,
+.fm-card-gallery h3,
+.fm-season-detail-grid h3,
+.fm-development-grid h3 {
+  margin: 0 0 12px;
+  color: #c77dff;
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.fm-mini-card ul {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.55;
+}
+
+.fm-mini-card table,
+.fm-career-main-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.fm-mini-card th,
+.fm-mini-card td,
+.fm-career-main-table th,
+.fm-career-main-table td {
+  padding: 8px 7px;
+  border-bottom: 1px solid rgba(105, 122, 164, 0.16);
+  text-align: left;
+}
+
+.fm-mini-card th,
+.fm-career-main-table th {
+  color: rgba(223,232,246,.55);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.fm-mini-card td.good,
+.fm-career-main-table td.good { color: #b7f16d; font-weight: 900; }
+.fm-mini-card td.ok,
+.fm-career-main-table td.ok { color: #f1d86d; font-weight: 900; }
+.fm-mini-card td.low,
+.fm-career-main-table td.low { color: #ff8f8f; font-weight: 900; }
+
+.fm-action-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fm-action-row button {
+  min-height: 38px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  padding: 0 14px;
+  font-weight: 800;
+}
+
+.fm-action-row button.danger { background: rgba(200,16,46,.72); }
+
+.fm-career-view {
+  padding: 24px 28px 40px;
+  background: #050b16;
+  color: #dfe8f6;
+}
+
+.fm-career-main {
+  display: grid;
+  gap: 18px;
+}
+
+.fm-card-gallery {
+  padding: 18px;
+}
+
+.fm-card-gallery > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.fm-card-gallery button {
+  display: grid;
+  gap: 4px;
+  border: 1px solid rgba(105, 122, 164, 0.26);
+  border-radius: 10px;
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  padding: 12px;
+  text-align: left;
+}
+
+.fm-card-gallery button.active {
+  background: rgba(124, 72, 196, 0.32);
+  border-color: rgba(198, 125, 255, 0.7);
+}
+
+.fm-card-gallery small { color: rgba(223,232,246,.62); }
+
+.fm-career-table-card {
+  overflow-x: auto;
+  padding: 12px;
+}
+
+.fm-career-main-table tr.is-selected td {
+  background: rgba(92, 102, 132, 0.42);
+}
+
+.fm-career-main-table tbody tr { cursor: pointer; }
+
+.fm-radio-fake {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(235, 242, 255, 0.86);
+  border-radius: 999px;
+}
+
+tr.is-selected .fm-radio-fake {
+  box-shadow: inset 0 0 0 4px #4e5870;
+  background: #fff;
+}
+
+.fm-season-detail-grid,
+.fm-development-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.fm-season-detail-grid > section,
+.fm-development-grid > section {
+  padding: 18px;
+}
+
+.fm-kpi-grid,
+.fm-detail-list,
+.fm-dev-attrs,
+.fm-value-list {
+  display: grid;
+  gap: 8px;
+}
+
+.fm-kpi-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.fm-kpi-grid div,
+.fm-detail-list div,
+.fm-dev-attrs div,
+.fm-value-list div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  border-radius: 9px;
+  background: rgba(255,255,255,.055);
+  padding: 10px;
+}
+
+.fm-value-list div {
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+}
+
+.fm-kpi-grid span,
+.fm-detail-list span,
+.fm-dev-attrs span,
+.fm-value-list span {
+  color: rgba(223,232,246,.55);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.fm-kpi-grid b,
+.fm-detail-list b,
+.fm-dev-attrs b,
+.fm-value-list b { color: #fff; }
+
+.is-positive { color: #8df58e; }
+.is-negative { color: #ff8f8f; }
+
+@media (max-width: 1500px) {
+  .fm-dashboard { grid-template-columns: 300px minmax(560px, 1fr); }
+  .fm-dashboard .fm-attribute-board { grid-template-columns: repeat(3, minmax(170px, 1fr)); }
+  .fm-info-cardlike, .fm-bottom-cards { grid-column: 1 / -1; }
+}
+
+@media (max-width: 1050px) {
+  .fm-dashboard,
+  .fm-dashboard .fm-attribute-board,
+  .fm-bottom-cards,
+  .fm-season-detail-grid,
+  .fm-development-grid { grid-template-columns: 1fr; }
+  .fm-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
