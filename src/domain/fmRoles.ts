@@ -15,6 +15,17 @@ export interface PositionDot {
   linked: string[];
 }
 
+export const normalizeAttributeKey = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ae/g, 'a')
+    .replace(/oe/g, 'o')
+    .replace(/ue/g, 'u')
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]/g, '');
+
 export const POSITION_DOTS: PositionDot[] = [
   { id: 'GK', label: 'Torwart', x: 8, y: 50, family: 'GK', linked: ['IV'] },
   { id: 'LV', label: 'Verteidiger links', x: 25, y: 22, family: 'FB', linked: ['LAV'] },
