@@ -78,7 +78,6 @@ export const StickerSlot = ({
         >
           <StickerCard
             sticker={sticker}
-            compact
             draggable={false}
             onOpen={onOpenSticker}
             onEdit={onEditSticker}
