@@ -38,9 +38,6 @@
 }
 
 .card-preview-tilt {
-  width: 38%;
-  margin: 0 auto;
-  transform-origin: center center;
   transform-style: preserve-3d;
   transition: transform 160ms ease;
   will-change: transform;
@@ -67,12 +64,7 @@
 }
 
 .sticker-card__pattern {
-  background-size: 20px 35px;
-  mask-image: none;
-}
-
-.sticker-card__hit::before {
-  background-size: 20px 35px;
+  background-size: 28px 49px;
 }
 
 .sticker-card__glow-panel {
@@ -80,13 +72,30 @@
   right: -8%;
   bottom: 0;
   height: 44%;
-  opacity: 0.75;
-  background: linear-gradient(0deg, var(--card-bottom) 0%, var(--card-mid) 42%, transparent 94%);
+  background: linear-gradient(0deg, var(--card-bottom) 0%, var(--card-mid) 35%, var(--card-top) 68%, transparent 94%);
   clip-path: none;
 }
 
-.card-preview-stage .sticker-card__name,
-.card-preview-stage .sticker-card__meta small,
+.sticker-card:not(.sticker-card--compact) .sticker-card__name {
+  bottom: 27%;
+}
+
+.sticker-card:not(.sticker-card--compact) .sticker-card__meta {
+  bottom: 9%;
+}
+
+.sticker-card__meta small {
+  color: rgba(54, 49, 21, 0.64);
+}
+
+.card-preview-stage .sticker-card__name {
+  font-size: clamp(32px, 12.5%, 46px);
+}
+
+.card-preview-stage .sticker-card__meta small {
+  font-size: clamp(10px, 4.8%, 13px);
+}
+
 .card-preview-stage .sticker-card__meta strong {
-  font-size: inherit;
+  font-size: clamp(17px, 7.2%, 22px);
 }
