@@ -1,0 +1,29 @@
+.fm-role-arrow {
+  display: none !important;
+}
+
+.fm-attr-row {
+  grid-template-columns: minmax(0, 1fr) 38px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.fm-attr-row.role-primary {
+  background: linear-gradient(90deg, rgba(79, 116, 92, 0.78), rgba(38, 64, 52, 0.7)) !important;
+  box-shadow: inset 3px 0 0 rgba(151, 232, 124, 0.95);
+}
+
+.fm-attr-row.role-secondary {
+  background: linear-gradient(90deg, rgba(71, 80, 103, 0.88), rgba(44, 53, 72, 0.72)) !important;
+  box-shadow: inset 3px 0 0 rgba(132, 170, 218, 0.95);
+}
+
+.fm-attr-row.role-primary .fm-attr-name,
+.fm-attr-row.role-secondary .fm-attr-name {
+  background: transparent !important;
+}
+
+.fm-attr-row.role-primary .fm-attr-val,
+.fm-attr-row.role-secondary .fm-attr-val {
+  background: rgba(7, 14, 26, 0.5) !important;
+}
