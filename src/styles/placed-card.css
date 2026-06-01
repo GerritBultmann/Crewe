@@ -36,15 +36,16 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 50%;
+  height: 58%;
   opacity: 1;
   background: linear-gradient(
     0deg,
     var(--card-bottom) 0%,
-    color-mix(in srgb, var(--card-bottom) 92%, transparent) 18%,
-    color-mix(in srgb, var(--card-mid) 72%, transparent) 33%,
-    color-mix(in srgb, var(--card-mid) 36%, transparent) 45%,
-    transparent 72%
+    var(--card-bottom) 32%,
+    color-mix(in srgb, var(--card-bottom) 86%, transparent) 45%,
+    color-mix(in srgb, var(--card-bottom) 48%, transparent) 58%,
+    color-mix(in srgb, var(--card-bottom) 18%, transparent) 70%,
+    transparent 82%
   );
 }
 
