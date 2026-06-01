@@ -1,26 +1,26 @@
 .sticker-card {
-  --card-a: #4f8cff;
-  --card-b: #1f62e5;
-  --card-c: #1450cf;
-  --card-glow: rgba(95, 155, 255, 0.42);
-  --card-text: #ffffff;
-  --card-edge: rgba(255, 255, 255, 0.72);
+  --card-top: #ffe66f;
+  --card-mid: #f4d72d;
+  --card-bottom: #b68f00;
+  --card-shadow: rgba(156, 118, 0, 0.38);
+  --card-ink: #0c0f17;
+  --card-muted: rgba(48, 44, 16, 0.56);
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 0.685;
+  aspect-ratio: 0.705;
   min-height: auto;
   overflow: visible;
-  border-radius: 28px;
+  border-radius: 22px;
   background: transparent;
   box-shadow: none;
   user-select: none;
-  transition: transform 170ms ease, filter 170ms ease;
+  transition: transform 180ms ease, filter 180ms ease;
 }
 
 .sticker-card:hover {
-  transform: translateY(-4px) scale(1.015);
-  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.28));
+  transform: translateY(-5px) scale(1.018);
+  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.34));
   box-shadow: none;
 }
 
@@ -31,303 +31,270 @@
   margin: 0;
 }
 
-.sticker-card--theme-keeper {
-  --card-a: #28b3a3;
-  --card-b: #0e8f81;
-  --card-c: #056f66;
-  --card-glow: rgba(20, 184, 166, 0.38);
+.sticker-card--gold,
+.sticker-card--legend {
+  --card-top: #fff176;
+  --card-mid: #f6d92d;
+  --card-bottom: #b68d00;
+  --card-shadow: rgba(185, 141, 0, 0.42);
 }
 
-.sticker-card--theme-defense {
-  --card-a: #47c67a;
-  --card-b: #189f58;
-  --card-c: #087443;
-  --card-glow: rgba(34, 197, 94, 0.38);
+.sticker-card--emerald {
+  --card-top: #b7f7a0;
+  --card-mid: #4bd46d;
+  --card-bottom: #0f8b48;
+  --card-shadow: rgba(34, 197, 94, 0.36);
 }
 
-.sticker-card--theme-midfield {
-  --card-a: #4f8cff;
-  --card-b: #2467e8;
-  --card-c: #164fc5;
-  --card-glow: rgba(79, 140, 255, 0.42);
+.sticker-card--azure {
+  --card-top: #93d7ff;
+  --card-mid: #38a9f5;
+  --card-bottom: #1368b7;
+  --card-shadow: rgba(56, 169, 245, 0.36);
 }
 
-.sticker-card--theme-creator {
-  --card-a: #679bff;
-  --card-b: #2768f2;
-  --card-c: #1551ce;
-  --card-glow: rgba(103, 155, 255, 0.46);
+.sticker-card--royal {
+  --card-top: #a7c6ff;
+  --card-mid: #5988ff;
+  --card-bottom: #2444c5;
+  --card-shadow: rgba(89, 136, 255, 0.4);
 }
 
-.sticker-card--theme-wing {
-  --card-a: #8c6dff;
-  --card-b: #6748e8;
-  --card-c: #4d31c2;
-  --card-glow: rgba(139, 109, 255, 0.42);
+.sticker-card--violet {
+  --card-top: #d8b4fe;
+  --card-mid: #9b5cf5;
+  --card-bottom: #6730a6;
+  --card-shadow: rgba(155, 92, 245, 0.38);
 }
 
-.sticker-card--theme-attack {
-  --card-a: #ff6b5e;
-  --card-b: #ef3340;
-  --card-c: #b91c2c;
-  --card-glow: rgba(239, 51, 64, 0.42);
+.sticker-card--crimson {
+  --card-top: #ffb0a7;
+  --card-mid: #ff5b57;
+  --card-bottom: #b9192a;
+  --card-shadow: rgba(255, 91, 87, 0.36);
 }
 
-.sticker-card--theme-staff {
-  --card-a: #9ca3af;
-  --card-b: #64748b;
-  --card-c: #334155;
-  --card-glow: rgba(148, 163, 184, 0.38);
-}
-
-.sticker-card--theme-special {
-  --card-a: #ffd166;
-  --card-b: #d99a18;
-  --card-c: #9f6a00;
-  --card-glow: rgba(251, 191, 36, 0.42);
+.sticker-card--slate {
+  --card-top: #d8dee8;
+  --card-mid: #8d99aa;
+  --card-bottom: #485466;
+  --card-shadow: rgba(100, 116, 139, 0.36);
 }
 
 .sticker-card__hit {
   position: relative;
-  display: grid;
+  display: block;
   width: 100%;
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  border: 5px solid rgba(255, 255, 255, 0.72);
+  border: 0;
   border-radius: inherit;
   background:
-    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.3), transparent 24%),
-    linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 48%, var(--card-c) 100%);
-  color: var(--card-text);
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.82) 0 10%, rgba(255, 255, 255, 0.22) 34%, transparent 56%),
+    linear-gradient(180deg, var(--card-top) 0%, var(--card-mid) 48%, var(--card-bottom) 100%);
+  color: var(--card-ink);
   text-align: left;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
-    inset 0 -34px 54px rgba(0, 0, 0, 0.13),
-    0 13px 26px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(0, 0, 0, 0.06),
-    0 0 30px var(--card-glow);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    inset 0 28px 34px rgba(255, 255, 255, 0.16),
+    inset 0 -46px 58px rgba(88, 64, 0, 0.18),
+    0 26px 34px rgba(0, 0, 0, 0.26),
+    0 0 36px var(--card-shadow);
   isolation: isolate;
 }
 
-.sticker-card__hit::before,
-.sticker-card__hit::after {
-  content: "";
+.sticker-card__pattern,
+.sticker-card__shine,
+.sticker-card__glow-panel {
   position: absolute;
-  inset: -20%;
-  z-index: -1;
   pointer-events: none;
 }
 
-.sticker-card__hit::before {
-  opacity: 0.32;
-  background:
-    repeating-linear-gradient(60deg, transparent 0 47px, rgba(255, 255, 255, 0.16) 48px 50px, transparent 51px 96px),
-    repeating-linear-gradient(120deg, transparent 0 47px, rgba(255, 255, 255, 0.14) 48px 50px, transparent 51px 96px);
-}
-
-.sticker-card__hit::after {
-  inset: 0;
+.sticker-card__pattern {
+  inset: -4%;
   z-index: 1;
+  opacity: 0.38;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 24%, transparent 70%, rgba(0, 0, 0, 0.13)),
-    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.18), transparent 28%);
-  mix-blend-mode: screen;
+    linear-gradient(30deg, transparent 24%, rgba(255, 255, 255, 0.38) 25%, rgba(255, 255, 255, 0.38) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.38) 75%, rgba(255, 255, 255, 0.38) 77%, transparent 78%),
+    linear-gradient(150deg, transparent 24%, rgba(255, 255, 255, 0.32) 25%, rgba(255, 255, 255, 0.32) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.32) 75%, rgba(255, 255, 255, 0.32) 77%, transparent 78%),
+    linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.22) 25%, rgba(255, 255, 255, 0.22) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.22) 75%, rgba(255, 255, 255, 0.22) 77%, transparent 78%);
+  background-position: 0 0, 0 0, 0 0;
+  background-size: 54px 94px;
+  mask-image: linear-gradient(180deg, #000 0%, #000 70%, transparent 96%);
 }
 
-.sticker-card__corner {
-  position: absolute;
-  top: -17px;
-  right: -17px;
-  z-index: 4;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #c8102e;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.32);
+.sticker-card__shine {
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.42) 0%, transparent 20%, transparent 64%, rgba(0, 0, 0, 0.12) 100%),
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.38), transparent 20%);
+  mix-blend-mode: soft-light;
 }
 
-.sticker-card__corner::after {
-  content: "";
+.sticker-card__top-left {
   position: absolute;
-  left: 12px;
-  bottom: 12px;
-  width: 14px;
-  height: 14px;
-  border-left: 3px solid #fff;
-  border-bottom: 3px solid #fff;
-  border-radius: 0 0 0 10px;
-}
-
-.sticker-card__card-number {
-  position: absolute;
-  top: 18px;
-  left: 20px;
-  z-index: 3;
-  color: #fff;
-  font-size: clamp(15px, 9%, 21px);
+  top: 9%;
+  left: 7%;
+  z-index: 6;
+  display: grid;
+  gap: 2px;
+  color: rgba(27, 31, 42, 0.62);
+  font-size: clamp(9px, 4.8%, 13px);
   font-weight: 900;
   letter-spacing: 0.02em;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.34);
 }
 
-.sticker-card__club-block {
+.sticker-card__top-left strong {
+  color: rgba(13, 16, 24, 0.78);
+  font-size: clamp(10px, 5.2%, 15px);
+}
+
+.sticker-card__top-right {
   position: absolute;
-  top: 20px;
-  right: 18px;
-  z-index: 3;
+  top: 8%;
+  right: 8%;
+  z-index: 6;
   display: grid;
   justify-items: center;
-  gap: 13px;
+  gap: 12px;
+  color: rgba(27, 31, 42, 0.58);
+  font-size: clamp(13px, 7%, 18px);
+  font-weight: 900;
 }
 
-.sticker-card__club-logo {
+.sticker-card__club-mark {
   display: grid;
-  width: clamp(31px, 17%, 44px);
+  width: clamp(30px, 14%, 42px);
   aspect-ratio: 1;
   place-items: center;
-  border: 2px solid rgba(255, 255, 255, 0.72);
-  border-radius: 5px;
-  background: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.28);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38), 0 4px 10px rgba(0, 0, 0, 0.13);
+  opacity: 0.78;
 }
 
-.sticker-card__club-logo img {
-  width: 84%;
-  height: 84%;
+.sticker-card__club-mark img {
+  width: 78%;
+  height: 78%;
   object-fit: contain;
 }
 
-.sticker-card__shirt-number {
-  color: #fff;
-  font-size: clamp(16px, 10%, 22px);
-  font-weight: 900;
-  line-height: 1;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.28);
-}
-
-.sticker-card__portrait-zone {
+.sticker-card__player-area {
   position: absolute;
-  inset: 22% 17% 29%;
-  z-index: 2;
+  inset: 11% 13% 30%;
+  z-index: 4;
   display: grid;
-  place-items: center;
+  place-items: end center;
 }
 
-.sticker-card__portrait-frame {
-  position: relative;
-  display: grid;
-  width: 100%;
-  height: 100%;
-  place-items: center;
-}
-
-.sticker-card__portrait-frame::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 34px;
-  height: 78px;
-  border: 3px solid rgba(255, 255, 255, 0.48);
-  border-radius: 2px;
-  transform: translate(-50%, -46%);
-  opacity: 0.9;
-}
-
-.sticker-card__portrait-frame img {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
+.sticker-card__player-area img {
+  width: 110%;
+  height: 112%;
   object-fit: contain;
   object-position: center bottom;
-  filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.34));
+  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.22));
 }
 
-.sticker-card__initials {
-  position: relative;
-  z-index: 2;
+.sticker-card__placeholder {
   display: grid;
-  width: 78px;
-  height: 78px;
+  width: 96px;
+  height: 96px;
   place-items: center;
-  border: 3px solid rgba(255, 255, 255, 0.5);
   border-radius: 50%;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 42px;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 54px;
   font-weight: 900;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.24);
+}
+
+.sticker-card__glow-panel {
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  z-index: 5;
+  height: 48%;
+  background:
+    radial-gradient(ellipse at 50% 4%, rgba(255, 255, 255, 0.98) 0 18%, rgba(255, 246, 88, 0.96) 42%, rgba(255, 231, 33, 0.88) 62%, rgba(255, 224, 28, 0.12) 100%),
+    linear-gradient(180deg, rgba(255, 248, 113, 0.72) 0%, rgba(255, 224, 21, 0.96) 52%, rgba(182, 143, 0, 0.12) 100%);
+  clip-path: ellipse(68% 64% at 50% 25%);
+  filter: blur(0.2px);
 }
 
 .sticker-card__name {
   position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 72px;
-  z-index: 3;
-  display: block;
-  overflow: hidden;
-  color: #fff;
-  font-size: clamp(18px, 10%, 29px);
+  left: 12%;
+  right: 12%;
+  bottom: 33%;
+  z-index: 7;
+  display: grid;
+  gap: 0;
+  justify-items: center;
+  color: #111111;
+  font-size: clamp(22px, 11.6%, 34px);
   font-weight: 950;
-  line-height: 1.05;
+  line-height: 1.04;
   text-align: center;
+  letter-spacing: -0.06em;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.25);
+}
+
+.sticker-card__name strong {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow:
-    0 2px 0 rgba(0, 0, 0, 0.17),
-    0 4px 10px rgba(0, 0, 0, 0.34);
   white-space: nowrap;
 }
 
 .sticker-card__meta {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 20px;
-  z-index: 3;
+  left: 12%;
+  right: 12%;
+  bottom: 15%;
+  z-index: 7;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: end;
-  gap: 8px;
-  color: #fff;
+  gap: 6px;
+  color: #10131a;
   text-align: center;
 }
 
 .sticker-card__meta span {
   display: grid;
-  gap: 5px;
+  gap: 8px;
   min-width: 0;
 }
 
 .sticker-card__meta small {
   overflow: hidden;
-  color: #fff;
-  font-size: clamp(9px, 5.2%, 12px);
+  color: rgba(54, 49, 21, 0.58);
+  font-size: clamp(8px, 4.2%, 11px);
   font-weight: 950;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.18em;
   line-height: 1;
   text-overflow: ellipsis;
   text-transform: uppercase;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.27);
   white-space: nowrap;
 }
 
 .sticker-card__meta strong {
   overflow: hidden;
-  color: #fff;
-  font-size: clamp(12px, 7.1%, 17px);
+  color: #10131a;
+  font-size: clamp(12px, 6.2%, 18px);
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.05;
   text-overflow: ellipsis;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.27);
   white-space: nowrap;
 }
 
 .sticker-card__actions {
   position: absolute;
   inset: 9px auto auto 9px;
-  z-index: 8;
+  z-index: 20;
   display: flex;
   max-width: calc(100% - 18px);
   gap: 4px;
@@ -347,7 +314,7 @@
   padding: 4px 7px;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 999px;
-  background: rgba(7, 25, 50, 0.76);
+  background: rgba(7, 25, 50, 0.78);
   color: #fff;
   font-size: 9px;
   font-weight: 800;
@@ -358,59 +325,65 @@
   background: rgba(200, 16, 46, 0.86);
 }
 
+.sticker-card--compact {
+  border-radius: 16px;
+}
+
 .sticker-card--compact .sticker-card__hit {
-  border-width: 3px;
-  border-radius: 18px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    inset 0 -28px 42px rgba(88, 64, 0, 0.16),
+    0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.sticker-card--compact .sticker-card__card-number {
-  top: 11px;
-  left: 13px;
-  font-size: 13px;
+.sticker-card--compact .sticker-card__top-left {
+  top: 7%;
+  left: 7%;
+  font-size: 7px;
 }
 
-.sticker-card--compact .sticker-card__club-block {
-  top: 12px;
-  right: 11px;
-  gap: 6px;
+.sticker-card--compact .sticker-card__top-left strong {
+  font-size: 8px;
 }
 
-.sticker-card--compact .sticker-card__club-logo {
-  width: 26px;
+.sticker-card--compact .sticker-card__top-right {
+  top: 7%;
+  right: 7%;
+  gap: 4px;
+  font-size: 10px;
 }
 
-.sticker-card--compact .sticker-card__shirt-number {
-  font-size: 13px;
+.sticker-card--compact .sticker-card__club-mark {
+  width: 25px;
 }
 
-.sticker-card--compact .sticker-card__portrait-zone {
-  inset: 24% 19% 32%;
+.sticker-card--compact .sticker-card__player-area {
+  inset: 12% 12% 33%;
 }
 
-.sticker-card--compact .sticker-card__portrait-frame::before {
-  width: 22px;
-  height: 52px;
-  border-width: 2px;
+.sticker-card--compact .sticker-card__glow-panel {
+  height: 51%;
 }
 
 .sticker-card--compact .sticker-card__name {
-  left: 10px;
-  right: 10px;
-  bottom: 45px;
-  font-size: 13px;
+  left: 9%;
+  right: 9%;
+  bottom: 34%;
+  font-size: 15px;
 }
 
 .sticker-card--compact .sticker-card__meta {
-  left: 8px;
-  right: 8px;
-  bottom: 11px;
+  left: 8%;
+  right: 8%;
+  bottom: 14%;
   gap: 3px;
 }
 
 .sticker-card--compact .sticker-card__meta small {
-  font-size: 7px;
+  font-size: 6px;
+  letter-spacing: 0.1em;
 }
 
 .sticker-card--compact .sticker-card__meta strong {
-  font-size: 9px;
+  font-size: 8px;
 }
