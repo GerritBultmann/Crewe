@@ -78,6 +78,16 @@ const pick = (row: Record<string, string> | undefined, names: string[]) => {
   return text(entry?.[1]);
 };
 
+const pickLoose = (row: Record<string, string> | undefined, names: string[]) => {
+  if (!row) return '';
+  const wanted = names.map(normalizeKey);
+  const entry = Object.entries(row).find(([key, value]) => {
+    const normalized = normalizeKey(key);
+    return text(value) && wanted.some((name) => normalized === name || normalized.startsWith(`${name}_`) || normalized.startsWith(name));
+  });
+  return text(entry?.[1]);
+};
+
 const parseAppsCell = (value: string) => {
   const match = value.match(/(\d+)\s*(?:\((\d+)\))?/);
   if (!match) return { total: value, starts: '', subApps: '' };
@@ -164,20 +174,12 @@ const attributeAliases: Record<string, string[]> = {
   Zielstrebigkeit: ['Zielstrebigkeit', 'attr_Zielstrebigkeit'],
 };
 
-const allAttributeLabels = Array.from(
-  new Set([
-    ...ATTRIBUTE_GROUPS.fieldTechnical,
-    ...ATTRIBUTE_GROUPS.setPieces,
-    ...ATTRIBUTE_GROUPS.goalkeeping,
-    ...ATTRIBUTE_GROUPS.mental,
-    ...ATTRIBUTE_GROUPS.athletic,
-  ]),
-);
+const allAttributeLabels = Array.from(new Set([...ATTRIBUTE_GROUPS.fieldTechnical, ...ATTRIBUTE_GROUPS.setPieces, ...ATTRIBUTE_GROUPS.goalkeeping, ...ATTRIBUTE_GROUPS.mental, ...ATTRIBUTE_GROUPS.athletic]));
 
 const readAttributes = (row: Record<string, string> | undefined) => {
   const attributes: Record<string, string> = {};
   for (const label of allAttributeLabels) {
-    const value = pick(row, attributeAliases[label] ?? [label]);
+    const value = pickLoose(row, attributeAliases[label] ?? [label]);
     if (value) attributes[label] = value.match(/-?\d+(?:[,.]\d+)?/)?.[0]?.replace(',', '.') ?? value;
   }
 
@@ -216,6 +218,7 @@ export const profileFromSticker = (sticker: Sticker): PlayerProfile => {
   const row = sticker.sourceRow;
   const rawPosition = pick(row, ['Position', 'pos', 'Spielposition']) || sticker.position;
   const year = pick(row, ['seasonStatsYear', 'Statistik Jahr', 'Statistikjahr', 'Saisonjahr', 'seasonYear']);
+  const mediaDescription = pickLoose(row, ['Medienbeschreibung', 'mediaDescription']);
 
   return {
     name: sticker.name,
@@ -232,7 +235,7 @@ export const profileFromSticker = (sticker: Sticker): PlayerProfile => {
     age: parseAge(pick(row, ['Alter', 'Age', 'age'])),
     height: pick(row, ['Größe', 'Groesse', 'height']),
     personality: pick(row, ['Persönlichkeit', 'Persoenlichkeit', 'Persönl.', 'Persoenl.', 'Pers.', 'personality']),
-    mediaDescription: pick(row, ['Medienbeschreibung', 'mediaDescription']) || sticker.description || '',
+    mediaDescription,
     value: pick(row, ['Transferwert', 'Marktwert', 'Wert', 'value']),
     wage: pick(row, ['Gehalt', 'Lohn', 'wage', 'salary']),
     contractEnd: pick(row, ['Endet', 'Endet_2', 'Vertrag bis', 'Vertragsende', 'contractEnd']),
@@ -248,5 +251,4 @@ export const profileFromSticker = (sticker: Sticker): PlayerProfile => {
   };
 };
 
-export const dotForProfile = (profile: PlayerProfile) =>
-  POSITION_DOTS.find((dot) => dot.id === positionIdForProfile(profile)) ?? POSITION_DOTS[0];
+export const dotForProfile = (profile: PlayerProfile) => POSITION_DOTS.find((dot) => dot.id === positionIdForProfile(profile)) ?? POSITION_DOTS[0];
