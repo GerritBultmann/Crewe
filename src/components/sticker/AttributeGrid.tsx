@@ -26,7 +26,6 @@ const Section = ({ title, labels, values, role }: { title: string; labels: reado
       const roleClass = roleClassForAttributeMatch(label, role);
       return (
         <div key={label} className={`fm-attr-row ${roleClass} ${value ? '' : 'missing'}`}>
-          <span className="fm-role-arrow" aria-hidden="true">➤</span>
           <span className="fm-attr-name">{label}</span>
           <strong className={`fm-attr-val ${valueClass(value)}`}>{dash(value)}</strong>
         </div>
