@@ -111,14 +111,130 @@ const parseDelimitedCareerRows = (value: string) => {
     .filter(Boolean)
     .map((line) => {
       const parts = line.split(/;|,/).map((part) => part.trim());
-      return {
-        year: parts[0] ?? '',
-        team: parts[1] ?? '',
-        info: parts[2] ?? '',
-        apps: parts[3] ?? '',
-        goals: parts[4] ?? '',
-        assists: parts[5] ?? '',
-        rating: parts[6] ?? '',
-      };
+      return { year: parts[0] ?? '', team: parts[1] ?? '', info: parts[2] ?? '', apps: parts[3] ?? '', goals: parts[4] ?? '', assists: parts[5] ?? '', rating: parts[6] ?? '' };
     });
+};
+
+const statRowToCareer = (stats: SeasonStats, profile: PlayerProfile): CareerHistoryRow => ({
+  year: stats.year || '',
+  team: profile.team,
+  info: profile.squadStatus || 'Saison',
+  nation: profile.nationality,
+  league: stats.competition || 'Gesamt',
+  apps: stats.apps,
+  goals: stats.goals,
+  assists: stats.assists,
+  playerOfMatch: stats.playerOfMatch,
+  rating: stats.rating,
+  details: { Starts: stats.starts, Einwechslungen: stats.subApps, Minuten: stats.minutes, 'Pass %': stats.passPercent, 'Zu Null': stats.cleanSheets },
+  attributes: profile.attributes,
+  stats,
+});
+
+const careerFromRaw = (candidate: unknown, fallbackProfile: PlayerProfile): CareerHistoryRow => {
+  const raw = objectEntriesToStrings(candidate);
+  const object = candidate as Record<string, unknown> | undefined;
+  const attrs = nestedRecord(object?.attrs ?? object?.attributes);
+  const rawStats = objectEntriesToStrings(object?.stats ?? object?.seasonStats);
+
+  return {
+    year: pick(raw, ['year', 'jahr', 'season', 'saison']) || raw.year || '',
+    team: pick(raw, ['team', 'mannschaft', 'club', 'verein']) || fallbackProfile.team,
+    info: pick(raw, ['info', 'status', 'type', 'typ', 'leagueOrNation']) || fallbackProfile.squadStatus || 'Saison',
+    nation: pick(raw, ['nation', 'nationality', 'land']) || fallbackProfile.nationality,
+    league: pick(raw, ['league', 'liga', 'competition', 'wettbewerb']) || pick(raw, ['leagueOrNation']) || '',
+    apps: pick(raw, ['apps', 'appearances', 'einsätze', 'einsaetze', 'eins']) || rawStats.apps || '',
+    goals: pick(raw, ['goals', 'tore']) || rawStats.goals || '',
+    assists: pick(raw, ['assists', 'vorlagen', 'vor']) || rawStats.assists || '',
+    playerOfMatch: pick(raw, ['playerOfMatch', 'sds', 'spieler des spiels']) || rawStats.playerOfMatch || '',
+    rating: pick(raw, ['rating', 'wertung', 'durchschnittsnote', 'note', 'avgRat']) || rawStats.rating || '',
+    details: raw,
+    attributes: attrs,
+    stats: rawStats as Partial<SeasonStats>,
+  };
+};
+
+export const careerRowsForProfile = (sticker: Sticker, profile = profileFromSticker(sticker)): CareerHistoryRow[] => {
+  const row = sticker.sourceRow;
+  const jsonRows = parseRowsFromJsonField(row, ['careerHistory', 'career_history', 'Karriere', 'Laufbahn', 'history']);
+  const delimitedRows = parseDelimitedCareerRows(pick(row, ['careerText', 'Karriere Text', 'Laufbahn Text']));
+  const importedRows = [...jsonRows, ...delimitedRows].map((item) => careerFromRaw(item, profile));
+  if (importedRows.length) return importedRows;
+  if (profile.stats.length) return profile.stats.map((stats) => statRowToCareer(stats, profile));
+
+  return [{
+    year: pick(row, ['Saison', 'season', 'Jahr', 'year']),
+    team: profile.team,
+    info: profile.squadStatus || (sticker.status === 'owned' ? 'Im Verein' : sticker.status),
+    nation: profile.nationality,
+    league: pick(row, ['Wettbewerb', 'competition', 'Liga', 'league']),
+    apps: pick(row, ['Einsätze', 'Einsaetze', 'Apps', 'Appearances']),
+    goals: pick(row, ['Tore', 'Goals']),
+    assists: pick(row, ['Vorlagen', 'Assists']),
+    playerOfMatch: pick(row, ['SdS', 'Spieler des Spiels', 'Player of Match']),
+    rating: pick(row, ['Wertung', 'Rating', 'Ø Note']),
+    details: objectEntriesToStrings(row),
+    attributes: profile.attributes,
+    stats: profile.stats[0] ?? {},
+  }];
+};
+
+export const relatedProfileCards = (sticker: Sticker, stickers: Sticker[]) => {
+  const key = profilePersonKey(sticker);
+  return stickers
+    .filter((candidate) => profilePersonKey(candidate) === key)
+    .sort((left, right) => (left.cardNumber ?? 0) - (right.cardNumber ?? 0))
+    .map((candidate): RelatedProfileCard => {
+      const profile = profileFromSticker(candidate);
+      return { sticker: candidate, profile, cardNumber: formatCardNumber(candidate.cardNumber), title: candidate.importedFrom === 'csv' ? 'CSV-Karte' : candidate.importedFrom === 'json' ? 'JSON-Karte' : 'Albumkarte', season: pick(candidate.sourceRow, ['Saison', 'season', 'Jahr', 'year', 'seasonYear']) || 'Aktuelle Saison', value: profile.value, stats: profile.stats[0] ?? {} };
+    });
+};
+
+export const parseMoney = (value: string): number | null => {
+  if (!value) return null;
+  const firstPart = value.toLowerCase().replace(/€/g, '').replace(/eur/g, '').split(/\s*(?:-|–|—|bis|to)\s*/)[0].trim();
+  const match = firstPart.match(/(-?\d+(?:[,.]\d+)?)\s*(mio\.?|million(?:en)?|m\b|tsd\.?|k\b)?/i);
+  if (!match) return null;
+  const amount = Number.parseFloat(match[1].replace(',', '.'));
+  if (!Number.isFinite(amount)) return null;
+  const unit = (match[2] ?? '').toLowerCase();
+  if (/mio|million|^m\b/.test(unit)) return amount * 1_000_000;
+  if (/tsd|^k\b/.test(unit)) return amount * 1_000;
+  return amount;
+};
+
+export const formatMoney = (value: number | null, fallback = '—') => {
+  if (value === null || !Number.isFinite(value)) return fallback || '—';
+  if (Math.abs(value) >= 1_000_000) {
+    const millions = value / 1_000_000;
+    return `${Number.isInteger(millions) ? millions : millions.toFixed(1).replace('.', ',')} Mio. €`;
+  }
+  if (Math.abs(value) >= 1_000) return `${Math.round(value / 1_000).toLocaleString('de-DE')} Tsd. €`;
+  return `${Math.round(value).toLocaleString('de-DE')} €`;
+};
+
+const moneyDiff = (current: string, previous: string) => {
+  const now = parseMoney(current);
+  const before = parseMoney(previous);
+  if (now === null || before === null) return '—';
+  const diff = now - before;
+  if (diff === 0) return '±0 €';
+  return `${diff > 0 ? '+' : '−'}${formatMoney(Math.abs(diff), '')}`;
+};
+
+export const valueCurveForCards = (cards: RelatedProfileCard[]): ValuePoint[] =>
+  cards.map((card, index) => ({ label: card.season, value: parseMoney(card.value), formatted: formatMoney(parseMoney(card.value), card.value || '—'), delta: index === 0 ? '—' : moneyDiff(card.value, cards[index - 1].value) }));
+
+export const buildProfileDashboardModel = (sticker: Sticker, stickers: Sticker[], selectedStickerId?: string, selectedCareerIndex = 0): ProfileDashboardModel => {
+  const related = relatedProfileCards(sticker, stickers.length ? stickers : [sticker]);
+  const selected = related.find((item) => item.sticker.id === selectedStickerId)?.sticker ?? related[0]?.sticker ?? sticker;
+  const selectedProfile = profileFromSticker(selected);
+  const careerRows = careerRowsForProfile(selected, selectedProfile);
+  return { sticker, profile: profileFromSticker(sticker), selectedSticker: selected, selectedProfile, relatedCards: related, careerRows, selectedCareerRow: careerRows[selectedCareerIndex] ?? careerRows[0] ?? null, valueCurve: valueCurveForCards(related), developmentAttributes: Object.entries(selectedProfile.attributes).slice(0, 16) };
+};
+
+export const statusLabelForSticker = (sticker: Sticker) => {
+  if (sticker.status === 'owned') return 'Im Verein';
+  if (sticker.status === 'wanted') return 'Gesucht';
+  return 'Doppelt';
 };
