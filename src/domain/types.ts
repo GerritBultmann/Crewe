@@ -25,6 +25,7 @@ export interface StickerCategory {
 
 export interface Sticker {
   id: string;
+  cardNumber: number;
   number: string;
   name: string;
   team: string;
