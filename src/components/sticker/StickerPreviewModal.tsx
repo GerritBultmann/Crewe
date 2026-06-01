@@ -9,7 +9,6 @@ interface StickerPreviewModalProps {
 }
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-const PREVIEW_SCALE = 2.65;
 
 export const StickerPreviewModal = ({ sticker, onClose, onProfile }: StickerPreviewModalProps) => {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
@@ -31,8 +30,8 @@ export const StickerPreviewModal = ({ sticker, onClose, onProfile }: StickerPrev
           onPointerLeave={() => setRotation({ x: 0, y: 0 })}
           onClick={() => onProfile(sticker)}
         >
-          <div className="card-preview-tilt" style={{ transform: `scale(${PREVIEW_SCALE}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)` }}>
-            <StickerCard sticker={sticker} compact draggable={false} interactive={false} />
+          <div className="card-preview-tilt" style={{ transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)` }}>
+            <StickerCard sticker={sticker} compact={false} draggable={false} interactive={false} />
           </div>
         </div>
         <button type="button" className="card-preview-profile-button" onClick={() => onProfile(sticker)}>
