@@ -14,11 +14,12 @@ export interface StickerFormValues {
   description: string;
 }
 
-export const createStickerFromForm = (values: StickerFormValues): Sticker => {
+export const createStickerFromForm = (values: StickerFormValues, cardNumber: number): Sticker => {
   const timestamp = nowIso();
 
   return {
     id: values.id ?? createId('sticker'),
+    cardNumber,
     number: values.number.trim(),
     name: values.name.trim(),
     team: values.team.trim(),
