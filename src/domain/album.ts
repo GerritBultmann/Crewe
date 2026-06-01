@@ -1,4 +1,5 @@
 import { STICKER_CATEGORIES } from '../config/albumConfig';
+import { assignMissingCardNumbers, normalizeCardNumber } from './cardNumbers';
 import { createId } from './ids';
 import type { AlbumData, AlbumSlot, AlbumSpread, AlbumStats, PageSide, Sticker, StickerPosition, StickerStatus } from './types';
 
@@ -27,13 +28,7 @@ export const createSpread = (title = 'Doppelseite 1', subtitle = 'Meine erste Sa
     })),
   );
 
-  return {
-    id: spreadId,
-    title,
-    subtitle,
-    createdAt: nowIso(),
-    slots,
-  };
+  return { id: spreadId, title, subtitle, createdAt: nowIso(), slots };
 };
 
 export const createInitialAlbum = (): AlbumData => {
@@ -54,9 +49,7 @@ export const createInitialAlbum = (): AlbumData => {
 export const addEmptySlotToCategory = (spread: AlbumSpread, categoryId: string): AlbumSpread => {
   const referenceCategory = STICKER_CATEGORIES.find((category) => category.id === categoryId);
   const categorySlots = spread.slots.filter((slot) => slot.categoryId === categoryId);
-  const nextIndex = categorySlots.length
-    ? Math.max(...categorySlots.map((slot) => slot.index)) + 1
-    : 0;
+  const nextIndex = categorySlots.length ? Math.max(...categorySlots.map((slot) => slot.index)) + 1 : 0;
 
   return {
     ...spread,
@@ -102,10 +95,7 @@ export const getUnplacedStickers = (album: AlbumData) => {
 
 export const getAlbumStats = (album: AlbumData): AlbumStats => {
   const totalSlots = album.spreads.reduce((sum, spread) => sum + spread.slots.length, 0);
-  const placed = album.spreads.reduce(
-    (sum, spread) => sum + spread.slots.filter((slot) => Boolean(slot.stickerId)).length,
-    0,
-  );
+  const placed = album.spreads.reduce((sum, spread) => sum + spread.slots.filter((slot) => Boolean(slot.stickerId)).length, 0);
   const unplaced = getUnplacedStickers(album).length;
 
   return {
@@ -128,18 +118,14 @@ const normalizeStatus = (status: unknown): StickerStatus => {
 
 const normalizeSourceRow = (sourceRow: unknown): Record<string, string> | undefined => {
   if (!sourceRow || typeof sourceRow !== 'object' || Array.isArray(sourceRow)) return undefined;
-  return Object.fromEntries(
-    Object.entries(sourceRow as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')]),
-  );
+  return Object.fromEntries(Object.entries(sourceRow as Record<string, unknown>).map(([key, value]) => [key, String(value ?? '')]));
 };
 
 export const normalizeImportedAlbum = (candidate: unknown): AlbumData | null => {
   if (!candidate || typeof candidate !== 'object') return null;
   const value = candidate as Partial<AlbumData>;
 
-  if (value.schemaVersion !== 1 || !Array.isArray(value.spreads) || !Array.isArray(value.stickers)) {
-    return null;
-  }
+  if (value.schemaVersion !== 1 || !Array.isArray(value.spreads) || !Array.isArray(value.stickers)) return null;
 
   const spreads = value.spreads.map((spread, spreadIndex) => {
     const spreadId = String(spread.id || createId('spread'));
@@ -162,25 +148,28 @@ export const normalizeImportedAlbum = (candidate: unknown): AlbumData | null => 
     };
   });
 
-  const stickers = value.stickers.map((sticker): Sticker => {
-    const timestamp = nowIso();
-    const importedFrom = sticker.importedFrom === 'csv' || sticker.importedFrom === 'json' ? sticker.importedFrom : undefined;
+  const stickers = assignMissingCardNumbers(
+    value.stickers.map((sticker): Sticker => {
+      const timestamp = nowIso();
+      const importedFrom = sticker.importedFrom === 'csv' || sticker.importedFrom === 'json' ? sticker.importedFrom : undefined;
 
-    return {
-      id: String(sticker.id || createId('sticker')),
-      number: String(sticker.number || ''),
-      name: String(sticker.name || 'Unbenannter Sticker'),
-      team: String(sticker.team || ''),
-      position: normalizePosition(sticker.position),
-      status: normalizeStatus(sticker.status),
-      imageUrl: sticker.imageUrl ? String(sticker.imageUrl) : undefined,
-      description: sticker.description ? String(sticker.description) : undefined,
-      importedFrom,
-      sourceRow: normalizeSourceRow(sticker.sourceRow),
-      createdAt: String(sticker.createdAt || timestamp),
-      updatedAt: String(sticker.updatedAt || timestamp),
-    };
-  });
+      return {
+        id: String(sticker.id || createId('sticker')),
+        cardNumber: normalizeCardNumber(sticker.cardNumber) ?? 0,
+        number: String(sticker.number || ''),
+        name: String(sticker.name || 'Unbenannter Sticker'),
+        team: String(sticker.team || ''),
+        position: normalizePosition(sticker.position),
+        status: normalizeStatus(sticker.status),
+        imageUrl: sticker.imageUrl ? String(sticker.imageUrl) : undefined,
+        description: sticker.description ? String(sticker.description) : undefined,
+        importedFrom,
+        sourceRow: normalizeSourceRow(sticker.sourceRow),
+        createdAt: String(sticker.createdAt || timestamp),
+        updatedAt: String(sticker.updatedAt || timestamp),
+      };
+    }),
+  );
 
   const stickerIds = new Set(stickers.map((sticker) => sticker.id));
   const repairedSpreads = spreads.map((spread) =>
@@ -194,9 +183,7 @@ export const normalizeImportedAlbum = (candidate: unknown): AlbumData | null => 
   );
 
   const fallbackSpread = repairedSpreads[0] ?? createSpread();
-  const activeSpreadId = repairedSpreads.some((spread) => spread.id === value.activeSpreadId)
-    ? String(value.activeSpreadId)
-    : fallbackSpread.id;
+  const activeSpreadId = repairedSpreads.some((spread) => spread.id === value.activeSpreadId) ? String(value.activeSpreadId) : fallbackSpread.id;
 
   return {
     schemaVersion: 1,
