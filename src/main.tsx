@@ -8,6 +8,7 @@ import './styles/sticker-card.css';
 import './styles/card-preview.css';
 import './styles/profile-hero.css';
 import './styles/attribute-highlights.css';
+import './styles/profile-dashboard.css';
 
 const rootElement = document.getElementById('root');
 
