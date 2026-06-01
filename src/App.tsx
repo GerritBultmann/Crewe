@@ -5,6 +5,7 @@ import { SpreadNavigator } from './components/album/SpreadNavigator';
 import { StickerCollection } from './components/sticker/StickerCollection';
 import { StickerDetailModal } from './components/sticker/StickerDetailModal';
 import { StickerFormModal } from './components/sticker/StickerFormModal';
+import { StickerPreviewModal } from './components/sticker/StickerPreviewModal';
 import { useAlbum } from './hooks/useAlbum';
 import { downloadAlbumJson, readImportFile } from './services/exportAlbum';
 import type { Sticker } from './domain/types';
@@ -13,6 +14,7 @@ import type { StickerFormValues } from './domain/stickers';
 export const App = () => {
   const { album, dispatch } = useAlbum();
   const [formSticker, setFormSticker] = useState<Sticker | null | undefined>(undefined);
+  const [previewSticker, setPreviewSticker] = useState<Sticker | null>(null);
   const [detailSticker, setDetailSticker] = useState<Sticker | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -31,8 +33,14 @@ export const App = () => {
     const confirmed = window.confirm(`Sticker "${sticker.name}" wirklich loeschen?`);
     if (!confirmed) return;
     dispatch({ type: 'sticker/delete', stickerId: sticker.id });
+    setPreviewSticker(null);
     setDetailSticker(null);
     closeForm();
+  };
+
+  const openProfile = (sticker: Sticker) => {
+    setPreviewSticker(null);
+    setDetailSticker(sticker);
   };
 
   const importAlbum = async (file: File) => {
@@ -64,9 +72,7 @@ export const App = () => {
       {notice ? (
         <div className="notice" role="status">
           <span>{notice}</span>
-          <button type="button" onClick={() => setNotice(null)}>
-            ×
-          </button>
+          <button type="button" onClick={() => setNotice(null)}>×</button>
         </div>
       ) : null}
 
@@ -76,7 +82,7 @@ export const App = () => {
         <AlbumSpreadView
           album={album}
           dispatch={dispatch}
-          onOpenSticker={setDetailSticker}
+          onOpenSticker={setPreviewSticker}
           onEditSticker={(sticker) => setFormSticker(sticker)}
           onDeleteSticker={deleteSticker}
         />
@@ -85,7 +91,7 @@ export const App = () => {
           album={album}
           dispatch={dispatch}
           onAdd={() => setFormSticker(null)}
-          onOpen={setDetailSticker}
+          onOpen={setPreviewSticker}
           onEdit={(sticker) => setFormSticker(sticker)}
           onDelete={deleteSticker}
         />
@@ -93,6 +99,14 @@ export const App = () => {
 
       {formSticker !== undefined ? (
         <StickerFormModal sticker={formSticker} onClose={closeForm} onSubmit={submitSticker} />
+      ) : null}
+
+      {previewSticker ? (
+        <StickerPreviewModal
+          sticker={previewSticker}
+          onClose={() => setPreviewSticker(null)}
+          onProfile={openProfile}
+        />
       ) : null}
 
       {detailSticker ? (
