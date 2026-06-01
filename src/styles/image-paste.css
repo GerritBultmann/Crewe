@@ -1,0 +1,64 @@
+.image-paste-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 16px;
+  align-items: center;
+  min-height: 138px;
+  padding: 16px;
+  border: 2px dashed rgba(21, 59, 115, 0.28);
+  border-radius: 14px;
+  background: rgba(21, 59, 115, 0.06);
+  color: rgba(7, 25, 50, 0.76);
+  outline: none;
+}
+
+.image-paste-box:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(21, 59, 115, 0.1);
+}
+
+.image-paste-box div {
+  display: grid;
+  gap: 8px;
+}
+
+.image-paste-box strong {
+  color: var(--navy);
+  font-size: 16px;
+}
+
+.image-paste-box span,
+.image-paste-box em {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.image-paste-box em {
+  color: var(--blue);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.image-paste-box img,
+.image-paste-box__placeholder {
+  width: 128px;
+  height: 128px;
+  border-radius: 12px;
+  background: rgba(7, 25, 50, 0.1);
+  object-fit: contain;
+}
+
+.image-paste-box__placeholder {
+  display: grid;
+  place-items: center;
+  color: rgba(7, 25, 50, 0.5);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  .image-paste-box {
+    grid-template-columns: 1fr;
+  }
+}
