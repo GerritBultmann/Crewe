@@ -1,9 +1,9 @@
+import { formatCardNumber } from './cardNumbers';
 import { profileFromSticker } from './playerProfile';
 import type { Sticker, StickerPosition } from './types';
 
 export interface StickerCardViewModel {
   cardNumber: string;
-  edition: string;
   jerseyNumber: string;
   position: string;
   theme: string;
@@ -55,48 +55,16 @@ export const readStickerSource = (sticker: Sticker, keys: string[]) => {
   return match?.[1]?.trim() ?? '';
 };
 
-const compactNumber = (value: string, fallback: string) => {
-  const raw = value || fallback;
-  const numeric = raw.match(/\d+/)?.[0];
-  return numeric ? numeric.padStart(3, '0').slice(-3) : raw.slice(0, 3).toUpperCase();
-};
-
 const displayJerseyNumber = (sticker: Sticker) =>
   readStickerSource(sticker, ['trikotnummer', 'shirt number', 'jersey number', 'jersey', 'nr', 'number']) ||
   sticker.number ||
   '—';
 
-const displayCardNumber = (sticker: Sticker) =>
-  compactNumber(
-    readStickerSource(sticker, ['kartennummer', 'card number', 'cardNumber', 'album number', 'albumNumber', 'id']),
-    sticker.number || '0',
-  );
-
-const displayEdition = (sticker: Sticker) =>
-  readStickerSource(sticker, ['saison', 'season', 'edition', 'jahrgang', 'year']) || '2021-22';
-
 const displayCountry = (value: string) => {
   if (!value || value === '—') return '???';
   const clean = value.replace(/\(.+?\)/g, '').trim();
-  const known: Record<string, string> = {
-    deutschland: '🇩🇪',
-    germany: '🇩🇪',
-    deutsch: '🇩🇪',
-    england: '🏴',
-    'england ': '🏴',
-    wales: '🏴',
-    scotland: '🏴',
-    france: '🇫🇷',
-    frankreich: '🇫🇷',
-    spain: '🇪🇸',
-    spanien: '🇪🇸',
-    italy: '🇮🇹',
-    italien: '🇮🇹',
-    netherlands: '🇳🇱',
-    niederlande: '🇳🇱',
-  };
-  const key = clean.toLowerCase();
-  return known[key] ?? (clean.length <= 3 ? clean.toUpperCase() : clean.slice(0, 3).toUpperCase());
+  if (clean.length <= 3) return clean.toUpperCase();
+  return clean.slice(0, 3).toUpperCase();
 };
 
 const displayAge = (age: string, birthdate: string) => {
@@ -108,10 +76,7 @@ const displayAge = (age: string, birthdate: string) => {
 const splitName = (name: string) => {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length <= 1) return { givenName: name, familyName: '' };
-  return {
-    givenName: parts.slice(0, -1).join(' '),
-    familyName: parts.at(-1) ?? '',
-  };
+  return { givenName: parts.slice(0, -1).join(' '), familyName: parts.at(-1) ?? '' };
 };
 
 export const buildStickerCardViewModel = (sticker: Sticker): StickerCardViewModel => {
@@ -119,8 +84,7 @@ export const buildStickerCardViewModel = (sticker: Sticker): StickerCardViewMode
   const name = splitName(sticker.name);
 
   return {
-    cardNumber: displayCardNumber(sticker),
-    edition: displayEdition(sticker),
+    cardNumber: formatCardNumber(sticker.cardNumber),
     jerseyNumber: displayJerseyNumber(sticker),
     position: positionShortLabel[sticker.position],
     theme: positionTheme[sticker.position],
