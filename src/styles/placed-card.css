@@ -11,18 +11,28 @@
   -webkit-mask-image: none;
 }
 
-.sticker-card__player-area {
-  inset: 4% 2% 21%;
-}
-
-.sticker-card__player-area img {
+.sticker-card--compact .sticker-card__player-area img {
   width: 131%;
   height: 133%;
   max-width: none;
   max-height: none;
 }
 
-.sticker-card__glow-panel {
+.slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__player-area,
+.card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area {
+  inset: 9% 8% 28%;
+}
+
+.slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__player-area img,
+.card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area img {
+  width: 118%;
+  height: 120%;
+  max-width: none;
+  max-height: none;
+}
+
+.slot--filled .sticker-card__glow-panel,
+.card-preview-stage .sticker-card__glow-panel {
   left: 0;
   right: 0;
   bottom: 0;
