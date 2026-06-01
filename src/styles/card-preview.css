@@ -47,6 +47,18 @@
   filter: drop-shadow(0 34px 28px rgba(0, 0, 0, 0.48));
 }
 
+.card-preview-stage .sticker-card__pattern {
+  inset: 0;
+  opacity: 0.32;
+  background:
+    repeating-linear-gradient(30deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 10px),
+    repeating-linear-gradient(150deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 10px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 12px);
+  background-size: 12px 12px;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
 .card-preview-profile-button {
   min-height: 48px;
   padding: 0 28px;
@@ -61,10 +73,6 @@
 
 .card-preview-profile-button:hover {
   transform: translateY(-1px);
-}
-
-.sticker-card__pattern {
-  background-size: 28px 49px;
 }
 
 .sticker-card__glow-panel {
