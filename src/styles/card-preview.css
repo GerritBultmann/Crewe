@@ -32,7 +32,7 @@
 }
 
 .card-preview-stage {
-  width: min(400px, 74vw);
+  width: min(430px, 78vw);
   perspective: 1200px;
   cursor: pointer;
 }
@@ -64,24 +64,39 @@
 }
 
 .sticker-card__pattern {
-  background-size: 32px 56px;
+  background-size: 28px 49px;
 }
 
 .sticker-card__glow-panel {
-  left: -12%;
-  right: -12%;
-  bottom: -6%;
-  height: 58%;
+  left: -8%;
+  right: -8%;
+  bottom: 0;
+  height: 44%;
   background:
-    radial-gradient(ellipse at 50% 95%, rgba(255, 247, 90, 0.96) 0 16%, rgba(255, 235, 32, 0.9) 30%, rgba(255, 226, 24, 0.54) 48%, rgba(255, 226, 24, 0.02) 72%),
-    linear-gradient(0deg, rgba(255, 230, 31, 0.95) 0%, rgba(255, 235, 55, 0.56) 44%, rgba(255, 242, 91, 0) 74%);
-  clip-path: polygon(0 42%, 50% 0, 100% 42%, 100% 100%, 0 100%);
+    linear-gradient(0deg, rgba(255, 229, 25, 0.98) 0%, rgba(255, 236, 50, 0.96) 28%, rgba(255, 240, 82, 0.56) 58%, rgba(255, 240, 82, 0) 92%);
+  clip-path: none;
 }
 
-.sticker-card__name {
-  bottom: 31%;
+.sticker-card:not(.sticker-card--compact) .sticker-card__name {
+  bottom: 27%;
+}
+
+.sticker-card:not(.sticker-card--compact) .sticker-card__meta {
+  bottom: 9%;
 }
 
 .sticker-card__meta small {
   color: rgba(54, 49, 21, 0.64);
+}
+
+.card-preview-stage .sticker-card__name {
+  font-size: clamp(32px, 12.5%, 46px);
+}
+
+.card-preview-stage .sticker-card__meta small {
+  font-size: clamp(10px, 4.8%, 13px);
+}
+
+.card-preview-stage .sticker-card__meta strong {
+  font-size: clamp(17px, 7.2%, 22px);
 }
