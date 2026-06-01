@@ -5,6 +5,7 @@ import {
   nowIso,
   reindexSpreadSlots,
 } from '../domain/album';
+import { nextCardNumber, normalizeCardNumber } from '../domain/cardNumbers';
 import {
   createStickerFromForm,
   isStickerCompatibleWithSlot,
@@ -55,15 +56,17 @@ const clearStickerFromSlots = (album: AlbumData, stickerId: string): AlbumData =
   })),
 });
 
+const getPlacedStickerIds = (album: AlbumData) =>
+  new Set(
+    album.spreads.flatMap((spread) =>
+      spread.slots.map((slot) => slot.stickerId).filter((stickerId): stickerId is string => Boolean(stickerId)),
+    ),
+  );
+
 const findSticker = (album: AlbumData, stickerId: string) =>
   album.stickers.find((sticker) => sticker.id === stickerId) ?? null;
 
-const placeSticker = (
-  album: AlbumData,
-  spreadId: string,
-  slotId: string,
-  stickerId: string,
-): AlbumData => {
+const placeSticker = (album: AlbumData, spreadId: string, slotId: string, stickerId: string): AlbumData => {
   const sticker = findSticker(album, stickerId);
   if (!sticker) return album;
 
@@ -74,9 +77,7 @@ const placeSticker = (
   const cleanedAlbum = clearStickerFromSlots(album, stickerId);
   return updateSpread(cleanedAlbum, spreadId, (spread) => ({
     ...spread,
-    slots: spread.slots.map((slot) =>
-      slot.id === slotId ? { ...slot, stickerId } : slot,
-    ),
+    slots: spread.slots.map((slot) => (slot.id === slotId ? { ...slot, stickerId } : slot)),
   }));
 };
 
@@ -103,12 +104,8 @@ const moveBetweenSlots = (
     spreads: album.spreads.map((spread) => ({
       ...spread,
       slots: spread.slots.map((slot) => {
-        if (slot.id === sourceSlotId && spread.id === sourceSpreadId) {
-          return { ...slot, stickerId: targetSlot.stickerId };
-        }
-        if (slot.id === targetSlotId && spread.id === targetSpreadId) {
-          return { ...slot, stickerId: sourceSlot.stickerId };
-        }
+        if (slot.id === sourceSlotId && spread.id === sourceSpreadId) return { ...slot, stickerId: targetSlot.stickerId };
+        if (slot.id === targetSlotId && spread.id === targetSpreadId) return { ...slot, stickerId: sourceSlot.stickerId };
         return slot;
       }),
     })),
@@ -123,56 +120,61 @@ const firstCompatibleEmptySlot = (album: AlbumData, sticker: Sticker) => {
   );
 };
 
+const importedCardNumber = (item: ParsedStickerImport) =>
+  normalizeCardNumber(item.sourceRow?.Kartennummer ?? item.sourceRow?.cardNumber ?? item.sourceRow?.['Card Number']);
+
 const upsertImportedStickers = (album: AlbumData, imports: ParsedStickerImport[]): AlbumData => {
   if (!imports.length) return album;
 
   const timestamp = nowIso();
-  const importedStickers = imports.map((item) => ({
-    sticker: {
-      ...createStickerFromForm(item.values),
-      importedFrom: item.source,
-      sourceRow: item.sourceRow,
-      updatedAt: timestamp,
-    } satisfies Sticker,
-    values: item.values,
-  }));
-
+  const alreadyPlacedIds = getPlacedStickerIds(album);
   const byIdentity = new Map(album.stickers.map((sticker) => [stickerIdentityKey(sticker), sticker]));
   const nextStickers = [...album.stickers];
-  const importedIds: string[] = [];
+  const stickersToAutoPlace: string[] = [];
+  let nextNumber = nextCardNumber(nextStickers);
 
-  for (const { sticker } of importedStickers) {
-    const identity = stickerIdentityKey(sticker);
+  for (const item of imports) {
+    const identitySeed = createStickerFromForm(item.values, importedCardNumber(item) ?? nextNumber);
+    const identity = stickerIdentityKey(identitySeed);
     const existing = byIdentity.get(identity);
 
     if (existing) {
       const updated: Sticker = {
         ...existing,
-        number: sticker.number || existing.number,
-        name: sticker.name || existing.name,
-        team: sticker.team || existing.team,
-        position: sticker.position,
-        status: sticker.status,
-        imageUrl: sticker.imageUrl ?? existing.imageUrl,
-        description: sticker.description || existing.description,
-        importedFrom: sticker.importedFrom,
-        sourceRow: sticker.sourceRow,
+        number: identitySeed.number || existing.number,
+        name: identitySeed.name || existing.name,
+        team: identitySeed.team || existing.team,
+        position: identitySeed.position,
+        status: identitySeed.status,
+        imageUrl: identitySeed.imageUrl ?? existing.imageUrl,
+        description: identitySeed.description || existing.description,
+        importedFrom: item.source,
+        sourceRow: item.sourceRow,
         updatedAt: timestamp,
       };
-      const index = nextStickers.findIndex((item) => item.id === existing.id);
+      const index = nextStickers.findIndex((sticker) => sticker.id === existing.id);
       if (index >= 0) nextStickers[index] = updated;
       byIdentity.set(identity, updated);
-      importedIds.push(updated.id);
-    } else {
-      nextStickers.push(sticker);
-      byIdentity.set(identity, sticker);
-      importedIds.push(sticker.id);
+      if (!alreadyPlacedIds.has(updated.id)) stickersToAutoPlace.push(updated.id);
+      continue;
     }
+
+    const cardNumber = importedCardNumber(item) ?? nextNumber;
+    const sticker: Sticker = {
+      ...createStickerFromForm(item.values, cardNumber),
+      importedFrom: item.source,
+      sourceRow: item.sourceRow,
+      updatedAt: timestamp,
+    };
+    nextStickers.push(sticker);
+    byIdentity.set(identity, sticker);
+    stickersToAutoPlace.push(sticker.id);
+    nextNumber = Math.max(nextNumber + 1, cardNumber + 1);
   }
 
   let nextAlbum: AlbumData = { ...album, stickers: nextStickers };
 
-  for (const stickerId of importedIds) {
+  for (const stickerId of stickersToAutoPlace) {
     const sticker = findSticker(nextAlbum, stickerId);
     if (!sticker) continue;
     const targetSlot = firstCompatibleEmptySlot(nextAlbum, sticker);
@@ -194,26 +196,14 @@ export const albumReducer = (state: AlbumData, action: AlbumAction): AlbumData =
     case 'spread/add': {
       const nextNumber = state.spreads.length + 1;
       const spread = createSpread(`Doppelseite ${nextNumber}`, `Saison ${nextNumber}`);
-      return touch({
-        ...state,
-        activeSpreadId: spread.id,
-        spreads: [...state.spreads, spread],
-      });
+      return touch({ ...state, activeSpreadId: spread.id, spreads: [...state.spreads, spread] });
     }
 
     case 'spread/select':
-      return state.spreads.some((spread) => spread.id === action.spreadId)
-        ? { ...state, activeSpreadId: action.spreadId }
-        : state;
+      return state.spreads.some((spread) => spread.id === action.spreadId) ? { ...state, activeSpreadId: action.spreadId } : state;
 
     case 'spread/update':
-      return touch(
-        updateSpread(state, action.spreadId, (spread) => ({
-          ...spread,
-          title: action.title.trim() || spread.title,
-          subtitle: action.subtitle.trim(),
-        })),
-      );
+      return touch(updateSpread(state, action.spreadId, (spread) => ({ ...spread, title: action.title.trim() || spread.title, subtitle: action.subtitle.trim() })));
 
     case 'spread/delete': {
       if (state.spreads.length <= 1) return state;
@@ -223,52 +213,31 @@ export const albumReducer = (state: AlbumData, action: AlbumAction): AlbumData =
     }
 
     case 'slot/add':
-      return touch(
-        updateSpread(state, action.spreadId, (spread) => addEmptySlotToCategory(spread, action.categoryId)),
-      );
+      return touch(updateSpread(state, action.spreadId, (spread) => addEmptySlotToCategory(spread, action.categoryId)));
 
     case 'slot/remove':
-      return touch(
-        updateSpread(state, action.spreadId, (spread) => {
-          const slot = spread.slots.find((item) => item.id === action.slotId);
-          if (!slot || slot.stickerId) return spread;
-          return {
-            ...spread,
-            slots: spread.slots.filter((item) => item.id !== action.slotId),
-          };
-        }),
-      );
+      return touch(updateSpread(state, action.spreadId, (spread) => {
+        const slot = spread.slots.find((item) => item.id === action.slotId);
+        return !slot || slot.stickerId ? spread : { ...spread, slots: spread.slots.filter((item) => item.id !== action.slotId) };
+      }));
 
     case 'slot/place':
       return touch(placeSticker(state, action.spreadId, action.slotId, action.stickerId));
 
     case 'slot/move':
-      return touch(
-        moveBetweenSlots(
-          state,
-          action.sourceSpreadId,
-          action.sourceSlotId,
-          action.targetSpreadId,
-          action.targetSlotId,
-        ),
-      );
+      return touch(moveBetweenSlots(state, action.sourceSpreadId, action.sourceSlotId, action.targetSpreadId, action.targetSlotId));
 
     case 'slot/unstick':
-      return touch(
-        updateSpread(state, action.spreadId, (spread) => ({
-          ...spread,
-          slots: spread.slots.map((slot) =>
-            slot.id === action.slotId ? { ...slot, stickerId: null } : slot,
-          ),
-        })),
-      );
+      return touch(updateSpread(state, action.spreadId, (spread) => ({
+        ...spread,
+        slots: spread.slots.map((slot) => (slot.id === action.slotId ? { ...slot, stickerId: null } : slot)),
+      })));
 
     case 'sticker/create': {
-      const sticker = createStickerFromForm(action.values);
+      const sticker = createStickerFromForm(action.values, nextCardNumber(state.stickers));
       const stateWithSticker = touch({ ...state, stickers: [...state.stickers, sticker] });
       const targetSlotId = action.targetSlotId ?? firstCompatibleEmptySlot(stateWithSticker, sticker)?.id;
-      if (!targetSlotId) return stateWithSticker;
-      return touch(placeSticker(stateWithSticker, state.activeSpreadId, targetSlotId, sticker.id));
+      return targetSlotId ? touch(placeSticker(stateWithSticker, state.activeSpreadId, targetSlotId, sticker.id)) : stateWithSticker;
     }
 
     case 'sticker/update': {
@@ -277,11 +246,8 @@ export const albumReducer = (state: AlbumData, action: AlbumAction): AlbumData =
       const updatedSticker = updateStickerFromForm(current, action.values);
       const updatedState = {
         ...state,
-        stickers: state.stickers.map((sticker) =>
-          sticker.id === action.stickerId ? updatedSticker : sticker,
-        ),
+        stickers: state.stickers.map((sticker) => (sticker.id === action.stickerId ? updatedSticker : sticker)),
       };
-
       return touch({
         ...updatedState,
         spreads: updatedState.spreads.map((spread) => ({
@@ -295,10 +261,7 @@ export const albumReducer = (state: AlbumData, action: AlbumAction): AlbumData =
     }
 
     case 'sticker/delete':
-      return touch({
-        ...clearStickerFromSlots(state, action.stickerId),
-        stickers: state.stickers.filter((sticker) => sticker.id !== action.stickerId),
-      });
+      return touch({ ...clearStickerFromSlots(state, action.stickerId), stickers: state.stickers.filter((sticker) => sticker.id !== action.stickerId) });
 
     case 'stickers/import':
       return touch(upsertImportedStickers(state, action.imports));
