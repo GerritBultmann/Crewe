@@ -116,17 +116,6 @@ export const PlayerProfilePanel = ({ sticker, stickers, onEdit, onDelete }: Play
 
       {activeTab === 'overview' ? (
         <section className="fm-dashboard fm-dashboard-roles">
-          <aside className="fm-profile-photo-card">
-            <div className="fm-profile-photo-frame">
-              {selectedSticker.imageUrl ? <img src={selectedSticker.imageUrl} alt="" /> : <span>{profile.name.slice(0, 1).toUpperCase()}</span>}
-            </div>
-            <div className="fm-profile-photo-meta">
-              <span>Größe {dash(profile.height)}</span>
-              <span>Persönlichkeit {dash(profile.personality)}</span>
-            </div>
-            <div className="fm-foot-mini"><div><span>Linker Fuß</span><b>{dash(profile.leftFoot)}</b></div><div><span>Rechter Fuß</span><b>{dash(profile.rightFoot)}</b></div></div>
-          </aside>
-
           <RoleSelector positionId={positionId} mode={mode} roleName={roleName} abilityStars={profile.abilityStars} onPositionChange={changePosition} onModeChange={changeMode} onRoleChange={setRoleName} />
           <AttributeGrid values={profile.attributes} role={selectedRole} isKeeper={isKeeper} />
 
@@ -137,7 +126,11 @@ export const PlayerProfilePanel = ({ sticker, stickers, onEdit, onDelete }: Play
               <div className="fm-info-row"><span>Nationalität</span><b>{dash(profile.nationality)}</b></div>
               <div className="fm-info-row"><span>2. Nation</span><b>{dash(profile.secondNationality)}</b></div>
               <div className="fm-info-row"><span>Geburtsort</span><b>{dash(profile.birthplace)}</b></div>
-              <div className="fm-info-row"><span>Medienbeschreibung</span><b>{dash(profile.mediaDescription)}</b></div>
+              <div className="fm-info-row fm-info-row--wide"><span>Medienbeschreibung</span><b>{dash(profile.mediaDescription)}</b></div>
+              <div className="fm-info-row"><span>Größe</span><b>{dash(profile.height)}</b></div>
+              <div className="fm-info-row"><span>Persönlichkeit</span><b>{dash(profile.personality)}</b></div>
+              <div className="fm-info-row"><span>Linker Fuß</span><b>{dash(profile.leftFoot)}</b></div>
+              <div className="fm-info-row"><span>Rechter Fuß</span><b>{dash(profile.rightFoot)}</b></div>
             </div>
           </aside>
 
