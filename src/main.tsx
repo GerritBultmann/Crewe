@@ -12,6 +12,7 @@ import './styles/profile-dashboard.css';
 import './styles/placed-card.css';
 import './styles/image-paste.css';
 import './styles/profile-positions.css';
+import './styles/market-chart-compact.css';
 
 const rootElement = document.getElementById('root');
 
