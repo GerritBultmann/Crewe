@@ -13,6 +13,7 @@ import './styles/placed-card.css';
 import './styles/image-paste.css';
 import './styles/profile-positions.css';
 import './styles/market-chart-compact.css';
+import './styles/modern-card.css';
 
 const rootElement = document.getElementById('root');
 
