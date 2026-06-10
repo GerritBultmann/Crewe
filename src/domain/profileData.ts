@@ -111,7 +111,7 @@ const parseDelimitedCareerRows = (value: string) => {
     .filter(Boolean)
     .map((line) => {
       const parts = line.split(/;|,/).map((part) => part.trim());
-      return { year: parts[0] ?? '', team: parts[1] ?? '', info: parts[2] ?? '', apps: parts[3] ?? '', goals: parts[4] ?? '', assists: parts[5] ?? '', rating: parts[6] ?? '' };
+      return { year: parts[0] ?? '', team: parts[1] ?? '', info: parts[2] ?? '', apps: parts[3] ?? '', goals: parts[4] ?? '', assists: parts[5] ?? '', rating: parts[6] ?? '', value: parts[7] ?? '' };
     });
 };
 
@@ -126,7 +126,7 @@ const statRowToCareer = (stats: SeasonStats, profile: PlayerProfile): CareerHist
   assists: stats.assists,
   playerOfMatch: stats.playerOfMatch,
   rating: stats.rating,
-  details: { Starts: stats.starts, Einwechslungen: stats.subApps, Minuten: stats.minutes, 'Pass %': stats.passPercent, 'Zu Null': stats.cleanSheets },
+  details: { Starts: stats.starts, Einwechslungen: stats.subApps, Minuten: stats.minutes, 'Pass %': stats.passPercent, 'Zu Null': stats.cleanSheets, Marktwert: profile.value },
   attributes: profile.attributes,
   stats,
 });
@@ -222,15 +222,40 @@ const moneyDiff = (current: string, previous: string) => {
   return `${diff > 0 ? '+' : '−'}${formatMoney(Math.abs(diff), '')}`;
 };
 
+const valueKeys = ['Marktwert', 'Wert', 'Transferwert', 'Marktwert €', 'Value', 'marketValue', 'market_value', 'transferValue', 'transfer_value'];
+const yearKeys = ['Saison', 'season', 'Jahr', 'year', 'seasonYear'];
+
+const valueFromCareerRow = (row: CareerHistoryRow, fallbackValue = '') =>
+  pick(row.details, valueKeys) || fallbackValue;
+
+const yearFromCareerRow = (row: CareerHistoryRow, fallback = 'Aktuell') =>
+  row.year || pick(row.details, yearKeys) || fallback;
+
 export const valueCurveForCards = (cards: RelatedProfileCard[]): ValuePoint[] =>
   cards.map((card, index) => ({ label: card.season, value: parseMoney(card.value), formatted: formatMoney(parseMoney(card.value), card.value || '—'), delta: index === 0 ? '—' : moneyDiff(card.value, cards[index - 1].value) }));
+
+export const valueCurveForCareerRows = (rows: CareerHistoryRow[], fallbackValue = ''): ValuePoint[] =>
+  rows.map((row, index) => {
+    const rawValue = valueFromCareerRow(row, fallbackValue);
+    const previousRawValue = index > 0 ? valueFromCareerRow(rows[index - 1], fallbackValue) : '';
+    const value = parseMoney(rawValue);
+    return {
+      label: yearFromCareerRow(row, `Jahr ${index + 1}`),
+      value,
+      formatted: formatMoney(value, rawValue || '—'),
+      delta: index === 0 ? '—' : moneyDiff(rawValue, previousRawValue),
+    };
+  });
 
 export const buildProfileDashboardModel = (sticker: Sticker, stickers: Sticker[], selectedStickerId?: string, selectedCareerIndex = 0): ProfileDashboardModel => {
   const related = relatedProfileCards(sticker, stickers.length ? stickers : [sticker]);
   const selected = related.find((item) => item.sticker.id === selectedStickerId)?.sticker ?? related[0]?.sticker ?? sticker;
   const selectedProfile = profileFromSticker(selected);
   const careerRows = careerRowsForProfile(selected, selectedProfile);
-  return { sticker, profile: profileFromSticker(sticker), selectedSticker: selected, selectedProfile, relatedCards: related, careerRows, selectedCareerRow: careerRows[selectedCareerIndex] ?? careerRows[0] ?? null, valueCurve: valueCurveForCards(related), developmentAttributes: Object.entries(selectedProfile.attributes).slice(0, 16) };
+  const careerCurve = valueCurveForCareerRows(careerRows, selectedProfile.value);
+  const cardCurve = valueCurveForCards(related);
+  const valueCurve = careerCurve.some((point) => point.value !== null) ? careerCurve : cardCurve;
+  return { sticker, profile: profileFromSticker(sticker), selectedSticker: selected, selectedProfile, relatedCards: related, careerRows, selectedCareerRow: careerRows[selectedCareerIndex] ?? careerRows[0] ?? null, valueCurve, developmentAttributes: Object.entries(selectedProfile.attributes).slice(0, 16) };
 };
 
 export const statusLabelForSticker = (sticker: Sticker) => {
