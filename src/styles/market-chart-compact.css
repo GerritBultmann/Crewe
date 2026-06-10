@@ -1,12 +1,31 @@
-.fm-development-grid--market {
-  grid-template-columns: minmax(320px, min(25vw, 520px));
-  justify-content: start;
+.fm-career-main {
+  grid-template-columns: minmax(320px, 50vw) minmax(320px, 50vw);
+  align-items: start;
+  overflow-x: auto;
 }
 
-.fm-development-grid--market .fm-market-chart-card {
-  width: min(25vw, 520px);
+.fm-card-gallery,
+.fm-career-table-card {
+  grid-column: 1 / -1;
+}
+
+.fm-development-grid--market {
+  grid-column: 1;
+  grid-template-columns: 1fr;
   min-width: 320px;
-  max-width: 520px;
+}
+
+.fm-season-detail-grid--single {
+  grid-column: 2;
+  grid-template-columns: 1fr;
+  min-width: 320px;
+}
+
+.fm-development-grid--market .fm-market-chart-card,
+.fm-season-detail-grid--single > section {
+  width: 50vw;
+  min-width: 320px;
+  max-width: none;
   padding: 14px;
 }
 
@@ -40,11 +59,20 @@
 }
 
 @media (max-width: 1050px) {
-  .fm-development-grid--market {
+  .fm-career-main {
     grid-template-columns: 1fr;
+    overflow-x: visible;
   }
 
-  .fm-development-grid--market .fm-market-chart-card {
+  .fm-card-gallery,
+  .fm-career-table-card,
+  .fm-development-grid--market,
+  .fm-season-detail-grid--single {
+    grid-column: 1;
+  }
+
+  .fm-development-grid--market .fm-market-chart-card,
+  .fm-season-detail-grid--single > section {
     width: 100%;
     min-width: 0;
     max-width: none;
