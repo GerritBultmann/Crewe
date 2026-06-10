@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { roleOptionsFor, type RoleMode } from '../../domain/fmRoles';
 import { buildProfileDashboardModel, formatMoney, parseMoney, statusLabelForSticker, type CareerHistoryRow } from '../../domain/profileData';
 import { positionIdForProfile, profileFromSticker, type PlayerProfile } from '../../domain/playerProfile';
+import { playablePositionIdsForProfile } from '../../domain/profilePositions';
 import type { Sticker } from '../../domain/types';
 import { AttributeGrid } from './AttributeGrid';
 import { RoleSelector } from './RoleSelector';
@@ -63,6 +64,7 @@ export const PlayerProfilePanel = ({ sticker, stickers, onEdit, onDelete }: Play
   const [positionId, setPositionId] = useState(initialPositionId);
   const [mode, setMode] = useState<RoleMode>('ip');
   const [roleName, setRoleName] = useState(() => roleNameFor(profile, initialPositionId, 'ip'));
+  const playablePositionIds = playablePositionIdsForProfile(profile);
   const roleOptions = roleOptionsFor(positionId, mode);
   const selectedRole = roleOptions.find(([name]) => name === roleName)?.[1] ?? roleOptions[0]?.[1] ?? null;
   const isKeeper = selectedRole?.pos.includes('GK') || positionId === 'GK';
@@ -116,7 +118,7 @@ export const PlayerProfilePanel = ({ sticker, stickers, onEdit, onDelete }: Play
 
       {activeTab === 'overview' ? (
         <section className="fm-dashboard fm-dashboard-roles">
-          <RoleSelector positionId={positionId} mode={mode} roleName={roleName} abilityStars={profile.abilityStars} onPositionChange={changePosition} onModeChange={changeMode} onRoleChange={setRoleName} />
+          <RoleSelector positionId={positionId} playablePositionIds={playablePositionIds} mode={mode} roleName={roleName} abilityStars={profile.abilityStars} onPositionChange={changePosition} onModeChange={changeMode} onRoleChange={setRoleName} />
           <AttributeGrid values={profile.attributes} role={selectedRole} isKeeper={isKeeper} />
 
           <aside className="fm-info-panel fm-info-cardlike">
