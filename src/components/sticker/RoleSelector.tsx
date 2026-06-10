@@ -2,6 +2,7 @@ import { POSITION_DOTS, roleOptionsFor, type RoleMode } from '../../domain/fmRol
 
 interface RoleSelectorProps {
   positionId: string;
+  playablePositionIds: string[];
   mode: RoleMode;
   roleName: string;
   abilityStars?: string;
@@ -29,9 +30,9 @@ const shortPositionLabel: Record<string, string> = {
 
 const fallbackStars = '★★★☆☆';
 
-export const RoleSelector = ({ positionId, mode, roleName, abilityStars, onPositionChange, onModeChange, onRoleChange }: RoleSelectorProps) => {
+export const RoleSelector = ({ positionId, playablePositionIds, mode, roleName, abilityStars, onPositionChange, onModeChange, onRoleChange }: RoleSelectorProps) => {
   const activeDot = POSITION_DOTS.find((dot) => dot.id === positionId) ?? POSITION_DOTS[0];
-  const linked = new Set(activeDot.linked);
+  const playable = new Set(playablePositionIds);
   const roles = roleOptionsFor(positionId, mode);
   const stars = abilityStars || fallbackStars;
 
@@ -50,16 +51,20 @@ export const RoleSelector = ({ positionId, mode, roleName, abilityStars, onPosit
         <div className="fm-role-box right" />
         <div className="fm-role-goalarea" />
         <div className="fm-role-goalarea right" />
-        {POSITION_DOTS.map((dot) => (
-          <button
-            key={dot.id}
-            type="button"
-            className={`fm-pos-dot ${dot.id === positionId ? 'is-active' : ''} ${linked.has(dot.id) ? 'is-linked' : ''}`}
-            style={{ left: `${dot.x}%`, top: `${dot.y}%` }}
-            title={dot.label}
-            onClick={() => onPositionChange(dot.id)}
-          />
-        ))}
+        {POSITION_DOTS.map((dot) => {
+          const isPlayable = playable.has(dot.id);
+          const isSelected = dot.id === positionId;
+          return (
+            <button
+              key={dot.id}
+              type="button"
+              className={`fm-pos-dot ${isPlayable ? 'is-playable' : ''} ${isSelected ? 'is-selected' : ''}`}
+              style={{ left: `${dot.x}%`, top: `${dot.y}%` }}
+              title={dot.label}
+              onClick={() => onPositionChange(dot.id)}
+            />
+          );
+        })}
       </div>
 
       <div className="fm-role-selected-label">Selected: {activeDot.label}</div>
