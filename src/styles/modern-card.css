@@ -1,46 +1,48 @@
 .sticker-card {
   --card-text: #f4f7fb;
-  --card-subtext: rgba(244, 247, 251, 0.62);
+  --card-subtext: rgba(244, 247, 251, 0.64);
   --card-value-text: #f8fafc;
-  --card-line: rgba(255, 255, 255, 0.18);
-  --card-line-soft: rgba(255, 255, 255, 0.07);
-  --card-micro-line: rgba(255, 255, 255, 0.085);
-  --card-facet-a: color-mix(in srgb, var(--card-top) 45%, transparent);
-  --card-facet-b: color-mix(in srgb, var(--card-mid) 34%, transparent);
-  --card-facet-c: color-mix(in srgb, var(--card-bottom) 38%, transparent);
+  --card-line: rgba(255, 255, 255, 0.22);
+  --card-line-soft: rgba(255, 255, 255, 0.09);
+  --card-micro-line: rgba(255, 255, 255, 0.12);
+  --card-facet-a: color-mix(in srgb, var(--card-top) 58%, transparent);
+  --card-facet-b: color-mix(in srgb, var(--card-mid) 46%, transparent);
+  --card-facet-c: color-mix(in srgb, var(--card-bottom) 50%, transparent);
 }
 
 .sticker-card--gold,
 .sticker-card--legend {
   --card-text: #1d1a10;
-  --card-subtext: rgba(44, 39, 18, 0.56);
+  --card-subtext: rgba(44, 39, 18, 0.58);
   --card-value-text: #17140c;
-  --card-line: rgba(255, 255, 255, 0.32);
-  --card-line-soft: rgba(255, 255, 255, 0.12);
-  --card-micro-line: rgba(255, 255, 255, 0.13);
+  --card-line: rgba(255, 255, 255, 0.36);
+  --card-line-soft: rgba(255, 255, 255, 0.14);
+  --card-micro-line: rgba(255, 255, 255, 0.16);
 }
 
 .sticker-card__hit {
-  border: 1px solid color-mix(in srgb, var(--card-top) 42%, rgba(255, 255, 255, 0.22));
+  border: 1px solid color-mix(in srgb, var(--card-top) 48%, rgba(255, 255, 255, 0.26));
   background:
-    linear-gradient(132deg, transparent 0 13%, rgba(255, 255, 255, 0.12) 13.2% 13.8%, transparent 14% 100%),
-    linear-gradient(46deg, transparent 0 18%, rgba(255, 255, 255, 0.07) 18.2% 18.8%, transparent 19% 100%),
-    linear-gradient(152deg, transparent 0 58%, rgba(0, 0, 0, 0.1) 58.2% 58.8%, transparent 59% 100%),
-    radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.18) 0 8%, transparent 39%),
-    radial-gradient(circle at 18% 16%, var(--card-facet-a) 0 13%, transparent 34%),
-    radial-gradient(circle at 82% 12%, var(--card-facet-b) 0 12%, transparent 30%),
+    linear-gradient(132deg, transparent 0 13%, rgba(255, 255, 255, 0.15) 13.2% 13.8%, transparent 14% 100%),
+    linear-gradient(46deg, transparent 0 18%, rgba(255, 255, 255, 0.1) 18.2% 18.8%, transparent 19% 100%),
+    linear-gradient(152deg, transparent 0 58%, rgba(0, 0, 0, 0.11) 58.2% 58.8%, transparent 59% 100%),
+    linear-gradient(18deg, transparent 0 36%, var(--card-facet-a) 36.2% 36.8%, transparent 37% 100%),
+    linear-gradient(158deg, transparent 0 70%, var(--card-facet-c) 70.2% 70.8%, transparent 71% 100%),
+    radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.2) 0 8%, transparent 39%),
+    radial-gradient(circle at 18% 16%, var(--card-facet-a) 0 15%, transparent 36%),
+    radial-gradient(circle at 82% 12%, var(--card-facet-b) 0 14%, transparent 32%),
     linear-gradient(
       165deg,
-      color-mix(in srgb, var(--card-top) 66%, #1b2230 20%) 0%,
-      color-mix(in srgb, var(--card-mid) 76%, #172033 17%) 47%,
-      color-mix(in srgb, var(--card-bottom) 82%, #050816 18%) 100%
+      color-mix(in srgb, var(--card-top) 74%, #1b2230 15%) 0%,
+      color-mix(in srgb, var(--card-mid) 82%, #172033 12%) 47%,
+      color-mix(in srgb, var(--card-bottom) 86%, #050816 14%) 100%
     );
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
-    inset 0 18px 34px rgba(255, 255, 255, 0.09),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 18px 34px rgba(255, 255, 255, 0.11),
     inset 0 -38px 54px rgba(0, 0, 0, 0.24),
     0 22px 30px rgba(0, 0, 0, 0.28),
-    0 0 24px color-mix(in srgb, var(--card-mid) 24%, transparent);
+    0 0 28px color-mix(in srgb, var(--card-mid) 32%, transparent);
 }
 
 .sticker-card__hit::before,
@@ -56,52 +58,53 @@
 .sticker-card__hit::before {
   inset: 3.2%;
   border: 1px solid var(--card-line);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
   background:
-    linear-gradient(90deg, var(--card-line) 0 18px, transparent 18px) top left / 58px 1px no-repeat,
-    linear-gradient(180deg, var(--card-line) 0 18px, transparent 18px) top left / 1px 58px no-repeat,
-    linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) top right / 58px 1px no-repeat,
-    linear-gradient(180deg, var(--card-line) 0 18px, transparent 18px) top right / 1px 58px no-repeat,
-    linear-gradient(90deg, var(--card-line) 0 18px, transparent 18px) bottom left / 58px 1px no-repeat,
-    linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom left / 1px 58px no-repeat,
-    linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) bottom right / 58px 1px no-repeat,
-    linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom right / 1px 58px no-repeat,
+    linear-gradient(90deg, var(--card-line) 0 22px, transparent 22px) top left / 64px 1px no-repeat,
+    linear-gradient(180deg, var(--card-line) 0 22px, transparent 22px) top left / 1px 64px no-repeat,
+    linear-gradient(270deg, var(--card-line) 0 22px, transparent 22px) top right / 64px 1px no-repeat,
+    linear-gradient(180deg, var(--card-line) 0 22px, transparent 22px) top right / 1px 64px no-repeat,
+    linear-gradient(90deg, var(--card-line) 0 22px, transparent 22px) bottom left / 64px 1px no-repeat,
+    linear-gradient(0deg, var(--card-line) 0 22px, transparent 22px) bottom left / 1px 64px no-repeat,
+    linear-gradient(270deg, var(--card-line) 0 22px, transparent 22px) bottom right / 64px 1px no-repeat,
+    linear-gradient(0deg, var(--card-line) 0 22px, transparent 22px) bottom right / 1px 64px no-repeat,
     linear-gradient(135deg, var(--card-line-soft), transparent 24%, transparent 74%, var(--card-line-soft)),
     linear-gradient(90deg, transparent 0 10%, var(--card-line-soft) 10% 10.5%, transparent 10.5% 89.5%, var(--card-line-soft) 89.5% 90%, transparent 90% 100%);
-  opacity: 0.58;
+  opacity: 0.68;
 }
 
 .sticker-card__hit::after {
   background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.16) 0%, transparent 18%, transparent 74%, rgba(255, 255, 255, 0.045) 100%),
-    linear-gradient(180deg, transparent 0 17%, rgba(255, 255, 255, 0.045) 17% 17.4%, transparent 17.4% 82%, rgba(255, 255, 255, 0.035) 82% 82.35%, transparent 82.35%),
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.12), transparent 18%);
+    linear-gradient(125deg, rgba(255, 255, 255, 0.18) 0%, transparent 18%, transparent 74%, rgba(255, 255, 255, 0.055) 100%),
+    linear-gradient(180deg, transparent 0 17%, rgba(255, 255, 255, 0.055) 17% 17.4%, transparent 17.4% 82%, rgba(255, 255, 255, 0.045) 82% 82.35%, transparent 82.35%),
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.14), transparent 18%);
   mix-blend-mode: soft-light;
-  opacity: 0.62;
+  opacity: 0.7;
 }
 
 .sticker-card__pattern,
 .slot--filled .sticker-card__pattern,
 .card-preview-stage .sticker-card__pattern {
   inset: 0;
-  opacity: 0.3;
+  opacity: 0.42;
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.4px),
     linear-gradient(60deg, transparent 0 47%, var(--card-micro-line) 47% 49%, transparent 49% 100%),
-    linear-gradient(120deg, transparent 0 47%, rgba(255, 255, 255, 0.07) 47% 49%, transparent 49% 100%),
-    linear-gradient(0deg, transparent 0 48%, rgba(255, 255, 255, 0.045) 48% 50%, transparent 50% 100%),
-    conic-gradient(from 45deg at 50% 50%, transparent 0 25%, rgba(255, 255, 255, 0.055) 0 26%, transparent 0 50%, rgba(255, 255, 255, 0.04) 0 51%, transparent 0 100%);
-  background-size: 18px 18px, 24px 24px, 24px 24px, 24px 24px, 72px 72px;
-  background-position: 0 0, 0 0, 0 0, 12px 12px, 0 0;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, #000 72%, rgba(0, 0, 0, 0.48) 100%);
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, #000 72%, rgba(0, 0, 0, 0.48) 100%);
+    linear-gradient(120deg, transparent 0 47%, rgba(255, 255, 255, 0.11) 47% 49%, transparent 49% 100%),
+    linear-gradient(0deg, transparent 0 48%, rgba(255, 255, 255, 0.065) 48% 50%, transparent 50% 100%),
+    conic-gradient(from 45deg at 50% 50%, transparent 0 25%, rgba(255, 255, 255, 0.085) 0 26%, transparent 0 50%, rgba(255, 255, 255, 0.065) 0 51%, transparent 0 100%),
+    linear-gradient(135deg, transparent 0 46%, color-mix(in srgb, var(--card-top) 30%, transparent) 46% 47%, transparent 47% 100%);
+  background-size: 16px 16px, 22px 22px, 22px 22px, 22px 22px, 58px 58px, 86px 86px;
+  background-position: 0 0, 0 0, 0 0, 11px 11px, 0 0, 0 0;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, #000 74%, rgba(0, 0, 0, 0.55) 100%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, #000 74%, rgba(0, 0, 0, 0.55) 100%);
 }
 
 .sticker-card__shine {
-  opacity: 0.5;
+  opacity: 0.56;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.22) 0%, transparent 19%, transparent 67%, rgba(0, 0, 0, 0.16) 100%),
-    radial-gradient(circle at 72% 16%, rgba(255, 255, 255, 0.24), transparent 18%);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.25) 0%, transparent 19%, transparent 67%, rgba(0, 0, 0, 0.16) 100%),
+    radial-gradient(circle at 72% 16%, rgba(255, 255, 255, 0.28), transparent 18%);
 }
 
 .sticker-card__top-left,
@@ -115,9 +118,9 @@
 }
 
 .sticker-card__club-mark {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
     0 7px 15px rgba(0, 0, 0, 0.16);
   backdrop-filter: blur(4px);
 }
@@ -146,7 +149,7 @@
 }
 
 .sticker-card__actions button {
-  border-color: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.28);
   background: rgba(7, 14, 28, 0.68);
   box-shadow: 0 7px 15px rgba(0, 0, 0, 0.18);
 }
