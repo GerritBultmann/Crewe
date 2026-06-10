@@ -11,6 +11,7 @@ import './styles/attribute-highlights.css';
 import './styles/profile-dashboard.css';
 import './styles/placed-card.css';
 import './styles/image-paste.css';
+import './styles/profile-positions.css';
 
 const rootElement = document.getElementById('root');
 
