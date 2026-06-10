@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { roleOptionsFor, type RoleMode } from '../../domain/fmRoles';
-import { buildProfileDashboardModel, formatMoney, parseMoney, statusLabelForSticker, type CareerHistoryRow } from '../../domain/profileData';
+import { buildProfileDashboardModel, formatMoney, statusLabelForSticker, type CareerHistoryRow, type ValuePoint } from '../../domain/profileData';
 import { positionIdForProfile, profileFromSticker, type PlayerProfile } from '../../domain/playerProfile';
 import { playablePositionIdsForProfile } from '../../domain/profilePositions';
 import type { Sticker } from '../../domain/types';
@@ -16,7 +16,6 @@ interface PlayerProfilePanelProps {
 }
 
 const dash = (value?: string) => (value && value.trim() ? value : '—');
-const valueOf = (row: Partial<CareerHistoryRow> | null | undefined, key: keyof CareerHistoryRow) => dash(String(row?.[key] ?? ''));
 
 const ratingClass = (rating?: string) => {
   const number = Number.parseFloat(String(rating ?? '').replace(',', '.'));
@@ -42,12 +41,92 @@ const roleNameFor = (profile: PlayerProfile, positionId: string, mode: RoleMode)
   ?? roleOptionsFor(positionId, mode)[0]?.[0]
   ?? '';
 
-const MoneyDelta = ({ value, previous }: { value: string; previous?: string }) => {
-  const current = parseMoney(value);
-  const prior = previous ? parseMoney(previous) : null;
-  if (current === null || prior === null) return <span>—</span>;
-  const diff = current - prior;
-  return <span className={diff >= 0 ? 'is-positive' : 'is-negative'}>{diff === 0 ? '±0 €' : `${diff > 0 ? '+' : '−'}${formatMoney(Math.abs(diff), '')}`}</span>;
+const shortYearLabel = (label: string) => label.match(/\d{4}(?:[/-]\d{2})?/)?.[0] ?? label;
+
+type ChartPoint = ValuePoint & { value: number; pointIndex: number };
+
+const validChartPoints = (points: ValuePoint[]): ChartPoint[] =>
+  points
+    .map((point, pointIndex) => ({ ...point, pointIndex }))
+    .filter((point): point is ChartPoint => point.value !== null && Number.isFinite(point.value));
+
+const MarketValueChart = ({ points }: { points: ValuePoint[] }) => {
+  const chartPoints = validChartPoints(points);
+
+  if (!chartPoints.length) {
+    return (
+      <section className="fm-market-chart-card">
+        <h3>Marktwertverlauf</h3>
+        <p>Noch keine Marktwerte vorhanden.</p>
+      </section>
+    );
+  }
+
+  const width = 760;
+  const height = 320;
+  const padding = { top: 26, right: 28, bottom: 58, left: 92 };
+  const innerWidth = width - padding.left - padding.right;
+  const innerHeight = height - padding.top - padding.bottom;
+  const baseY = height - padding.bottom;
+  const maxValue = Math.max(...chartPoints.map((point) => point.value));
+  const yMax = Math.max(1, maxValue * 1.15);
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => yMax * ratio);
+  const xFor = (index: number) => padding.left + (chartPoints.length === 1 ? innerWidth / 2 : (index / (chartPoints.length - 1)) * innerWidth);
+  const yFor = (value: number) => baseY - (value / yMax) * innerHeight;
+  const coords = chartPoints.map((point, index) => ({ ...point, x: xFor(index), y: yFor(point.value) }));
+  const linePath = coords.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
+  const areaPath = coords.length
+    ? `M ${coords[0].x} ${baseY} L ${coords.map((point) => `${point.x} ${point.y}`).join(' L ')} L ${coords[coords.length - 1].x} ${baseY} Z`
+    : '';
+
+  return (
+    <section className="fm-market-chart-card">
+      <h3>Marktwertverlauf</h3>
+      <div className="fm-market-chart-wrap">
+        <svg className="fm-market-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Marktwertverlauf nach Jahr">
+          <line className="fm-market-axis" x1={padding.left} y1={padding.top} x2={padding.left} y2={baseY} />
+          <line className="fm-market-axis" x1={padding.left} y1={baseY} x2={width - padding.right} y2={baseY} />
+
+          {yTicks.map((tick) => {
+            const y = yFor(tick);
+            return (
+              <g key={tick}>
+                <line className="fm-market-grid-line" x1={padding.left} y1={y} x2={width - padding.right} y2={y} />
+                <text className="fm-market-y-label" x={padding.left - 12} y={y} textAnchor="end" dominantBaseline="middle">
+                  {formatMoney(tick, '0 €')}
+                </text>
+              </g>
+            );
+          })}
+
+          {areaPath ? <path className="fm-market-area" d={areaPath} /> : null}
+          {coords.length > 1 ? <path className="fm-market-line" d={linePath} /> : null}
+
+          {coords.map((point) => (
+            <g key={`${point.label}-${point.pointIndex}`}>
+              <line className="fm-market-x-guide" x1={point.x} y1={padding.top} x2={point.x} y2={baseY} />
+              <circle className="fm-market-dot" cx={point.x} cy={point.y} r="6">
+                <title>{`${point.label}: ${point.formatted}`}</title>
+              </circle>
+              <text className="fm-market-value-label" x={point.x} y={point.y - 14} textAnchor="middle">
+                {point.formatted}
+              </text>
+              <text className="fm-market-x-label" x={point.x} y={height - 22} textAnchor="middle">
+                {shortYearLabel(point.label)}
+              </text>
+            </g>
+          ))}
+
+          <text className="fm-market-axis-label fm-market-axis-label--y" x="20" y={padding.top + innerHeight / 2} transform={`rotate(-90 20 ${padding.top + innerHeight / 2})`} textAnchor="middle">
+            Wert in Euro
+          </text>
+          <text className="fm-market-axis-label" x={padding.left + innerWidth / 2} y={height - 4} textAnchor="middle">
+            Jahr
+          </text>
+        </svg>
+      </div>
+    </section>
+  );
 };
 
 export const PlayerProfilePanel = ({ sticker, stickers, onEdit, onDelete }: PlayerProfilePanelProps) => {
@@ -153,13 +232,11 @@ export const PlayerProfilePanel = ({ sticker, stickers, onEdit, onDelete }: Play
             <div className="fm-career-table-card">
               <table className="fm-career-main-table"><thead><tr><th>Ausw.</th><th>Jahr</th><th>Mannschaft</th><th>Info</th><th>Nation</th><th>Liga</th><th>Eins.</th><th>Tore</th><th>Vor.</th><th>SdS</th><th>Ø Note</th></tr></thead><tbody>{model.careerRows.map((row, index) => <tr key={`${row.year}-${index}`} className={selectedCareerIndex === index ? 'is-selected' : ''} onClick={() => setSelectedCareerIndex(index)}><td><span className="fm-radio-fake" /></td><td>{dash(row.year)}</td><td>{dash(row.team)}</td><td>{dash(row.info)}</td><td>{dash(row.nation)}</td><td>{dash(row.league)}</td><td>{dash(row.apps)}</td><td>{dash(row.goals)}</td><td>{dash(row.assists)}</td><td>{dash(row.playerOfMatch)}</td><td className={ratingClass(row.rating)}>{dash(row.rating)}</td></tr>)}</tbody></table>
             </div>
-            <div className="fm-season-detail-grid">
-              <section><h3>{valueOf(selectedCareer, 'year')}-Statistiken</h3><div className="fm-kpi-grid"><div><span>Einsätze</span><b>{valueOf(selectedCareer, 'apps')}</b></div><div><span>Tore</span><b>{valueOf(selectedCareer, 'goals')}</b></div><div><span>Vorlagen</span><b>{valueOf(selectedCareer, 'assists')}</b></div><div><span>Ø Note</span><b>{valueOf(selectedCareer, 'rating')}</b></div></div></section>
-              <section><h3>Weitere Daten</h3><div className="fm-detail-list">{Object.entries(selectedCareer?.details ?? {}).slice(0, 10).map(([key, value]) => value ? <div key={key}><span>{key}</span><b>{value}</b></div> : null)}</div></section>
+            <div className="fm-development-grid fm-development-grid--market">
+              <MarketValueChart points={model.valueCurve} />
             </div>
-            <div className="fm-development-grid">
-              <section><h3>Marktwertentwicklung</h3>{model.valueCurve.length ? <div className="fm-value-list">{model.valueCurve.map((point, index) => <div key={`${point.label}-${index}`}><span>{point.label}</span><b>{point.formatted}</b><MoneyDelta value={model.relatedCards[index]?.value ?? ''} previous={model.relatedCards[index - 1]?.value} /></div>)}</div> : <p>Noch keine Marktwerte vorhanden.</p>}</section>
-              <section><h3>Attribute dieser Karte</h3><div className="fm-dev-attrs">{model.developmentAttributes.map(([key, value]) => <div key={key}><span>{key}</span><b>{value}</b></div>)}</div></section>
+            <div className="fm-season-detail-grid fm-season-detail-grid--single">
+              <section><h3>Weitere Daten</h3><div className="fm-detail-list">{Object.entries(selectedCareer?.details ?? {}).slice(0, 10).map(([key, value]) => value ? <div key={key}><span>{key}</span><b>{value}</b></div> : null)}</div></section>
             </div>
           </div>
         </section>
