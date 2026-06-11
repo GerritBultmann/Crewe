@@ -1,63 +1,87 @@
 .slot--filled .sticker-card__pattern,
 .card-preview-stage .sticker-card__pattern {
-  inset: 0;
-  opacity: 0.24;
+  inset: 4% 6% 17%;
+  opacity: 0.95;
   background:
-    repeating-linear-gradient(60deg, transparent 0 34px, rgba(255, 255, 255, 0.11) 34px 35px, transparent 35px 68px),
-    repeating-linear-gradient(120deg, transparent 0 34px, rgba(255, 255, 255, 0.095) 34px 35px, transparent 35px 68px),
-    repeating-linear-gradient(0deg, transparent 0 38px, rgba(255, 255, 255, 0.055) 38px 39px, transparent 39px 76px);
-  background-size: 68px 58px;
-  mask-image: none;
-  -webkit-mask-image: none;
+    repeating-linear-gradient(0deg, rgba(255, 32, 38, 0.52) 0 1px, transparent 1px 7px),
+    radial-gradient(circle at 50% 43%, rgba(255, 25, 32, 0.64), transparent 32%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.62), transparent 30%, transparent 70%, rgba(0, 0, 0, 0.62));
+  background-size: 100% 100%;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0.18) 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0.18) 100%);
 }
 
 .sticker-card--compact .sticker-card__player-area img {
-  width: 131%;
-  height: 133%;
+  width: 142%;
+  height: 140%;
   max-width: none;
   max-height: none;
+}
+
+.slot--filled .sticker-card__hit,
+.card-preview-stage .sticker-card__hit {
+  border: 10px solid #080706;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(239, 18, 23, 0.55), transparent 34%),
+    linear-gradient(180deg, #0c0907 0%, #180303 24%, #430306 58%, #120202 100%);
 }
 
 .slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__player-area,
 .card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area {
-  inset: 9% 8% 28%;
+  inset: 12% 4% 16%;
 }
 
 .slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__player-area img,
 .card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area img {
-  width: 118%;
-  height: 120%;
+  width: 142%;
+  height: 140%;
   max-width: none;
   max-height: none;
+  filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.42));
 }
 
 .slot--filled .sticker-card__glow-panel,
 .card-preview-stage .sticker-card__glow-panel {
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 58%;
+  left: 6%;
+  right: 6%;
+  bottom: 4.8%;
+  height: 17%;
   opacity: 1;
-  background: linear-gradient(
-    0deg,
-    var(--card-bottom) 0%,
-    var(--card-bottom) 34%,
-    color-mix(in srgb, var(--card-bottom) 82%, transparent) 47%,
-    color-mix(in srgb, var(--card-bottom) 42%, transparent) 60%,
-    color-mix(in srgb, var(--card-bottom) 15%, transparent) 72%,
-    transparent 84%
-  );
+  border-radius: 10px 10px 3px 3px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255, 45, 52, 0.7), transparent 48%),
+    linear-gradient(180deg, rgba(166, 7, 11, 0.98), rgba(70, 2, 4, 0.98));
 }
 
-.slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__name {
-  font-size: clamp(18px, 9.4%, 27px);
+.slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__name,
+.card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__name {
+  left: 9%;
+  right: 9%;
+  bottom: 5.2%;
+  gap: 1px;
+  color: #fff;
+  font-size: clamp(17px, 9.2%, 30px);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.62);
 }
 
-.slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__meta small {
-  font-size: clamp(7px, 3.4%, 9px);
-  letter-spacing: 0.12em;
+.slot--filled .sticker-card__name strong:first-child,
+.card-preview-stage .sticker-card__name strong:first-child {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
-.slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__meta strong {
-  font-size: clamp(10px, 5.1%, 15px);
+.slot--filled .sticker-card__name strong:last-child,
+.card-preview-stage .sticker-card__name strong:last-child {
+  font-weight: 950;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.slot--filled .sticker-card__meta,
+.card-preview-stage .sticker-card__meta {
+  display: none;
 }
