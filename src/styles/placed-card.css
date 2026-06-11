@@ -1,3 +1,28 @@
+.slot--filled .sticker-card,
+.slot--filled > div[draggable="true"],
+.card-preview-stage .sticker-card {
+  border-radius: 18px;
+}
+
+.slot--filled .sticker-card__hit,
+.card-preview-stage .sticker-card__hit {
+  border: 8px solid #080706;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(239, 18, 23, 0.55), transparent 34%),
+    linear-gradient(180deg, #0c0907 0%, #180303 24%, #430306 58%, #120202 100%);
+}
+
+.slot--filled .sticker-card__shine,
+.card-preview-stage .sticker-card__shine {
+  z-index: 6;
+  opacity: 0.58;
+  background:
+    linear-gradient(180deg, rgba(255, 40, 46, 0.28) 0%, rgba(255, 35, 42, 0.22) 39%, transparent 68%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), transparent 20%, transparent 72%, rgba(0, 0, 0, 0.18));
+  mix-blend-mode: screen;
+}
+
 .slot--filled .sticker-card__pattern,
 .card-preview-stage .sticker-card__pattern {
   inset: 4% 6% 17%;
@@ -19,17 +44,43 @@
   max-height: none;
 }
 
-.slot--filled .sticker-card__hit,
-.card-preview-stage .sticker-card__hit {
-  border: 10px solid #080706;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(239, 18, 23, 0.55), transparent 34%),
-    linear-gradient(180deg, #0c0907 0%, #180303 24%, #430306 58%, #120202 100%);
+.slot--filled .sticker-card__top-left,
+.card-preview-stage .sticker-card__top-left {
+  top: 6.5%;
+  left: 8%;
+  color: #fff;
+  font-size: clamp(11px, 5.2%, 18px);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.slot--filled .sticker-card__top-left strong,
+.card-preview-stage .sticker-card__top-left strong {
+  font-size: clamp(13px, 6.2%, 22px);
+}
+
+.slot--filled .sticker-card__top-right,
+.card-preview-stage .sticker-card__top-right {
+  top: 6%;
+  right: 7.5%;
+}
+
+.slot--filled .sticker-card__club-mark,
+.card-preview-stage .sticker-card__club-mark {
+  width: clamp(42px, 17%, 62px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.slot--filled .sticker-card__top-right strong,
+.card-preview-stage .sticker-card__top-right strong {
+  display: grid;
+  min-width: clamp(26px, 10%, 38px);
+  min-height: clamp(24px, 9%, 34px);
+  font-size: clamp(11px, 4.6%, 16px);
 }
 
 .slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__player-area,
 .card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area {
-  inset: 12% 4% 16%;
+  inset: 12% 4% 14%;
 }
 
 .slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__player-area img,
@@ -46,22 +97,22 @@
   left: 6%;
   right: 6%;
   bottom: 4.8%;
-  height: 17%;
+  height: 23%;
   opacity: 1;
-  border-radius: 10px 10px 3px 3px;
+  border-radius: 14px 14px 6px 6px;
   background:
-    radial-gradient(circle at 50% 10%, rgba(255, 45, 52, 0.7), transparent 48%),
-    linear-gradient(180deg, rgba(166, 7, 11, 0.98), rgba(70, 2, 4, 0.98));
+    radial-gradient(circle at 50% 10%, rgba(255, 45, 52, 0.78), transparent 48%),
+    linear-gradient(180deg, rgba(176, 8, 12, 0.98), rgba(70, 2, 4, 0.98));
 }
 
 .slot--filled .sticker-card:not(.sticker-card--compact) .sticker-card__name,
 .card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__name {
   left: 9%;
   right: 9%;
-  bottom: 5.2%;
+  bottom: 11.4%;
   gap: 1px;
   color: #fff;
-  font-size: clamp(17px, 9.2%, 30px);
+  font-size: clamp(16px, 8.6%, 28px);
   line-height: 0.98;
   letter-spacing: 0.02em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.62);
@@ -83,5 +134,24 @@
 
 .slot--filled .sticker-card__meta,
 .card-preview-stage .sticker-card__meta {
-  display: none;
+  display: grid;
+  left: 9%;
+  right: 9%;
+  bottom: 5.3%;
+  gap: 8px;
+  color: #fff;
+  opacity: 1;
+}
+
+.slot--filled .sticker-card__meta small,
+.card-preview-stage .sticker-card__meta small {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: clamp(6px, 2.6%, 8px);
+  letter-spacing: 0.16em;
+}
+
+.slot--filled .sticker-card__meta strong,
+.card-preview-stage .sticker-card__meta strong {
+  color: #fff;
+  font-size: clamp(8px, 3.7%, 12px);
 }
