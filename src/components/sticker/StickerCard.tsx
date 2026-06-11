@@ -77,16 +77,16 @@ export const StickerCard = ({
 
         <span className="sticker-card__meta" aria-label="Spielerdaten">
           <span>
-            <small>Alter</small>
-            <strong>{card.age}</strong>
+            <small>Nation</small>
+            <strong>{card.country}</strong>
           </span>
           <span>
             <small>Position</small>
             <strong>{card.position}</strong>
           </span>
           <span>
-            <small>Land</small>
-            <strong>{card.country}</strong>
+            <small>Alter</small>
+            <strong>{card.age}</strong>
           </span>
         </span>
       </Wrapper>
