@@ -212,3 +212,42 @@
   background: rgba(91, 0, 14, 0.74);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16);
 }
+
+/* stronger custom red-card tuning */
+.sticker-card__hit {
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255, 126, 26, 0.58) 0 15%, transparent 44%),
+    linear-gradient(180deg, #7f0611 0%, #b70b12 30%, #f12a15 48%, #ff6418 58%, #db1714 76%, #6d0710 100%);
+}
+
+.sticker-card__pattern,
+.slot--filled .sticker-card__pattern,
+.card-preview-stage .sticker-card__pattern {
+  opacity: 0.56;
+  background-size: 28px 48px;
+}
+
+.sticker-card__player-area {
+  inset: 10.6% 6.4% 30.4%;
+}
+
+.sticker-card__player-area img {
+  width: 133%;
+  height: 131%;
+}
+
+.sticker-card__glow-panel {
+  height: 58%;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 135, 31, 0.62), transparent 42%),
+    linear-gradient(180deg, rgba(255, 101, 22, 0.92) 0%, rgba(224, 27, 18, 0.97) 42%, rgba(96, 0, 14, 0.99) 100%);
+}
+
+.sticker-card__name {
+  bottom: 29%;
+  font-size: clamp(19px, 10.25%, 31px);
+}
+
+.sticker-card__meta {
+  bottom: 12.2%;
+}
