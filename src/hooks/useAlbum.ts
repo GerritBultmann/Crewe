@@ -1,6 +1,12 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { hasStoredAlbum, loadSharedAlbum, loadStoredAlbum, saveStoredAlbum } from '../services/storage';
+import { clearStoredAlbum, hasStoredAlbum, loadSharedAlbum, loadStoredAlbum, saveStoredAlbum } from '../services/storage';
 import { albumReducer } from '../store/albumReducer';
+
+const shouldForceServerAlbum = () => {
+  if (typeof window === 'undefined') return false;
+  const params = new URLSearchParams(window.location.search);
+  return params.get('server') === '1' || params.get('shared') === '1';
+};
 
 export const useAlbum = () => {
   const [album, dispatch] = useReducer(albumReducer, undefined, loadStoredAlbum);
@@ -8,10 +14,15 @@ export const useAlbum = () => {
 
   useEffect(() => {
     let isActive = true;
+    const forceServerAlbum = shouldForceServerAlbum();
 
-    if (hasStoredAlbum()) return () => {
-      isActive = false;
-    };
+    if (forceServerAlbum) {
+      clearStoredAlbum();
+    } else if (hasStoredAlbum()) {
+      return () => {
+        isActive = false;
+      };
+    }
 
     loadSharedAlbum().then((sharedAlbum) => {
       if (!isActive || !sharedAlbum) return;
