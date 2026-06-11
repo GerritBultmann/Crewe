@@ -15,6 +15,15 @@
   border-radius: 10px;
 }
 
+.slot--filled,
+.slot--filled > div[draggable="true"] {
+  border-radius: 10px;
+}
+
+.slot--filled .sticker-card {
+  border-radius: 10px;
+}
+
 .card-preview-tilt {
   border-radius: 16px;
 }
