@@ -8,10 +8,30 @@
   --card-facet-a: color-mix(in srgb, var(--card-top) 42%, transparent);
   --card-facet-b: color-mix(in srgb, var(--card-mid) 34%, transparent);
   --card-facet-c: color-mix(in srgb, var(--card-bottom) 38%, transparent);
+  --card-cut-shape: polygon(
+    0 16px,
+    16px 0,
+    calc(100% - 16px) 0,
+    100% 16px,
+    100% calc(100% - 18px),
+    calc(100% - 18px) 100%,
+    18px 100%,
+    0 calc(100% - 18px)
+  );
   border-radius: 14px;
 }
 
 .sticker-card--compact {
+  --card-cut-shape: polygon(
+    0 10px,
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px)
+  );
   border-radius: 10px;
 }
 
@@ -39,6 +59,7 @@
 }
 
 .sticker-card__hit {
+  clip-path: var(--card-cut-shape);
   border: 1px solid color-mix(in srgb, var(--card-top) 42%, rgba(255, 255, 255, 0.23));
   background:
     linear-gradient(132deg, transparent 0 13%, rgba(255, 255, 255, 0.1) 13.2% 13.8%, transparent 14% 100%),
@@ -72,6 +93,7 @@
 
 .sticker-card__hit::before {
   inset: 3.2%;
+  clip-path: var(--card-cut-shape);
   border: 1px solid var(--card-line);
   border-bottom-color: rgba(255, 255, 255, 0.06);
   background:
@@ -83,7 +105,7 @@
     linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom left / 1px 58px no-repeat,
     linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) bottom right / 58px 1px no-repeat,
     linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom right / 1px 58px no-repeat;
-  opacity: 0.48;
+  opacity: 0.56;
 }
 
 .sticker-card__hit::after {
@@ -98,13 +120,14 @@
 .slot--filled .sticker-card__pattern,
 .card-preview-stage .sticker-card__pattern {
   inset: 0;
-  opacity: 0.24;
+  opacity: 0.3;
   background:
-    repeating-linear-gradient(60deg, transparent 0 34px, rgba(255, 255, 255, 0.11) 34px 35px, transparent 35px 68px),
-    repeating-linear-gradient(120deg, transparent 0 34px, rgba(255, 255, 255, 0.095) 34px 35px, transparent 35px 68px),
-    repeating-linear-gradient(0deg, transparent 0 38px, rgba(255, 255, 255, 0.055) 38px 39px, transparent 39px 76px);
-  background-size: 68px 58px;
-  background-position: 0 0;
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.1) 75%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.1) 75%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.08) 75%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.08) 75%);
+  background-size: 22px 22px;
+  background-position: 0 0, 11px 11px, 0 0, 11px 11px;
   mask-image: none;
   -webkit-mask-image: none;
 }
