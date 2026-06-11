@@ -5,7 +5,7 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: radial-gradient(circle at 50% 15%, rgba(255, 230, 80, 0.12), transparent 28rem), rgba(3, 8, 18, 0.9);
+  background: radial-gradient(circle at 50% 15%, rgba(239, 18, 23, 0.12), transparent 28rem), rgba(0, 0, 0, 0.92);
 }
 
 .card-preview-modal {
@@ -42,7 +42,7 @@
   will-change: transform;
   backface-visibility: hidden;
   box-shadow: 0 24px 22px rgba(0, 0, 0, 0.34);
-  border-radius: 26px;
+  border-radius: 10px;
 }
 
 .card-preview-stage .sticker-card {
@@ -53,27 +53,33 @@
 }
 
 .card-preview-stage .sticker-card__hit {
+  border: 10px solid #080706;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(239, 18, 23, 0.55), transparent 34%),
+    linear-gradient(180deg, #0c0907 0%, #180303 24%, #430306 58%, #120202 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.13),
-    inset 0 12px 22px rgba(255, 255, 255, 0.06),
-    inset 0 -26px 36px rgba(0, 0, 0, 0.2);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 -42px 55px rgba(0, 0, 0, 0.66),
+    0 18px 28px rgba(0, 0, 0, 0.32);
 }
 
 .card-preview-stage .sticker-card__hit::before,
 .card-preview-stage .sticker-card__hit::after,
 .card-preview-stage .sticker-card__shine {
-  display: none;
+  display: block;
 }
 
 .card-preview-stage .sticker-card__pattern {
-  inset: 0;
-  opacity: 0.14;
+  inset: 4% 6% 17%;
+  opacity: 0.95;
   background:
-    repeating-linear-gradient(60deg, transparent 0 42px, rgba(255, 255, 255, 0.11) 42px 43px, transparent 43px 84px),
-    repeating-linear-gradient(120deg, transparent 0 42px, rgba(255, 255, 255, 0.09) 42px 43px, transparent 43px 84px);
-  background-size: 84px 72px;
-  mask-image: none;
-  -webkit-mask-image: none;
+    repeating-linear-gradient(0deg, rgba(255, 32, 38, 0.52) 0 1px, transparent 1px 7px),
+    radial-gradient(circle at 50% 43%, rgba(255, 25, 32, 0.64), transparent 32%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.62), transparent 30%, transparent 70%, rgba(0, 0, 0, 0.62));
+  background-size: 100% 100%;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0.18) 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0.18) 100%);
 }
 
 .card-preview-profile-button {
@@ -93,34 +99,53 @@
 }
 
 .card-preview-stage .sticker-card__glow-panel {
-  left: -8%;
-  right: -8%;
-  bottom: 0;
-  height: 44%;
-  background: linear-gradient(0deg, var(--card-bottom) 0%, var(--card-mid) 35%, var(--card-top) 68%, transparent 94%);
+  left: 6%;
+  right: 6%;
+  bottom: 4.8%;
+  height: 17%;
+  border-radius: 10px 10px 3px 3px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255, 45, 52, 0.7), transparent 48%),
+    linear-gradient(180deg, rgba(166, 7, 11, 0.98), rgba(70, 2, 4, 0.98));
   clip-path: none;
 }
 
-.sticker-card:not(.sticker-card--compact) .sticker-card__name {
-  bottom: 27%;
+.card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area {
+  inset: 12% 4% 16%;
 }
 
-.sticker-card:not(.sticker-card--compact) .sticker-card__meta {
-  bottom: 9%;
+.card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__player-area img {
+  width: 142%;
+  height: 140%;
+  max-width: none;
+  max-height: none;
+  filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.42));
 }
 
-.sticker-card__meta small {
-  color: rgba(54, 49, 21, 0.64);
+.card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__name {
+  left: 9%;
+  right: 9%;
+  bottom: 5.2%;
+  gap: 1px;
+  color: #fff;
+  font-size: clamp(17px, 9.2%, 30px);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.62);
 }
 
-.card-preview-stage .sticker-card__name {
-  font-size: clamp(32px, 12.5%, 46px);
+.card-preview-stage .sticker-card__name strong:first-child {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
-.card-preview-stage .sticker-card__meta small {
-  font-size: clamp(10px, 4.8%, 13px);
+.card-preview-stage .sticker-card__name strong:last-child {
+  font-weight: 950;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
 }
 
-.card-preview-stage .sticker-card__meta strong {
-  font-size: clamp(17px, 7.2%, 22px);
+.card-preview-stage .sticker-card__meta {
+  display: none;
 }
