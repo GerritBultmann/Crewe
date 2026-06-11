@@ -5,8 +5,8 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: radial-gradient(circle at 50% 15%, rgba(255, 230, 80, 0.14), transparent 28rem), rgba(3, 8, 18, 0.86);
-  backdrop-filter: blur(8px);
+  background: radial-gradient(circle at 50% 15%, rgba(255, 230, 80, 0.18), transparent 28rem), rgba(3, 8, 18, 0.88);
+  backdrop-filter: blur(12px);
 }
 
 .card-preview-modal {
@@ -33,42 +33,28 @@
 
 .card-preview-stage {
   width: min(430px, 78vw);
-  perspective: 1000px;
+  perspective: 1200px;
   cursor: pointer;
-  contain: layout paint;
 }
 
 .card-preview-tilt {
-  --preview-rotate-x: 0deg;
-  --preview-rotate-y: 0deg;
-  transform: rotateX(var(--preview-rotate-x)) rotateY(var(--preview-rotate-y)) translateZ(0);
   transform-style: preserve-3d;
-  transition: transform 90ms linear;
+  transition: transform 160ms ease;
   will-change: transform;
-  backface-visibility: hidden;
 }
 
 .card-preview-stage .sticker-card {
-  filter: drop-shadow(0 24px 20px rgba(0, 0, 0, 0.42));
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-.card-preview-stage .sticker-card__hit,
-.card-preview-stage .sticker-card__pattern,
-.card-preview-stage .sticker-card__shine,
-.card-preview-stage .sticker-card__glow-panel {
-  will-change: auto;
+  filter: drop-shadow(0 28px 22px rgba(0, 0, 0, 0.44));
 }
 
 .card-preview-stage .sticker-card__pattern {
   inset: 0;
-  opacity: 0.32;
+  opacity: 0.22;
   background:
-    repeating-linear-gradient(30deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 10px),
-    repeating-linear-gradient(150deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 10px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 12px);
-  background-size: 12px 12px;
+    repeating-linear-gradient(60deg, transparent 0 34px, rgba(255, 255, 255, 0.12) 34px 35px, transparent 35px 68px),
+    repeating-linear-gradient(120deg, transparent 0 34px, rgba(255, 255, 255, 0.1) 34px 35px, transparent 35px 68px),
+    repeating-linear-gradient(0deg, transparent 0 38px, rgba(255, 255, 255, 0.065) 38px 39px, transparent 39px 76px);
+  background-size: 68px 58px;
   mask-image: none;
   -webkit-mask-image: none;
 }
