@@ -1,13 +1,13 @@
 .sticker-card {
-  --card-text: #f4f7fb;
-  --card-subtext: rgba(244, 247, 251, 0.64);
-  --card-value-text: #f8fafc;
-  --card-line: rgba(255, 255, 255, 0.2);
+  --card-text: #ffffff;
+  --card-subtext: rgba(255, 255, 255, 0.62);
+  --card-value-text: #ffffff;
+  --card-line: rgba(255, 255, 255, 0.18);
   --card-line-soft: rgba(255, 255, 255, 0.08);
-  --card-micro-line: rgba(255, 255, 255, 0.11);
-  --card-facet-a: color-mix(in srgb, var(--card-top) 42%, transparent);
-  --card-facet-b: color-mix(in srgb, var(--card-mid) 34%, transparent);
-  --card-facet-c: color-mix(in srgb, var(--card-bottom) 38%, transparent);
+  --card-micro-line: rgba(255, 255, 255, 0.12);
+  --card-facet-a: rgba(255, 115, 28, 0.36);
+  --card-facet-b: rgba(255, 78, 28, 0.28);
+  --card-facet-c: rgba(130, 0, 18, 0.42);
   border-radius: 12px;
 }
 
@@ -30,34 +30,24 @@
 
 .sticker-card--gold,
 .sticker-card--legend {
-  --card-text: #1d1a10;
-  --card-subtext: rgba(44, 39, 18, 0.58);
-  --card-value-text: #17140c;
-  --card-line: rgba(255, 255, 255, 0.32);
-  --card-line-soft: rgba(255, 255, 255, 0.12);
+  --card-text: #ffffff;
+  --card-subtext: rgba(255, 255, 255, 0.6);
+  --card-value-text: #ffffff;
+  --card-line: rgba(255, 255, 255, 0.2);
+  --card-line-soft: rgba(255, 255, 255, 0.08);
   --card-micro-line: rgba(255, 255, 255, 0.14);
 }
 
 .sticker-card__hit {
-  border: 1px solid color-mix(in srgb, var(--card-top) 42%, rgba(255, 255, 255, 0.23));
+  border: 0;
   background:
-    linear-gradient(132deg, transparent 0 13%, rgba(255, 255, 255, 0.1) 13.2% 13.8%, transparent 14% 100%),
-    linear-gradient(46deg, transparent 0 18%, rgba(255, 255, 255, 0.07) 18.2% 18.8%, transparent 19% 100%),
-    radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.16) 0 8%, transparent 39%),
-    radial-gradient(circle at 18% 16%, var(--card-facet-a) 0 13%, transparent 34%),
-    radial-gradient(circle at 82% 12%, var(--card-facet-b) 0 12%, transparent 30%),
-    linear-gradient(
-      165deg,
-      color-mix(in srgb, var(--card-top) 70%, #1b2230 18%) 0%,
-      color-mix(in srgb, var(--card-mid) 78%, #172033 15%) 47%,
-      color-mix(in srgb, var(--card-bottom) 84%, #050816 16%) 100%
-    );
+    radial-gradient(circle at 50% 18%, rgba(255, 145, 32, 0.48) 0 13%, transparent 45%),
+    linear-gradient(180deg, #8e0813 0%, #c70f14 34%, #ff5a18 56%, #dd1715 75%, #760712 100%);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.15),
-    inset 0 16px 28px rgba(255, 255, 255, 0.08),
-    inset 0 -34px 46px rgba(0, 0, 0, 0.22),
-    0 18px 26px rgba(0, 0, 0, 0.24),
-    0 0 18px color-mix(in srgb, var(--card-mid) 20%, transparent);
+    inset 0 22px 30px rgba(255, 255, 255, 0.06),
+    inset 0 -42px 58px rgba(62, 0, 8, 0.48),
+    0 18px 26px rgba(0, 0, 0, 0.25);
 }
 
 .sticker-card__hit::before,
@@ -71,95 +61,154 @@
 }
 
 .sticker-card__hit::before {
-  inset: 3.2%;
-  border: 1px solid var(--card-line);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   background:
-    linear-gradient(90deg, var(--card-line) 0 18px, transparent 18px) top left / 58px 1px no-repeat,
-    linear-gradient(180deg, var(--card-line) 0 18px, transparent 18px) top left / 1px 58px no-repeat,
-    linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) top right / 58px 1px no-repeat,
-    linear-gradient(180deg, var(--card-line) 0 18px, transparent 18px) top right / 1px 58px no-repeat,
-    linear-gradient(90deg, var(--card-line) 0 18px, transparent 18px) bottom left / 58px 1px no-repeat,
-    linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom left / 1px 58px no-repeat,
-    linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) bottom right / 58px 1px no-repeat,
-    linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom right / 1px 58px no-repeat;
-  opacity: 0.48;
+    radial-gradient(circle at 50% 3%, rgba(255, 130, 35, 0.4), transparent 34%),
+    linear-gradient(180deg, rgba(70, 0, 10, 0.2) 0%, transparent 32%, transparent 62%, rgba(65, 0, 9, 0.32) 100%);
+  opacity: 1;
 }
 
 .sticker-card__hit::after {
+  top: auto;
+  height: 42%;
   background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.13) 0%, transparent 18%, transparent 74%, rgba(255, 255, 255, 0.04) 100%),
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.1), transparent 18%);
-  mix-blend-mode: soft-light;
-  opacity: 0.5;
+    radial-gradient(circle at 50% 0%, rgba(255, 145, 35, 0.55), transparent 44%),
+    linear-gradient(180deg, rgba(255, 96, 22, 0.88) 0%, rgba(221, 24, 18, 0.96) 44%, rgba(104, 0, 14, 0.98) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  mix-blend-mode: normal;
+  opacity: 0.96;
 }
 
 .sticker-card__pattern,
 .slot--filled .sticker-card__pattern,
 .card-preview-stage .sticker-card__pattern {
-  inset: -4%;
-  opacity: 0.36;
+  inset: -4% -4% 34%;
+  opacity: 0.48;
   background:
-    linear-gradient(30deg, transparent 24%, rgba(255, 255, 255, 0.26) 25%, rgba(255, 255, 255, 0.26) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.26) 75%, rgba(255, 255, 255, 0.26) 77%, transparent 78%),
-    linear-gradient(150deg, transparent 24%, rgba(255, 255, 255, 0.22) 25%, rgba(255, 255, 255, 0.22) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.22) 75%, rgba(255, 255, 255, 0.22) 77%, transparent 78%),
-    linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.14) 25%, rgba(255, 255, 255, 0.14) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.14) 75%, rgba(255, 255, 255, 0.14) 77%, transparent 78%);
+    linear-gradient(30deg, transparent 24%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0.2) 77%, transparent 78%),
+    linear-gradient(150deg, transparent 24%, rgba(255, 255, 255, 0.16) 25%, rgba(255, 255, 255, 0.16) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.16) 75%, rgba(255, 255, 255, 0.16) 77%, transparent 78%),
+    linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.1) 27%, transparent 28%, transparent 74%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1) 77%, transparent 78%);
   background-size: 30px 52px;
   background-position: 0 0, 0 0, 0 0;
   mix-blend-mode: soft-light;
-  mask-image: linear-gradient(180deg, #000 0%, #000 68%, rgba(0, 0, 0, 0.22) 100%);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 68%, rgba(0, 0, 0, 0.22) 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.16) 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.16) 100%);
 }
 
 .sticker-card__shine {
-  opacity: 0.38;
+  z-index: 2;
+  opacity: 0.33;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.2) 0%, transparent 19%, transparent 67%, rgba(0, 0, 0, 0.14) 100%),
-    radial-gradient(circle at 72% 16%, rgba(255, 255, 255, 0.2), transparent 18%);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.18) 0%, transparent 18%, transparent 70%, rgba(40, 0, 8, 0.18) 100%),
+    radial-gradient(circle at 70% 14%, rgba(255, 190, 80, 0.2), transparent 19%);
 }
 
-.sticker-card__top-left,
-.sticker-card__top-right {
-  color: var(--card-text);
-  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
+.sticker-card__top-left {
+  top: 7.4%;
+  left: 7%;
+  z-index: 8;
+  gap: 1px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(7px, 3.2%, 10px);
+  line-height: 1.05;
+  text-shadow: none;
 }
 
 .sticker-card__top-left strong {
-  color: var(--card-value-text);
+  color: #ffffff;
+  font-size: clamp(8px, 3.6%, 11px);
+  letter-spacing: 0.01em;
+}
+
+.sticker-card__top-right {
+  top: 6.8%;
+  right: 7.2%;
+  z-index: 8;
+  gap: 8px;
+  color: #ffffff;
+  font-size: clamp(10px, 4.8%, 14px);
+  text-shadow: none;
+}
+
+.sticker-card__top-right strong {
+  display: grid;
+  min-width: clamp(19px, 8.8%, 25px);
+  min-height: clamp(19px, 8.8%, 25px);
+  place-items: center;
+  border-radius: 4px;
+  background: rgba(102, 0, 16, 0.5);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(8px, 3.5%, 11px);
 }
 
 .sticker-card__club-mark {
-  background: rgba(255, 255, 255, 0.16);
+  width: clamp(30px, 14%, 43px);
+  background: rgba(255, 255, 255, 0.88);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.3),
-    0 6px 12px rgba(0, 0, 0, 0.14);
-  backdrop-filter: blur(3px);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 5px 12px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  backdrop-filter: none;
+}
+
+.sticker-card__player-area {
+  inset: 12% 7% 31%;
+  z-index: 5;
+}
+
+.sticker-card__player-area img {
+  width: 128%;
+  height: 126%;
+  filter: drop-shadow(0 12px 13px rgba(70, 0, 7, 0.3));
+}
+
+.sticker-card__glow-panel {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  height: 56%;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 145, 35, 0.55), transparent 42%),
+    linear-gradient(180deg, rgba(255, 96, 22, 0.88) 0%, rgba(221, 24, 18, 0.96) 42%, rgba(104, 0, 14, 0.98) 100%);
+  filter: none;
 }
 
 .sticker-card__name {
-  color: var(--card-text);
-  letter-spacing: -0.045em;
-  text-shadow:
-    0 2px 7px rgba(0, 0, 0, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.08);
+  left: 13%;
+  right: 13%;
+  bottom: 30%;
+  z-index: 7;
+  color: #ffffff;
+  font-size: clamp(20px, 10.7%, 32px);
+  letter-spacing: -0.055em;
+  line-height: 1.02;
+  text-shadow: 0 2px 7px rgba(72, 0, 8, 0.38);
 }
 
-.sticker-card--gold .sticker-card__name,
-.sticker-card--legend .sticker-card__name {
-  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.16);
+.sticker-card__meta {
+  left: 11%;
+  right: 11%;
+  bottom: 13.6%;
+  z-index: 7;
+  gap: 10px;
+  color: #ffffff;
 }
 
 .sticker-card__meta small {
-  color: var(--card-subtext);
-  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: clamp(6px, 2.8%, 8px);
+  letter-spacing: 0.18em;
 }
 
 .sticker-card__meta strong {
-  color: var(--card-value-text);
-  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+  font-size: clamp(8px, 4.4%, 12px);
+  text-shadow: none;
 }
 
 .sticker-card__actions button {
-  border-color: rgba(255, 255, 255, 0.26);
-  background: rgba(7, 14, 28, 0.66);
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(91, 0, 14, 0.74);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16);
 }
