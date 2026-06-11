@@ -1,4 +1,4 @@
-import { useEffect, useRef, type PointerEvent } from 'react';
+import { useState, type PointerEvent } from 'react';
 import type { Sticker } from '../../domain/types';
 import { StickerCard } from './StickerCard';
 
@@ -11,46 +11,14 @@ interface StickerPreviewModalProps {
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 export const StickerPreviewModal = ({ sticker, onClose, onProfile }: StickerPreviewModalProps) => {
-  const tiltRef = useRef<HTMLDivElement | null>(null);
-  const frameRef = useRef<number | null>(null);
-  const pendingRotation = useRef({ x: 0, y: 0 });
-
-  const applyRotation = (x: number, y: number) => {
-    const element = tiltRef.current;
-    if (!element) return;
-
-    element.style.setProperty('--preview-rotate-x', `${x.toFixed(2)}deg`);
-    element.style.setProperty('--preview-rotate-y', `${y.toFixed(2)}deg`);
-  };
-
-  const scheduleRotation = (x: number, y: number) => {
-    pendingRotation.current = { x, y };
-
-    if (frameRef.current !== null) return;
-
-    frameRef.current = window.requestAnimationFrame(() => {
-      frameRef.current = null;
-      applyRotation(pendingRotation.current.x, pendingRotation.current.y);
-    });
-  };
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
   const updateRotation = (event: PointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
-
-    scheduleRotation(clamp(y * -14, -14, 14), clamp(x * 14, -14, 14));
+    setRotation({ x: clamp(y * -18, -18, 18), y: clamp(x * 18, -18, 18) });
   };
-
-  const resetRotation = () => {
-    scheduleRotation(0, 0);
-  };
-
-  useEffect(() => () => {
-    if (frameRef.current !== null) {
-      window.cancelAnimationFrame(frameRef.current);
-    }
-  }, []);
 
   return (
     <div className="card-preview-backdrop" role="presentation" onMouseDown={onClose}>
@@ -59,10 +27,10 @@ export const StickerPreviewModal = ({ sticker, onClose, onProfile }: StickerPrev
         <div
           className="card-preview-stage"
           onPointerMove={updateRotation}
-          onPointerLeave={resetRotation}
+          onPointerLeave={() => setRotation({ x: 0, y: 0 })}
           onClick={() => onProfile(sticker)}
         >
-          <div ref={tiltRef} className="card-preview-tilt">
+          <div className="card-preview-tilt" style={{ transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)` }}>
             <StickerCard sticker={sticker} compact={false} draggable={false} interactive={false} />
           </div>
         </div>
