@@ -81,12 +81,13 @@
 }
 
 .card-preview-stage .sticker-card__pattern {
+  z-index: 6;
   inset: 4% 6% 17%;
-  opacity: 0.95;
+  opacity: 0.72;
   background:
-    repeating-linear-gradient(0deg, rgba(255, 32, 38, 0.52) 0 1px, transparent 1px 7px),
-    radial-gradient(circle at 50% 43%, rgba(255, 25, 32, 0.64), transparent 32%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.62), transparent 30%, transparent 70%, rgba(0, 0, 0, 0.62));
+    repeating-linear-gradient(0deg, rgba(255, 32, 38, 0.5) 0 1px, transparent 1px 7px),
+    radial-gradient(circle at 50% 43%, rgba(255, 25, 32, 0.48), transparent 32%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5), transparent 30%, transparent 70%, rgba(0, 0, 0, 0.5));
   background-size: 100% 100%;
   mix-blend-mode: screen;
   mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0.18) 100%);
@@ -163,18 +164,6 @@
   max-width: none;
   max-height: none;
   filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.42));
-}
-
-.card-preview-stage .sticker-card__player-area::after {
-  content: "";
-  position: absolute;
-  inset: -6% -8% 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(255, 22, 30, 0.5) 0%, rgba(255, 28, 34, 0.38) 28%, rgba(190, 0, 12, 0.22) 56%, transparent 82%),
-    radial-gradient(circle at 50% 35%, rgba(255, 18, 26, 0.32), transparent 55%);
-  mix-blend-mode: multiply;
 }
 
 .card-preview-stage .sticker-card:not(.sticker-card--compact) .sticker-card__name {
