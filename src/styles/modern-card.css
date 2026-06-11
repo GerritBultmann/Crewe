@@ -8,6 +8,15 @@
   --card-facet-a: color-mix(in srgb, var(--card-top) 42%, transparent);
   --card-facet-b: color-mix(in srgb, var(--card-mid) 34%, transparent);
   --card-facet-c: color-mix(in srgb, var(--card-bottom) 38%, transparent);
+  border-radius: 14px;
+}
+
+.sticker-card--compact {
+  border-radius: 10px;
+}
+
+.card-preview-tilt {
+  border-radius: 16px;
 }
 
 .sticker-card--gold,
