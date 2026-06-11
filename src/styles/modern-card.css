@@ -9,43 +9,43 @@
   --card-facet-b: color-mix(in srgb, var(--card-mid) 34%, transparent);
   --card-facet-c: color-mix(in srgb, var(--card-bottom) 38%, transparent);
   --card-cut-shape: polygon(
-    0 16px,
-    16px 0,
-    calc(100% - 16px) 0,
-    100% 16px,
-    100% calc(100% - 18px),
-    calc(100% - 18px) 100%,
-    18px 100%,
-    0 calc(100% - 18px)
+    0 24px,
+    24px 0,
+    calc(100% - 24px) 0,
+    100% 24px,
+    100% calc(100% - 26px),
+    calc(100% - 26px) 100%,
+    26px 100%,
+    0 calc(100% - 26px)
   );
-  border-radius: 14px;
+  border-radius: 10px;
 }
 
 .sticker-card--compact {
   --card-cut-shape: polygon(
-    0 10px,
-    10px 0,
-    calc(100% - 10px) 0,
-    100% 10px,
-    100% calc(100% - 12px),
-    calc(100% - 12px) 100%,
-    12px 100%,
-    0 calc(100% - 12px)
+    0 14px,
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 16px),
+    calc(100% - 16px) 100%,
+    16px 100%,
+    0 calc(100% - 16px)
   );
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .slot--filled,
 .slot--filled > div[draggable="true"] {
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .slot--filled .sticker-card {
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .card-preview-tilt {
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 .sticker-card--gold,
@@ -97,15 +97,15 @@
   border: 1px solid var(--card-line);
   border-bottom-color: rgba(255, 255, 255, 0.06);
   background:
-    linear-gradient(90deg, var(--card-line) 0 18px, transparent 18px) top left / 58px 1px no-repeat,
-    linear-gradient(180deg, var(--card-line) 0 18px, transparent 18px) top left / 1px 58px no-repeat,
-    linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) top right / 58px 1px no-repeat,
-    linear-gradient(180deg, var(--card-line) 0 18px, transparent 18px) top right / 1px 58px no-repeat,
-    linear-gradient(90deg, var(--card-line) 0 18px, transparent 18px) bottom left / 58px 1px no-repeat,
-    linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom left / 1px 58px no-repeat,
-    linear-gradient(270deg, var(--card-line) 0 18px, transparent 18px) bottom right / 58px 1px no-repeat,
-    linear-gradient(0deg, var(--card-line) 0 18px, transparent 18px) bottom right / 1px 58px no-repeat;
-  opacity: 0.56;
+    linear-gradient(90deg, var(--card-line) 0 24px, transparent 24px) top left / 70px 1px no-repeat,
+    linear-gradient(180deg, var(--card-line) 0 24px, transparent 24px) top left / 1px 70px no-repeat,
+    linear-gradient(270deg, var(--card-line) 0 24px, transparent 24px) top right / 70px 1px no-repeat,
+    linear-gradient(180deg, var(--card-line) 0 24px, transparent 24px) top right / 1px 70px no-repeat,
+    linear-gradient(90deg, var(--card-line) 0 24px, transparent 24px) bottom left / 70px 1px no-repeat,
+    linear-gradient(0deg, var(--card-line) 0 24px, transparent 24px) bottom left / 1px 70px no-repeat,
+    linear-gradient(270deg, var(--card-line) 0 24px, transparent 24px) bottom right / 70px 1px no-repeat,
+    linear-gradient(0deg, var(--card-line) 0 24px, transparent 24px) bottom right / 1px 70px no-repeat;
+  opacity: 0.62;
 }
 
 .sticker-card__hit::after {
@@ -120,14 +120,14 @@
 .slot--filled .sticker-card__pattern,
 .card-preview-stage .sticker-card__pattern {
   inset: 0;
-  opacity: 0.3;
+  opacity: 0.54;
   background:
-    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.1) 75%),
-    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.1) 75%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.08) 75%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.08) 75%);
-  background-size: 22px 22px;
-  background-position: 0 0, 11px 11px, 0 0, 11px 11px;
+    repeating-linear-gradient(45deg, transparent 0 9px, rgba(255, 255, 255, 0.2) 9px 10px, transparent 10px 19px),
+    repeating-linear-gradient(135deg, transparent 0 9px, rgba(255, 255, 255, 0.16) 9px 10px, transparent 10px 19px),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25% 75%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 19px 19px, 19px 19px, 19px 19px;
+  background-position: 0 0;
+  mix-blend-mode: soft-light;
   mask-image: none;
   -webkit-mask-image: none;
 }
