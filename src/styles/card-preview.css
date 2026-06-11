@@ -5,8 +5,8 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: radial-gradient(circle at 50% 15%, rgba(255, 230, 80, 0.18), transparent 28rem), rgba(3, 8, 18, 0.88);
-  backdrop-filter: blur(12px);
+  background: radial-gradient(circle at 50% 15%, rgba(255, 230, 80, 0.14), transparent 28rem), rgba(3, 8, 18, 0.86);
+  backdrop-filter: blur(8px);
 }
 
 .card-preview-modal {
@@ -33,18 +33,32 @@
 
 .card-preview-stage {
   width: min(430px, 78vw);
-  perspective: 1200px;
+  perspective: 1000px;
   cursor: pointer;
+  contain: layout paint;
 }
 
 .card-preview-tilt {
+  --preview-rotate-x: 0deg;
+  --preview-rotate-y: 0deg;
+  transform: rotateX(var(--preview-rotate-x)) rotateY(var(--preview-rotate-y)) translateZ(0);
   transform-style: preserve-3d;
-  transition: transform 160ms ease;
+  transition: transform 90ms linear;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 .card-preview-stage .sticker-card {
-  filter: drop-shadow(0 34px 28px rgba(0, 0, 0, 0.48));
+  filter: drop-shadow(0 24px 20px rgba(0, 0, 0, 0.42));
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.card-preview-stage .sticker-card__hit,
+.card-preview-stage .sticker-card__pattern,
+.card-preview-stage .sticker-card__shine,
+.card-preview-stage .sticker-card__glow-panel {
+  will-change: auto;
 }
 
 .card-preview-stage .sticker-card__pattern {
