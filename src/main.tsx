@@ -5,6 +5,7 @@ import './styles/global.css';
 import './styles/crewe-logo.css';
 import './styles/player-profile.css';
 import './styles/sticker-card.css';
+import './styles/modern-card.css';
 import './styles/card-preview.css';
 import './styles/profile-hero.css';
 import './styles/attribute-highlights.css';
@@ -13,7 +14,6 @@ import './styles/placed-card.css';
 import './styles/image-paste.css';
 import './styles/profile-positions.css';
 import './styles/market-chart-compact.css';
-import './styles/modern-card.css';
 
 const rootElement = document.getElementById('root');
 
